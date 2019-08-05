@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "# Workflow [Development] => [Staging] => [Production]",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/project-team-player/server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/project-team-player/server/issues"
+  },
+  "homepage": "https://github.com/project-team-player/server#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "es6-promisify": "^6.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "express-validator": "^6.1.1",
+    "nodemon": "^1.19.1"
+  }
+}
