@@ -3,6 +3,10 @@
 # Workflow
 [Development] => [Staging] => [Production]
 
+# Style Guide
+* Kabob Case
+* Example: example-index.js (If file is a class then: Example-index.js)
+
 ## Cloning this repo
 1. Clone `https://github.com/project-team-player/server.git` into your local machine.
 2. `development` branch is the master branch. Make sure to branch off this branch.
