@@ -12,6 +12,7 @@ mongoose.connection.on('error', (err)=> {
 
 // ZOOM 
 // import all models
+require('./models/User');
 
 // Start the app
 const app = require('./app');
