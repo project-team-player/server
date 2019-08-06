@@ -3,7 +3,8 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
-const cookieParser = requier('cookie-parser');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const promisify = require('es6-promisify');
@@ -27,18 +28,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors()); // for CORS
 
 // Exposes methods for validating data. 
 app.use(expressValidator());
 
 // Populates req.cookies with any cookies that came along with the request
-app.use(cookieParser);
+// ACTIVATE OR DELETE
+// app.use(cookieParser);
 
 // Sessions allow storing data on visitors from request to request
 // This keeps users logged in and allows sending flash messages.
 app.use(session({
     secret: process.env.SECRET,
-    key: process.key.KEY,
+    key: process.env.KEY,
     resave: false,
     saveUninitialized: false,
     // this might need MODS
@@ -63,10 +66,11 @@ app.use((req, res, next) => {
 });
 
 // promisify some callbacks based APIs
-app.use((req, res, next) => {
-    req.login = promisify(req.login, req);
-    next();
-});
+// ACTIVATE OR DELETE
+// app.use((req, res, next) => {
+//     req.login = promisify(req.login, req);
+//     next();
+// });
 
 // Handle own routes now
 app.use('/', routes);
