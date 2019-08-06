@@ -48,9 +48,20 @@ const confirmedPasswords = (req, res, next) => {
     res.redirect('back');
 };
 
+// middleware to make sure username, 
+// password and email fields arent empty
+const usePassEmailFilled = (req, res, next) => {
+    if(req.body.username && req.body.password && req.body.email) {
+        return next();
+    }
+    req.flash('error', 'make sure username, password and email fields are filled');
+    res.redirect('back');
+}
+
 module.exports = {
     login,
     logout,
     isLoggedIn,
     confirmedPasswords,
+    usePassEmailFilled,
 };
