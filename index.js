@@ -10,10 +10,6 @@ mongoose.connection.on('error', (err)=> {
     console.error(`💩💩💩💩 🔎 ${err.message}`);
 });
 
-// ZOOM 
-// import all models
-require('./models/User');
-
 // Start the app
 const app = require('./app');
 app.set('port', process.env.PORT || 5900);
