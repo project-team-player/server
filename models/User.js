@@ -105,7 +105,7 @@ const userSchema = new Schema({
         {
             commentID: String,
             objectReference: {
-                type: mongooose.Schema.Types.ObjectId,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'comment',
             },
         },
