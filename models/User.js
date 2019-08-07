@@ -101,6 +101,15 @@ const userSchema = new Schema({
             type: String,
         }
     ],
+    comments: [
+        {
+            commentID: String,
+            objectReference: {
+                type: mongooose.Schema.Types.ObjectId,
+                ref: 'comment',
+            },
+        },
+    ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 });
