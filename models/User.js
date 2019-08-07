@@ -1,5 +1,6 @@
 /* User Model */
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
@@ -114,6 +115,21 @@ const userSchema = new Schema({
     ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+});
+
+/**
+ * Pre-save hook on 'password' property, this code will
+ * execute before saving.
+ */
+userSchema.pre('save', async function(next){
+    // if password isnt modified, no need to mod it
+    if(!this.isModified('password')) {
+        return next(); // GTFO and move on
+    }
+    // password is modified, salt and hash it
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(this.password, salt);
+    this.password = hash;
 });
 
 // VIRTUAL FIELD used for a user's gravatar
