@@ -5,7 +5,6 @@ mongoose.Promise = global.Promise;
 const md5 = require('md5');
 const validator = require('validator');
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
-const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
     name: {
@@ -26,7 +25,10 @@ const userSchema = new Schema({
         validate: [validator.isEmail, 'Invalid Email Address'],
         required: 'Supply an email address',
     },
-    // password will be kept by passport
+    password: {
+        type: String,
+        required: 'Supply a password',
+    },
     permissions: {
         type: Number,
         default: 0,
@@ -125,11 +127,8 @@ userSchema.virtual('gravatar').get(function() {
     return `https://gravatar.com/avatar/${hash}?s=200`;
 });
 
-// authenticate with passport-local-mongoose
-// will then be able to use a '.register' method on the controller
-// that is in charge of creating a user.
-userSchema.plugin(passportLocalMongoose, { usernameField: 'email', });
-userSchema.plugin(mongodbErrorHandler); // better error messages
+// better error messages
+userSchema.plugin(mongodbErrorHandler); 
 
 module.exports = mongoose.model('User', userSchema);
 

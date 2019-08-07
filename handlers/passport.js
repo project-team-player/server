@@ -1,7 +1,27 @@
-const passport = require('passport');
-const User = require('../models/User');
+const passportJwt = require('passport-jwt');
+const userController = require('../controllers/user-controller');
 
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-// Because of this, theres no need to worry about sessions or cookies.
+const { Strategy, ExtractJwt } = passportJwt;
+
+// options to be passed to strategy 
+const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.SECRET,
+    issuer: process.env.ISSUER,
+    passReqToCallback: true,
+};
+
+const jwtStrategy = new Strategy(options, async(req, payload, done) => {
+    try {
+        const user = await userController.readOne(payload._id);
+        req.user = user;
+        done(null, user);
+    } catch(err) {
+        done(err, false);
+    }
+});
+
+module.exports = jwtStrategy;
+
+
+

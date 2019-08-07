@@ -4,16 +4,14 @@ const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const promisify = require('es6-promisify');
+const passportStrategy = require('./handlers/passport');
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const routes = require('./routes/main');
 const helpers = require('./helpers');
 const errorHandlers = require('./handlers/error-handlers');
-// require('./handlers/passport'); // eventually used
 
 // create Express APP
 const app = express();
@@ -33,10 +31,6 @@ app.use(cors()); // for CORS
 // Exposes methods for validating data. 
 app.use(expressValidator());
 
-// Populates req.cookies with any cookies that came along with the request
-// ACTIVATE OR DELETE
-// app.use(cookieParser);
-
 // Sessions allow storing data on visitors from request to request
 // This keeps users logged in and allows sending flash messages.
 app.use(session({
@@ -50,7 +44,8 @@ app.use(session({
 
 // Passport JS will be used to handle user logins
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session()); // may need to be omitted
+passport.use(passportStrategy);
 
 // Flash middleware enables usage of req.flash('error', 'SHIT!'), which will then
 // pass that message to the next page the user requests.
@@ -64,13 +59,6 @@ app.use((req, res, next) => {
     res.locals.currentPath = req.path;
     next();
 });
-
-// promisify some callbacks based APIs
-// ACTIVATE OR DELETE
-// app.use((req, res, next) => {
-//     req.login = promisify(req.login, req);
-//     next();
-// });
 
 // Handle own routes now
 app.use('/', routes);

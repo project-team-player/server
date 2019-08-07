@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { catchErrors } = require('../handlers/error-handlers');
 const userController = require('../controllers/user-controller');
-const authController = require('../controllers/auth-subroutines');
+const authSubroutines = require('../handlers/auth-subroutines');
 
 router.post(
     '/signup', 

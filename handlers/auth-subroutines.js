@@ -1,31 +1,5 @@
-/**
- * Interface strategy to check if user is allowed to perform functions.
- * Local strategies will be used for such.
- */
-const passport = require('passport');
 const crypto = require('crypto'); // From node, turns text/tokens into cryptographs
-const mongoose = require('mongoose');
-const User = require('../models/User');
-const promisify = require('es6-promisify');
-const mail = require('../handlers/mail');
-
-/**
- * 'local' puts the user object on each request.
- * serializeUser() and desirializeUser() used on '../handlers/passport'
- * utilized for passing this user info.
- */
-const login = passport.authenticate('local', {
-    failureRedirect: '/login', // redirect to 'login'
-    failureFlash: 'Failed Login!',
-    successRedirect: '/',
-    successFlash: 'Youre Logged In', 
-});
-
-const logout = (req, res) => {
-    req.logout();
-    req.flash('success', 'You are logged out');
-    res.redirect('/');
-};
+const mail = require('./mail');
 
 // User this middleware to protect pages from being
 // used by unauthenticated users/sessions.
@@ -59,8 +33,6 @@ const usePassEmailFilled = (req, res, next) => {
 }
 
 module.exports = {
-    login,
-    logout,
     isLoggedIn,
     confirmedPasswords,
     usePassEmailFilled,
