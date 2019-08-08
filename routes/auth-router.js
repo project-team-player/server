@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const { catchErrors } = require('../handlers/error-handlers');
 const userController = require('../controllers/user-controller');
 const authSubroutines = require('../handlers/auth-subroutines');
@@ -33,8 +35,36 @@ router.post('/signup',
 
 router.post(
     '/login',
-    catchErrors((req, res) => {
-        // TODO
+    authSubroutines.loginFilled,
+    catchErrors(async (req, res) => {
+        // validation passed, find the user using email
+        let user = await userController.readOne({ email: req.body.username });
+        if(!user) {
+            // that attempt didnt work, attempt to find it using the username
+            user = await userController.readOne({ username: req.body.username });
+        }
+        if(!user) {
+            // user doesnt exist
+            const errorUser = new CustomError(400, 'Invalid Username: Try Again');
+            return res.status(400).json({ errorUser });
+        }
+        const passwordsMatch = await bcrypt.compare(req.body.password, user.password);
+        if(!passwordsMatch) {
+            const errorPassword = new CustomError(400, 'Invalid Password');
+            return res.status(400).json({ errorPassword });
+        }
+        const userObj = user.toObject();
+        delete userObj.password;
+        // sign the jwt and allow user access
+        const bearerToken = jwt.sign(user.toJSON(), process.env.SECRET, {
+            expiresIn: '1day',
+            issuer: process.env.ISSUER,
+        });
+        return res.json({
+            message: 'Login Successful',
+            token: `Bearer: ${bearerToken}`,
+            user: userObj,
+        });
     })
 );
 
