@@ -1,5 +1,6 @@
 const crypto = require('crypto'); // From node, turns text/tokens into cryptographs
 const mail = require('./mail');
+const CustomError = require('./Custom-Error');
 
 // User this middleware to protect pages from being
 // used by unauthenticated users/sessions.
@@ -18,19 +19,19 @@ const confirmedPasswords = (req, res, next) => {
     if(req.body.password === req.body['passwordConfirm']) {
         return next();
     }
-    req.flash('error', 'Passwords do not match');
-    res.redirect('back');
+    const error = new CustomError(400, 'Invalid Signup: Passwords do not match');
+    res.status(400).json({ error });
 };
 
 // middleware to make sure username, 
 // password and email fields arent empty
 const usePassEmailFilled = (req, res, next) => {
-    if(req.body.username && req.body.password && req.body.email) {
+    if(req.body.name && req.body.username && req.body.password && req.body.email) {
         return next();
     }
-    req.flash('error', 'make sure username, password and email fields are filled');
-    res.redirect('back');
-}
+    const error =  new CustomError(400, 'Invalid Signup: Missing either name, username, password, email');
+    res.status(400).json({ error });
+};
 
 module.exports = {
     isLoggedIn,
