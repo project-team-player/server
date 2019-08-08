@@ -33,8 +33,19 @@ router.post('/signup',
 
 router.post(
     '/login',
-    catchErrors((req, res) => {
-        // TODO
+    authSubroutines.loginFilled,
+    catchErrors(async (req, res) => {
+        // validation passed, find the user
+        let user = await userController.readOne({ email: req.body.username });
+        if(!user) {
+            // find it using the username
+            user = await userController.readOne({ username: req.body.username });
+        }
+        if(!user) {
+            // user doesnt exist
+            const errorUser = new CustomError(400, 'Invalid Username: Try Again');
+            res.status(400).json({ errorUser });
+        }
     })
 );
 

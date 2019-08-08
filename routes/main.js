@@ -8,7 +8,7 @@ const authRouter = require('./auth-router');
 
 const app = express();
 app.use('/', publicRouter);
-app.use('/', authRouter);
-//app.use('/login', authRouter);
+app.use('/authenticate', authRouter);
+app.use('/authenticate', authRouter);
 
 module.exports = app;
