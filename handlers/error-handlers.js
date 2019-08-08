@@ -66,7 +66,6 @@ const productionErrors = (err, req, res, next) => {
 
 module.exports = {
     catchErrors,
-    asyncWrapper,
     notFound,
     flashValidationErrors,
     developmentErrors,

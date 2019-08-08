@@ -24,7 +24,7 @@ const confirmedPasswords = (req, res, next) => {
     return res.status(400).json({ error });
 };
 
-// middleware to make sure username, 
+// middleware to make sure name, username, 
 // password and email fields arent empty
 const usePassEmailFilled = (req, res, next) => {
     if(!validator.isEmail(req.body.email)) {
@@ -38,8 +38,24 @@ const usePassEmailFilled = (req, res, next) => {
     return res.status(400).json({ errorValidate });
 };
 
+/**
+ * When logging in:
+ * 1. Make sure username and password fields are filled (validation needed).
+ * 2. username can be user's email or user's username
+ */
+
+ // middlware to make sure the login form isnt empty
+const loginFilled = (req, res, next) => {
+    if(req.body.username && req.body.password) {
+        return next();
+    }
+    const errorLogin = new CustomError(400, 'Username or/and Password is required');
+    return res.status(400).json({ errorLogin });
+};
+
 module.exports = {
     isLoggedIn,
     confirmedPasswords,
     usePassEmailFilled,
+    loginFilled,
 };
