@@ -2,11 +2,17 @@ const router = require('express').Router();
 const { catchErrors } = require('../handlers/error-handlers');
 const userController = require('../controllers/user-controller');
 const authSubroutines = require('../handlers/auth-subroutines');
+const CustomError = require('../handlers/Custom-Error');
 
 router.post('/signup', 
     authSubroutines.usePassEmailFilled,
     authSubroutines.confirmedPasswords,
     catchErrors(async (req, res) => {
+        const existingUser = await userController.readOne({ email: req.body.email });
+        if(existingUser) {
+            const errorEmailExists = new CustomError(400, 'That email address has already been registered');
+            return res.status(400).json({ errorEmailExists });
+        }
         // validators pass, move on.
         const user = {
             name: req.body.name,
