@@ -26,8 +26,14 @@ router.post('/signup',
         const userObj = createdUser.toObject();
         delete userObj.password;
         // might need to delete _id frm userObj as well
+        // sign the jwt and allow user access
+        const bearerToken = jwt.sign(createdUser.toJSON(), process.env.SECRET, {
+            expiresIn: '1day',
+            issuer: process.env.ISSUER,
+        });
         return res.status(201).json({ 
             message: 'User successfully created',
+            token: `Bearer: ${bearerToken}`,
             user: userObj,
         });
     })
@@ -60,7 +66,7 @@ router.post(
             expiresIn: '1day',
             issuer: process.env.ISSUER,
         });
-        return res.json({
+        return res.status(201).json({
             message: 'Login Successful',
             token: `Bearer: ${bearerToken}`,
             user: userObj,
