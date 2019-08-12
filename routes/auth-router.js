@@ -24,8 +24,8 @@ router.post('/signup',
         };
         const createdUser = await userController.createOne(user);
         const userObj = createdUser.toObject();
-        delete userObj.password;
-        // might need to delete _id frm userObj as well
+        delete userObj.password; // hide password
+        delete userObj._id; // hide ID
         // sign the jwt and allow user access
         const bearerToken = jwt.sign(createdUser.toJSON(), process.env.SECRET, {
             expiresIn: '1day',
@@ -60,7 +60,8 @@ router.post(
             return res.status(400).json({ errorPassword });
         }
         const userObj = user.toObject();
-        delete userObj.password;
+        delete userObj.password; // hide password
+        delete userObj._id; // hide ID 
         // sign the jwt and allow user access
         const bearerToken = jwt.sign(user.toJSON(), process.env.SECRET, {
             expiresIn: '1day',
