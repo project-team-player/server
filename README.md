@@ -1,7 +1,7 @@
 # Repository for sliceit.pizza backend
 
 # Workflow
-[Development] => [Staging] => [Production]
+`Development` => `Staging` => `Production`
 
 ## Cloning this repo then using it.
 1. Clone `https://github.com/project-team-player/server.git` into your local machine.
