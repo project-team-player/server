@@ -19,6 +19,9 @@ const gamethreadSchema = new Schema({
             ref: 'team',
         },
     },
+    gameStartTime: {
+        type: Date,
+    },
     bets: [
         {
             betID: String,
