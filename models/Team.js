@@ -38,7 +38,7 @@ const teamSchema = new teamSchema({
         stadiumState: String,
         stadiumCountry: {
             type: String,
-            default: 'USA',
+            default: 'USA', // because there could be out of country games
         },
         capacity: Number,
         playingSurface: String,
