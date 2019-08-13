@@ -36,6 +36,10 @@ const teamSchema = new teamSchema({
         stadiumName: String,
         stadiumCity: String,
         stadiumState: String,
+        stadiumCountry: {
+            type: String,
+            default: 'USA',
+        },
         capacity: Number,
         playingSurface: String,
         type: String,
