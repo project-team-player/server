@@ -4,6 +4,6 @@ const fs = require('fs');
 if(process.argv.includes('--team')) {
     // TODO
     console.log('Running Ingestion Engine for Teams');
-} else{
+} else {
     console.log('Need further arguments to specify engine to be run');
 }
