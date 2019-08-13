@@ -56,4 +56,6 @@ const gamethreadSchema = new Schema({
 
 gamethreadSchema.plugin(mongodbErrorHandler);
 
-module.exports = mongoose.model('Gamethread', gamethreadSchema);
+const Gamethread =  mongoose.model('gamethread', gamethreadSchema);
+
+module.exports = Gamethread;

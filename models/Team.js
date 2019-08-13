@@ -1,9 +1,10 @@
 /** Team Model */
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
-const teamSchema = new teamSchema({
+const teamSchema = new Schema({
     fullName: String,
     key: String,
     placeName: String,
@@ -33,21 +34,12 @@ const teamSchema = new teamSchema({
     secondaryColor: String,
     tertiaryColor: String,
     stadiumDetails: {
-        stadiumName: String,
-        stadiumCity: String,
-        stadiumState: String,
-        stadiumCountry: {
-            type: String,
-            default: 'USA', // because there could be out of country games
-        },
-        capacity: Number,
-        playingSurface: String,
-        type: String,
-        geoLat: Number,
-        geoLong: Number,
+        type: Object,
     },
 });
 
 teamSchema.plugin(mongodbErrorHandler);
 
-module.exports = mongoose.model('Team', teamSchema);
+const Team = mongoose.model('team', teamSchema);
+
+module.exports = Team;
