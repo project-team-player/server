@@ -32,7 +32,16 @@ const teamSchema = new teamSchema({
     primaryColor: String,
     secondaryColor: String,
     tertiaryColor: String,
-    stadiumDetails: Object,
+    stadiumDetails: {
+        stadiumName: String,
+        stadiumCity: String,
+        stadiumState: String,
+        capacity: Number,
+        playingSurface: String,
+        type: String,
+        geoLat: Number,
+        geoLong: Number,
+    },
 });
 
 teamSchema.plugin(mongodbErrorHandler);
