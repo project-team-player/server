@@ -6,32 +6,38 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const gameSchema = new Schema({
     week: Number,
+    gameKey: String,
+    globalGameID: String,
     awayTeam: {
+        type: Object,
         key: String,
         awayID: String,
         logo: String,
         name: String,
-        primaryColors: String,
-        secondaryColors: String,
-        tertiaryColors: String,
+        primaryColor: String,
+        secondaryColor: String,
+        tertiaryColor: String,
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'team',
         },
     },
     homeTeam: {
+        type: Object,
         key: String,
         homeID: String,
         logo: String,
         name: String,
-        primaryColors: String,
-        secondaryColors: String,
-        tertiaryColors: String,
+        primaryColor: String,
+        secondaryColor: String,
+        tertiaryColor: String,
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'team',
         },
     },
+    awayScore: Number,
+    homeScore: Number,
     date: String,       // OR Date Format
     dateTime: String,   // OR Date Format
     isFinished: {
@@ -40,7 +46,6 @@ const gameSchema = new Schema({
     },
     winner: {
         name: String,
-        default: 'In Progress',
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'team',
