@@ -32,12 +32,23 @@ const gameSchema = new Schema({
             ref: 'team',
         },
     },
-    date: Date,
-    isFinished: Boolean,
-    gameThread: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'gamethread',
+    date: String,       // OR Date Format
+    dateTime: String,   // OR Date Format
+    isFinished: {
+        type: Boolean,
+        default: false,
     },
+    gameThreadReference: {
+        gameThreadID: String,
+        objectReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'gamethread',
+        },
+    },
+    stadium: String,
+    city: String,
+    state: String,
+    country: String,
 });
 
 gameSchema.plugin(mongodbErrorHandler);
