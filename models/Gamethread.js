@@ -21,18 +21,6 @@ const gamethreadSchema = new Schema({
             },
         },
     ],
-    winner: {
-        name: String,
-        default: 'In Progress',
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
-    isFinished: {
-        type: Boolean,
-        default: false,
-    },
     comments: [
         {
             commentID: String,
