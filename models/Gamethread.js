@@ -5,23 +5,12 @@ mongoose.Promise = global.Promise;
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const gamethreadSchema = new Schema({
-    week: Number,
-    homeTeam: {
-        name: String,
+    game: {
+        gameID: String,
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
-    awayTeam: {
-        name: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
-    gameStartTime: {
-        type: Date,
+            ref: 'game',
+        }
     },
     bets: [
         {
