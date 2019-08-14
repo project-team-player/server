@@ -146,5 +146,7 @@ userSchema.virtual('gravatar').get(function() {
 // better error messages
 userSchema.plugin(mongodbErrorHandler); 
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('user', userSchema);
+
+module.exports = User;
 

@@ -11,6 +11,11 @@ const createOne = async (user, options) => {
     return returnAwait;
 }
 
+const createMany = async (users, options) => {
+    const returnAwait = await User.insertMany(users, { ordered: false });
+    return returnAwait;
+}
+
 /**
  * 
  * @param {Object} options -> defines the parameters on what to find  
@@ -23,5 +28,6 @@ const readOne = async (options) => {
 
 module.exports = {
     createOne,
+    createMany,
     readOne,
 };
