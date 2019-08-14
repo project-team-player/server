@@ -8,7 +8,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "ingestion": "node ./ingestion/engine.js",
-    "ingestion-team": "node ./ingestion/engine.js --team"
+    "ingestion-team": "node ./ingestion/engine.js --team",
+    "ingestion-game": "node ./ingestion/engine.js --game"
   },
   "repository": {
     "type": "git",
