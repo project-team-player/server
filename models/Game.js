@@ -45,6 +45,7 @@ const gameSchema = new Schema({
             ref: 'gamethread',
         },
     },
+    // location details
     stadium: String,
     city: String,
     state: String,
