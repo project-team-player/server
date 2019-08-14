@@ -1,26 +1,16 @@
 /** Gamethread model */
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const gamethreadSchema = new Schema({
-    week: Number,
-    homeTeam: {
-        name: String,
+    game: {
+        gameID: String,
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
-    awayTeam: {
-        name: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
-    gameStartTime: {
-        type: Date,
+            ref: 'game',
+        }
     },
     bets: [
         {
@@ -31,18 +21,6 @@ const gamethreadSchema = new Schema({
             },
         },
     ],
-    winner: {
-        name: String,
-        default: 'In Progress',
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
-    isFinished: {
-        type: Boolean,
-        default: false,
-    },
     comments: [
         {
             commentID: String,
