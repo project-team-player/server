@@ -35,7 +35,10 @@ const readOne = async(options) => {
 /**
  * 
  * @param {Object} options -> defines parameters to find
- * @returns {Object} returned Object(s) 
+ * @returns {Object} returned Object(s)
+ * NOTE: This is probably the most useful controller when finding
+ * all the games in a given week since 'week' is already a 
+ * key in the Game model. 
  */
 const readMany = async(options) => {
     const returnAwait = await Game.find(options);

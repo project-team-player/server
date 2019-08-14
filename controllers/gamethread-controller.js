@@ -35,10 +35,7 @@ const readOne = async(options) => {
 /**
  * 
  * @param {Object} options -> the conditions on what to find
- * @returns {Object} read Object
- * NOTE: This is probably the most useful controller when finding
- * all the games in a given week since 'week' is already a 
- * key in the Gamethread model. 
+ * @returns {Object} read Object 
  */
 const readMany = async(options) => {
     const returnAwait = await Gamethread.find(options);
