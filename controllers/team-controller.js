@@ -22,8 +22,13 @@ const createMany = async(teams, options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> defines parameters to find
+ */
 const readOne = async(options) => {
-    // TODO
+    const returnAwait = await Team.findOne(options);
+    return returnAwait;
 };
 
 const readMany = async(options) => {
