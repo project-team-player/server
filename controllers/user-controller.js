@@ -26,8 +26,19 @@ const readOne = async (options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> defines parameters to find
+ * @returns {Object} found Object(s)
+ */
+const readMany = async (options) => {
+    const returnAwait = await User.find(options);
+    return returnAwait;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
+    readMany,   
 };

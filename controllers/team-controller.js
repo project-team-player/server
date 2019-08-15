@@ -31,8 +31,15 @@ const readOne = async(options) => {
     return returnAwait;
 };
 
+
+/**
+ * 
+ * @param {Object} options -> defines parameters to find
+ * @returns {Object} returned Object(s)
+ */
 const readMany = async(options) => {
-    // TODO
+    const returnAwait = await Team.find(options);
+    return returnAwait;
 };
 
 module.exports = {

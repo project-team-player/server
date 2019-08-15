@@ -32,8 +32,28 @@ const readOne = async(options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> defines parameters to find
+ * @returns {Object} returned Object(s)
+ * NOTE: This is probably the most useful controller when finding
+ * all the games in a given week since 'week' is already a 
+ * key in the Game model. 
+ */
 const readMany = async(options) => {
-    // TODO
+    const returnAwait = await Game.find(options);
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {Object} game -> id of the game to be updated 
+ * @param {Object} options -> keys to be updated with respective values
+ * @returns {Object} updated Object
+ */
+const updateOne = async(game, options) => {
+    const returnAwait = await Game.findByIdAndUpdate(game, { $set: options }, { new: true });
+    return returnAwait;
 };
 
 module.exports = {
@@ -41,4 +61,5 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    updateOne,
 };
