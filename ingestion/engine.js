@@ -7,6 +7,7 @@ if(process.argv.includes('--team')) {
     teamPartition.runEngine();
 } else if(process.argv.includes('--thread')) {
     console.log('Running Ingestion Engine for GameThreads');
+    threadPartition.runEngine();
 } else if(process.argv.includes('--game')) {
     console.log('Running Ingestion Engine for Games');
     gamePartition.runEngine();

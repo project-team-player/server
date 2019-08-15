@@ -47,6 +47,8 @@ const runEngine = async () => {
             pushToDb.push(team);
         }
         await teamController.createMany(pushToDb);
+        // close db when youre done
+        mongoose.disconnect();
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }

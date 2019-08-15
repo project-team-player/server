@@ -53,6 +53,7 @@ const runEngine = async () => {
                 winner: 'In Progress',  
                 date: gameData[i].Day,
                 dateTime: gameData[i].DateTime,
+                gameThreadReference: {},
                 stadium: gameData[i].StadiumDetails.Name,
                 city: gameData[i].StadiumDetails.City,
                 state: gameData[i].StadiumDetails.State,
@@ -61,6 +62,8 @@ const runEngine = async () => {
             pushToDBGames.push(game);
         }
         await gameController.createMany(pushToDBGames);
+        // close db when youre done
+        mongoose.disconnect();
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }

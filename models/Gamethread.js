@@ -6,6 +6,7 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const gamethreadSchema = new Schema({
     game: {
+        type: Object,
         gameID: String,
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +15,7 @@ const gamethreadSchema = new Schema({
     },
     bets: [
         {
+            type: Object,
             betID: String,
             objectReference: {
                 type: mongoose.Schema.Types.ObjectId,
@@ -23,6 +25,7 @@ const gamethreadSchema = new Schema({
     ],
     comments: [
         {
+            type: Object,
             commentID: String,
             objectReference: {
                 type: mongoose.Schema.Types.ObjectId,
