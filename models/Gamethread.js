@@ -30,6 +30,7 @@ const gamethreadSchema = new Schema({
             }
         }
     ],
+    week: Number,
 });
 
 gamethreadSchema.plugin(mongodbErrorHandler);
