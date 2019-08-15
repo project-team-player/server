@@ -33,6 +33,7 @@
             homeScore: gameArray[i].homeScore,
             date: gameArray[i].date,
             dateTime: gameArray[i].dateTime,
+            gameThreadReference: gameArray[i].gameThreadReference,
         }
         trimmedGames.push(game);
     }

@@ -45,9 +45,21 @@ const readMany = async(options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} game -> id of the game to be updated 
+ * @param {Object} options -> keys to be updated with respective values
+ * @returns {Object} updated Object
+ */
+const updateOne = async(game, options) => {
+    const returnAwait = await Game.findByIdAndUpdate(game, { $set: options }, { new: true });
+    return returnAwait;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
     readMany,
+    updateOne,
 };

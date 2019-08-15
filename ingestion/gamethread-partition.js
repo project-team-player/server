@@ -1,4 +1,6 @@
-const axios = require('axios');
+/**
+ * O(n^2) 
+ */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
@@ -26,8 +28,32 @@ const runEngine = async () => {
                 comments: [],
                 week: games[i].week,
             };
+            pushToDB.push(gamethread);
         }
-
+        await gamethreadController.createMany(pushToDB);
+        /**
+         * gamethreads are now pushed into the database
+         * ObjectIds now exist for gamethread objects
+         * reverse referencing it to each game is now possible
+         * 1. DB Search: Search all game threads in the DB and place it in an array
+         * 2. Update each game's gamethread reference with its corresponding 
+         * gamethread's id.
+         * 3. Done
+         */
+        const gamethreads = await gamethreadController.readMany({});
+        for(let i = 0; i < gamethreads.length; ++i) {
+            for(let j = 0; j < games.length; ++j) {
+                if(gamethreads[i].game.gameID === games[j]._id.toString()) {
+                    await gameController.updateOne(games[j]._id, {
+                        gameThreadReference: {
+                            gameThreadID: gamethreads[i]._id.toString(),
+                            objectReference: gamethreads[i]._id
+                        }
+                    });
+                }
+            }
+        }
+        // Done
         // close db when youre done
         mongoose.disconnect();
     } catch(err) {
