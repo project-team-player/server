@@ -9,7 +9,8 @@
     "dev": "nodemon index.js",
     "ingestion": "node ./ingestion/engine.js",
     "ingestion-team": "node ./ingestion/engine.js --team",
-    "ingestion-game": "node ./ingestion/engine.js --game"
+    "ingestion-game": "node ./ingestion/engine.js --game",
+    "ingestion-thread": "node ./ingestion/engine.js --thread"
   },
   "repository": {
     "type": "git",
