@@ -23,6 +23,13 @@ const commentSchema = new Schema({
         type: Number,
         default: 4,
     },
+    gameThreadReference: {
+        gameThreadID: String,
+        objectReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'gamethread',
+        },
+    },
 });
 
 commentSchema.plugin(mongodbErrorHandler);
