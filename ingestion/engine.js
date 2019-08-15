@@ -4,6 +4,8 @@ const gamePartition = require('./game-partition');
 if(process.argv.includes('--team')) {
     console.log('Running Ingestion Engine for Teams');
     teamPartition.runEngine();
+} else if(process.argv.includes('--thread')) {
+    console.log('Running Ingestion Engine for GameThreads');
 } else if(process.argv.includes('--game')) {
     console.log('Running Ingestion Engine for Games');
     gamePartition.runEngine();
