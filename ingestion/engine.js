@@ -1,5 +1,6 @@
 const teamPartition = require('./team-partition');
 const gamePartition = require('./game-partition');
+const threadPartition = require('./gamethread-partition');
 
 if(process.argv.includes('--team')) {
     console.log('Running Ingestion Engine for Teams');
