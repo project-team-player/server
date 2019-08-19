@@ -13,33 +13,22 @@ const betSchema = new Schema({
         },
     },
     gameReference: {
-        gameID: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'game',
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'game',
     },
     gameThreadReference: {
-        gameThreadID: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'gamethread',
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'gamethread',
     },
     team: {
-        type: Object,
-        key: String,
-        teamID: String,
-        name: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'team',
     },
     slicesBet: {
         type: Number,
         default: 0,
     },
+    isWin: Boolean,
 });
 
 betSchema.plugin(mongodbErrorHandler);
