@@ -15,25 +15,18 @@ const gamethreadSchema = new Schema({
     },
     bets: [
         {
-            type: Object,
-            betID: String,
-            objectReference: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'bet',
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'bet',
         },
     ],
     comments: [
         {
-            type: Object,
-            commentID: String,
-            objectReference: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'comment',
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'comment',
         }
     ],
     week: Number,
+    slug: String, // slug will be assigned by game.
 });
 
 gamethreadSchema.plugin(mongodbErrorHandler);

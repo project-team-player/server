@@ -8,6 +8,7 @@ const gameSchema = new Schema({
     week: Number,
     gameKey: String,
     globalGameID: String,
+    slug: String,
     awayTeam: {
         type: Object,
         key: String,

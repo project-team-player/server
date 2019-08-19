@@ -27,6 +27,7 @@ const runEngine = async () => {
                 bets: [],
                 comments: [],
                 week: games[i].week,
+                slug: games[i].slug, // add slug from games
             };
             pushToDB.push(gamethread);
         }

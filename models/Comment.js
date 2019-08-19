@@ -12,23 +12,19 @@ const commentSchema = new Schema({
             ref: 'user',
         },
     },
-    comments: {
-        commentID: String,
-        objectReference: {
+    comments: [
+        {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'comment',
-        },
-    },
+        }
+    ],
     slicesToEnter: {
         type: Number,
         default: 4,
     },
     gameThreadReference: {
-        gameThreadID: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'gamethread',
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'gamethread',
     },
 });
 

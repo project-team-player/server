@@ -13,6 +13,7 @@
             isFinished: gameArray[i].isFinished,
             _id: gameArray[i]._id,
             week: gameArray[i].week,
+            slug: gameArray[i].slug,
             awayTeam: {
                 key: gameArray[i].awayTeam.key,
                 awayID: gameArray[i].awayTeam.awayID,
