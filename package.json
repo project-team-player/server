@@ -10,7 +10,10 @@
     "ingestion": "node ./ingestion/engine.js",
     "ingestion-team": "node ./ingestion/engine.js --team",
     "ingestion-game": "node ./ingestion/engine.js --game",
-    "ingestion-thread": "node ./ingestion/engine.js --thread"
+    "ingestion-thread": "node ./ingestion/engine.js --thread",
+    "mirror-development": "node ./mirrors/proliferate.js --dev",
+    "mirror-staging": "node ./mirrors/proliferate.js --stag",
+    "mirror-production": "node ./mirrors/proliferate.js --prod"
   },
   "repository": {
     "type": "git",
