@@ -67,6 +67,20 @@ const gameSchema = new Schema({
     country: String,
 });
 
+/**
+ * Slug generator. Pre save hook on 'slug' property.
+ * code executes before saving.
+ */
+gameSchema.pre('save', async function(next) {
+    awayKey = this.awayTeam.key;
+    homeKey = this.homeTeam.key;
+    year = this.date.slice(0, 3);
+    preSlug = `${awayKey}vs${homeKey}${year}week{this.week}`;
+    // example: DAL-vs-MIN-2019-week-1
+    this.slug = slug(preSlug);
+    next();
+});
+
 gameSchema.plugin(mongodbErrorHandler);
 
 const Game = mongoose.model('game', gameSchema);

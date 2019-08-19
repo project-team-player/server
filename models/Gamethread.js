@@ -26,7 +26,7 @@ const gamethreadSchema = new Schema({
         }
     ],
     week: Number,
-    slug: String, 
+    slug: String, // slug will be assigned by game.
 });
 
 gamethreadSchema.plugin(mongodbErrorHandler);
