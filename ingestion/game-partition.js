@@ -58,7 +58,7 @@ const runEngine = async () => {
                 city: gameData[i].StadiumDetails.City,
                 state: gameData[i].StadiumDetails.State,
                 country: gameData[i].StadiumDetails.Country,
-                slug: `${away.key}-vs-${home.key}-date.slice(0, 3)-week-${week}`,
+                slug: `${away.key}-vs-${home.key}-${date.slice(0, 3)}-week-${week}`,
             };
             pushToDBGames.push(game);
         }
