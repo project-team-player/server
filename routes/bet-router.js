@@ -15,8 +15,8 @@ router.post('/gamethread/:id',
         if(req.body.slices && req.body.teamId) {
             const bet = await betController.createOne({
                 owner: {
-                    ownerID: req.user.id.toString(),
-                    objectReference: req.user.id,
+                    ownerID: req.user._id.toString(),
+                    objectReference: req.user._id,
                 },
                 gameThreadReference: req.params.id,
                 team: req.body.teamId,

@@ -36,9 +36,20 @@ const readMany = async (options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} user -> user id 
+ * @param {Object} options -> update parameters
+ * @returns {Object}
+ */
+const updateOne = async (user, options) => {
+    // TODO
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
     readMany,   
+    updateOne,
 };
