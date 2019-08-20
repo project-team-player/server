@@ -42,6 +42,16 @@ const readMany = async(options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} bet -> the bet object
+ * Synchronizes user and gamethreads on the database 
+ * accordingly for every bet.
+ */
+const syncUserAndGamethread = async(bet) => {
+
+}
+
 module.exports = {
     createOne,
     createMany,

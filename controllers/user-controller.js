@@ -43,7 +43,8 @@ const readMany = async (options) => {
  * @returns {Object}
  */
 const updateOne = async (user, options) => {
-    // TODO
+    const returnAwait = await User.findByIdAndUpdate(user, { $set: options }, { new: true });
+    return returnAwait;
 };
 
 module.exports = {

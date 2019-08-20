@@ -49,7 +49,8 @@ const readMany = async(options) => {
  * @returns {Object} 
  */
 const updateOne = async(gamethread, options) => {
-    // TODO
+    const returnAwait = await Gamethread.findByIdAndUpdate(gamethread, { $set: options }, { new: true });
+    return returnAwait;
 };
 
 module.exports = {
