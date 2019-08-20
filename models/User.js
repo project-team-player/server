@@ -84,11 +84,8 @@ const userSchema = new Schema({
     ],
     bets: [
         {
-            betID: String,
-            objectReference: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'bet',
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'bet',
         },
     ],
     globalRank: {

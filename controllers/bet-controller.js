@@ -1,4 +1,6 @@
 const Bet = require('../models/Bet');
+const userController = require('./user-controller');
+const gamethreadController = require('./gamethread-controller');
 
 /**
  * 
@@ -49,7 +51,8 @@ const readMany = async(options) => {
  * accordingly for every bet.
  */
 const syncUserAndGamethread = async(bet) => {
-
+    const user = bet.owner.objectReference.populate();
+    const gamethread = bet.gameThreadReference.populate();
 }
 
 module.exports = {
