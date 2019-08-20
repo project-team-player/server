@@ -12,10 +12,6 @@ const betSchema = new Schema({
             ref: 'user',
         },
     },
-    gameReference: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'game',
-    },
     gameThreadReference: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'gamethread',
