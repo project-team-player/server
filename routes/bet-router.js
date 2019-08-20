@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const passport = require('passport');
 const { catchErrors } = require('../handlers/error-handlers');
 const betController = require('../controllers/bet-controller');
 const CustomError = require('../handlers/Custom-Error');
@@ -11,8 +12,9 @@ const CustomError = require('../handlers/Custom-Error');
  * req.user -> the user
  */
 router.post('/gamethread/:id',
+    passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
-        if(req.body.slices && req.body.teamId) {
+        if(req.user && req.body.slices && req.body.teamId) {
             const bet = await betController.createOne({
                 owner: {
                     ownerID: req.user._id.toString(),
@@ -24,15 +26,13 @@ router.post('/gamethread/:id',
                 isWin: false,
             });
             if(bet) {
-                return res.status(201).json({
-                    message: `Bet Created on gamethread: ${bet.gameThreadReference.toString()}`,
-                });
+                return res.status(201).json({ bet });
             } else {
-                const errorBet = new CustomError(400, 'Bet wasnt created, check gamethread id or team id');
+                const errorBet = new CustomError(400, 'Bet wasnt created.');
                 return res.status(400).json({ errorBet });
             }
         } else {
-            const errorReq = new CustomError(400, `'slices' and 'teamId' are required in req.body`);
+            const errorReq = new CustomError(400, `Must be Logged in: 'slices' and 'teamId' are required in req.body`);
             return res.status(400).json({ errorReq });
         }
     })

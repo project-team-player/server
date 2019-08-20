@@ -6,7 +6,7 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const passportStrategy = require('./handlers/passport');
+const jwtStrategy = require('./handlers/passport');
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const routes = require('./routes/main');
@@ -44,8 +44,8 @@ app.use(session({
 
 // Passport JS will be used to handle user logins
 app.use(passport.initialize());
-app.use(passport.session()); // may need to be omitted
-passport.use(passportStrategy);
+// app.use(passport.session()); // may need to be omitted
+passport.use(jwtStrategy);
 
 // Flash middleware enables usage of req.flash('error', 'SHIT!'), which will then
 // pass that message to the next page the user requests.

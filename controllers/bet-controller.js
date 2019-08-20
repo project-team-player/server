@@ -6,11 +6,12 @@ const gamethreadController = require('./gamethread-controller');
  * 
  * @param {Object} bet -> the bet object 
  * @param {Object} options -> optional parameters
- * @returns {Object} created object
+ * @returns {Object} created object or error message
  */
 const createOne = async(bet, options) => {
-    const returnAwait = await Bet.create(bet);
-    return returnAwait;
+    const returnAwait = await Bet.create(bet);  
+    const fromSync = await syncUserAndGamethread(returnAwait._id, returnAwait.slicesBet);
+    return fromSync;
 };
 
 /**
@@ -50,9 +51,34 @@ const readMany = async(options) => {
  * Synchronizes user and gamethreads on the database 
  * accordingly for every bet.
  */
-const syncUserAndGamethread = async(bet) => {
-    const user = bet.owner.objectReference.populate();
-    const gamethread = bet.gameThreadReference.populate();
+const syncUserAndGamethread = async(bet, slices) => {
+    const betObj = await Bet
+        .findOne({ _id: bet })
+        .populate('owner.objectReference')
+        .populate('gameThreadReference');
+    const user = betObj.owner.objectReference;
+    const gamethread = betObj.gameThreadReference;
+    betsArrayUser = user.bets;
+    betsArrayGamethread = gamethread.bets;
+    betsArrayUser.push(bet);
+    betsArrayGamethread.push(bet);
+    const userUpdate = await userController.updateOne(user._id.toString(), {
+        bets: betsArrayUser,
+    });
+    const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id.toString(), {
+        bets: betsArrayGamethread,
+    });
+    if(userUpdate && gamethreadUpdate) {
+        const returnedObj = {
+            message: 'Success betting', 
+        };
+        return returnedObj;
+    } else {
+        const returnedObj = {
+            message: 'Fail to update user and/or gamethread',
+        }
+        return returnedObj;
+    }
 }
 
 module.exports = {
