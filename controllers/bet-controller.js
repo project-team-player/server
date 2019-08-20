@@ -70,12 +70,12 @@ const syncUserAndGamethread = async(bet, slices) => {
     });
     if(userUpdate && gamethreadUpdate) {
         const returnedObj = {
-            message: 'Success betting', 
+            message: `Success betting ${slices} slices on ${gamethread.slug}`, 
         };
         return returnedObj;
     } else {
         const returnedObj = {
-            message: 'Fail to update user and/or gamethread',
+            message: `Failed to bet on ${gamethread.slug}`,
         }
         return returnedObj;
     }

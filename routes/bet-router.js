@@ -14,7 +14,7 @@ const CustomError = require('../handlers/Custom-Error');
 router.post('/gamethread/:id',
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
-        if(req.user && req.body.slices && req.body.teamId) {
+        if(req.body.slices && req.body.teamId) {
             const bet = await betController.createOne({
                 owner: {
                     ownerID: req.user._id.toString(),
@@ -32,7 +32,7 @@ router.post('/gamethread/:id',
                 return res.status(400).json({ errorBet });
             }
         } else {
-            const errorReq = new CustomError(400, `Must be Logged in: 'slices' and 'teamId' are required in req.body`);
+            const errorReq = new CustomError(400, `'slices' and 'teamId' are required in req.body`);
             return res.status(400).json({ errorReq });
         }
     })
