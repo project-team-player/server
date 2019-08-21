@@ -8,7 +8,9 @@ const CustomError = require('../handlers/Custom-Error');
  * Router that places bets, syncs to bet controller 'createOne()'
  * req.params.id -> id of the gamethread
  * req.body.slices -> number of slices to be betted 
+ * req.body.teamId -> id of team bet on
  * req.body.key -> team key that the user is betting on
+ * req.body.slug -> slug of the game thread 
  * req.user -> the user
  */
 router.post('/gamethread/:id',
@@ -21,7 +23,9 @@ router.post('/gamethread/:id',
                     objectReference: req.user._id,
                 },
                 gameThreadReference: req.params.id,
-                team: req.body.key,
+                team: req.body.teamId,
+                key: req.body.key,
+                slug: req.body.slug,
                 slicesBet: req.body.slices,
                 isWin: false,
             });
