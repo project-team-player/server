@@ -24,4 +24,11 @@ router.get('/week/:week',
     })
 );
 
+// route to get an INT of total weeks: per Jonathan's request
+router.get('/weekTotal/NFL', (req, res) => {
+    return res.status(201).json({
+        totalWeeksNFL: MAX_WEEK_REG,
+    });
+});
+
 module.exports = router;
