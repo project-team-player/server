@@ -6,15 +6,8 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const betSchema = new Schema({
     owner: {
-        ownerID: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
-        },
-    },
-    gameReference: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'game',
+        ref: 'user',
     },
     gameThreadReference: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,6 +17,8 @@ const betSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'team',
     },
+    key: String,
+    slug: String,
     slicesBet: {
         type: Number,
         default: 0,

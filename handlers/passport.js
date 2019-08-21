@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const passportJwt = require('passport-jwt');
 const userController = require('../controllers/user-controller');
 
@@ -13,7 +15,7 @@ const options = {
 
 const jwtStrategy = new Strategy(options, async(req, payload, done) => {
     try {
-        const user = await userController.readOne(payload._id);
+        const user = await userController.readOne({ _id: payload._id });
         req.user = user;
         done(null, user);
     } catch(err) {

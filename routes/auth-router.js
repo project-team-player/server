@@ -1,3 +1,5 @@
+// const path = require('path');
+// require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -28,12 +30,12 @@ router.post('/signup',
         delete userObj._id; // hide ID
         // sign the jwt and allow user access
         const bearerToken = jwt.sign(createdUser.toJSON(), process.env.SECRET, {
-            expiresIn: '1day',
+            expiresIn: '1 day',
             issuer: process.env.ISSUER,
         });
         return res.status(201).json({ 
             message: 'User successfully created',
-            token: `Bearer: ${bearerToken}`,
+            token: `JWT ${bearerToken}`,
             user: userObj,
         });
     })
@@ -64,12 +66,12 @@ router.post(
         delete userObj._id; // hide ID 
         // sign the jwt and allow user access
         const bearerToken = jwt.sign(user.toJSON(), process.env.SECRET, {
-            expiresIn: '1day',
+            expiresIn: '1 day',
             issuer: process.env.ISSUER,
         });
         return res.status(201).json({
             message: 'Login Successful',
-            token: `Bearer: ${bearerToken}`,
+            token: `JWT ${bearerToken}`,
             user: userObj,
         });
     })

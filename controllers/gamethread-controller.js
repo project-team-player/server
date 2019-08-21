@@ -42,9 +42,21 @@ const readMany = async(options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} gamethread -> gamethread id to be updated 
+ * @param {Object} options -> update parameters
+ * @returns {Object} 
+ */
+const updateOne = async(gamethread, options) => {
+    const returnAwait = await Gamethread.findByIdAndUpdate(gamethread, { $set: options }, { new: true });
+    return returnAwait;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
     readMany,
+    updateOne,
 };
