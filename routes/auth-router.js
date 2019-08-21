@@ -19,7 +19,7 @@ router.post('/signup',
         }
         // validators pass, move on.
         const user = {
-            name: req.body.name,
+            name: req.body.username,
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
