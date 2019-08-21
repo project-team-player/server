@@ -13,15 +13,12 @@ const CustomError = require('../handlers/Custom-Error');
  * req.body.slug -> slug of the game thread 
  * req.user -> the user
  */
-router.post('/gamethread/:id',
+router.post('/add/gamethread/:id',
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
         if(req.body.slices && req.body.key) {
             const bet = await betController.createOne({
-                owner: {
-                    ownerID: req.user._id.toString(),
-                    objectReference: req.user._id,
-                },
+                owner: req.user._id,
                 gameThreadReference: req.params.id,
                 team: req.body.teamId,
                 key: req.body.key,
