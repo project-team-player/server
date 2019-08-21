@@ -31,10 +31,10 @@ const usePassEmailFilled = (req, res, next) => {
         const errorEmail = new CustomError(400, 'Invalid Email Format');
         return res.status(400).json({ errorEmail });
     }
-    if(req.body.name && req.body.username && req.body.password && req.body.email) {
+    if(req.body.username && req.body.password && req.body.email) {
         return next();
     }
-    const errorValidate =  new CustomError(400, 'Invalid Signup: Missing either name, username, password, email');
+    const errorValidate =  new CustomError(400, 'Invalid Signup: Missing either username, password, email');
     return res.status(400).json({ errorValidate });
 };
 
