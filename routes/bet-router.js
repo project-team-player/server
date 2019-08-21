@@ -8,20 +8,20 @@ const CustomError = require('../handlers/Custom-Error');
  * Router that places bets, syncs to bet controller 'createOne()'
  * req.params.id -> id of the gamethread
  * req.body.slices -> number of slices to be betted 
- * req.body.teamId -> ID team that the user is betting on
+ * req.body.key -> team key that the user is betting on
  * req.user -> the user
  */
 router.post('/gamethread/:id',
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
-        if(req.body.slices && req.body.teamId) {
+        if(req.body.slices && req.body.key) {
             const bet = await betController.createOne({
                 owner: {
                     ownerID: req.user._id.toString(),
                     objectReference: req.user._id,
                 },
                 gameThreadReference: req.params.id,
-                team: req.body.teamId,
+                team: req.body.key,
                 slicesBet: req.body.slices,
                 isWin: false,
             });
@@ -32,7 +32,7 @@ router.post('/gamethread/:id',
                 return res.status(400).json({ errorBet });
             }
         } else {
-            const errorReq = new CustomError(400, `'slices' and 'teamId' are required in req.body`);
+            const errorReq = new CustomError(400, `'slices' and 'key' are required in req.body`);
             return res.status(400).json({ errorReq });
         }
     })
