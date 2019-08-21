@@ -20,6 +20,8 @@ const betSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'team',
     },
+    key: String,
+    slug: String,
     slicesBet: {
         type: Number,
         default: 0,
