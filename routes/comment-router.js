@@ -28,6 +28,12 @@ router.post('/add/gamethread/:id',
                 gameThreadReference: req.params.id,
                 slug: req.body.slug,
             });
+            if(comment) {
+                return res.status(201).json({ comment });
+            } else {
+                const errorComment = new CustomError(400, 'Comment wasnt created.');
+                return res.status(400).json({ errorComment });
+            }
         } else {
             const errorReq = new CustomError(400, `'username' and 'text' are required`);
             return res.status(400).json({ errorReq });
