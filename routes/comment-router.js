@@ -5,6 +5,18 @@ const { catchErrors } = require('../handlers/error-handlers');
 const commentController = require('../controllers/comment-controller');
 const CustomError = require('../handlers/Custom-Error');
 
+
+/**
+ * Router that gets all the comments of a gamethread
+ * req.params.id -> id of the gamethread containing comments
+ */
+router.get('/all/gamethread/:id',
+    catchErrors(async(req, res) => {
+        const comments = await commentController.readMany({ gameThreadReference: req.params.id });
+        return res.status(200).json({ comments });
+    })
+);
+
 /**
  * Router that creates a single ROOT comment, syncs to comment 
  * controller's createOne() function.

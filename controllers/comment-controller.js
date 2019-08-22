@@ -57,7 +57,19 @@ const readOne = async(options) => {
  */
 const readMany = async(options) => {
     const returnAwait = await Comment.find(options);
-    return returnAwait;
+    const returnArray = [];
+    for(let i = 0; i < returnAwait.length; ++i) {
+        returnArray.push({
+            _id: returnAwait[i]._id,
+            owner: returnAwait[i].owner,
+            text: returnAwait[i].text,
+            createdAt:returnAwait[i].createdAt,
+            isRootComment: returnAwait[i].isRootComment,
+            slug: returnAwait[i].slug,
+            gameThreadReference: returnAwait[i].gameThreadReference,
+        });
+    }
+    return returnArray;
 };
 
 /**
