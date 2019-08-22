@@ -27,7 +27,7 @@ router.post('/add/gamethread/:id',
                 isWin: false,
             });
             if(bet) {
-                return res.status(201).json({ bet });
+                return res.status(201).json(bet);
             } else {
                 const errorBet = new CustomError(400, 'Bet wasnt created.');
                 return res.status(400).json({ errorBet });

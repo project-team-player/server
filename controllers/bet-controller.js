@@ -32,7 +32,14 @@ const createOne = async(bet, options) => {
         slug: returnAwait.slug,
     };
     const fromSync = await syncUserAndGamethread(passToSync, 1);
-    return fromSync;
+    const returnObj = {
+        _id: returnAwait._id,
+        slicesBet: returnAwait.slicesBet,
+        key: returnAwait.key,
+        slug: returnAwait.slug,
+        serverMessage: fromSync,
+    };
+    return returnObj;
 };
 
 /**
@@ -92,15 +99,9 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
             bets: betsArrayGamethread,
         });
         if(userUpdate && gamethreadUpdate) {
-            const returnedMsg = {
-                message: `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}`, 
-            };
-            return returnedMsg;
+            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}`;
         } else {
-            const returnedMsg = {
-                message: `Failed to bet on ${syncRequest.slug}`,
-            };
-            return returnedMsg;
+            return `Failed to bet on ${syncRequest.slug}`;
         }
     } else if(analog === 2) {
         // TODO
