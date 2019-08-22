@@ -103,11 +103,8 @@ const userSchema = new Schema({
     ],
     comments: [
         {
-            commentID: String,
-            objectReference: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'comment',
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'comment',
         },
     ],
     resetPasswordToken: String,

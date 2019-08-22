@@ -6,12 +6,15 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const commentSchema = new Schema({
     owner: {
-        ownerID: String,
+        username: String,
         objectReference: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'user',
         },
     },
+    text: String,
+    createdAt: String,
+    isRootComment: Boolean, // only allow nested comments if this is true.
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
