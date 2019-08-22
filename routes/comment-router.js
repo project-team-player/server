@@ -20,7 +20,7 @@ router.post('/add/gamethread/:id',
         if(req.body.username && req.body.text) {
             const comment = await commentController.createOne({
                 owner: req.body.username,
-                ownerID: req.user_id,
+                ownerObj: req.user_id,
                 text: req.body.text,
                 createdAt: `${moment()}`,
                 isRootComment: true,

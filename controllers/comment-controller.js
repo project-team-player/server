@@ -51,6 +51,12 @@ const readMany = async(options) => {
  */
 const syncUserAndGamethread = async(syncRequest, analog) => {
     if(analog === 1) {
+        const commentObj = await Comment
+            .findOne({ _id: syncRequest._id })
+            .populate('ownerObj')
+            .populate('gameThreadReference');
+        const user = commentObj.ownerObj;
+        const gamethread = commentObj.gameThreadReference;
 
     } else if(analog === 2) {
         // TODO
