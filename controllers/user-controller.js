@@ -11,6 +11,11 @@ const createOne = async (user, options) => {
     return returnAwait;
 }
 
+const createMany = async (users, options) => {
+    const returnAwait = await User.insertMany(users, { ordered: false });
+    return returnAwait;
+}
+
 /**
  * 
  * @param {Object} options -> defines the parameters on what to find  
@@ -21,7 +26,31 @@ const readOne = async (options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> defines parameters to find
+ * @returns {Object} found Object(s)
+ */
+const readMany = async (options) => {
+    const returnAwait = await User.find(options);
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {Object} user -> user id 
+ * @param {Object} options -> update parameters
+ * @returns {Object}
+ */
+const updateOne = async (user, options) => {
+    const returnAwait = await User.findByIdAndUpdate(user, { $set: options }, { new: true });
+    return returnAwait;
+};
+
 module.exports = {
     createOne,
+    createMany,
     readOne,
+    readMany,   
+    updateOne,
 };

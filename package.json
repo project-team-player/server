@@ -6,7 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "ingestion": "node ./ingestion/engine.js",
+    "ingestion-team": "node ./ingestion/engine.js --team",
+    "ingestion-game": "node ./ingestion/engine.js --game",
+    "ingestion-thread": "node ./ingestion/engine.js --thread",
+    "mirror": "node ./mirrors/proliferate.js",
+    "mirror-development": "node ./mirrors/proliferate.js --dev",
+    "mirror-staging": "node ./mirrors/proliferate.js --stag",
+    "mirror-production": "node ./mirrors/proliferate.js --prod"
   },
   "repository": {
     "type": "git",
@@ -20,6 +28,7 @@
   },
   "homepage": "https://github.com/project-team-player/server#readme",
   "dependencies": {
+    "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
