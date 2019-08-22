@@ -5,13 +5,14 @@ mongoose.Promise = global.Promise;
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const commentSchema = new Schema({
-    owner: {
-        ownerID: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
-        },
+    owner: String,
+    ownerObj: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
     },
+    text: String,
+    createdAt: String,
+    isRootComment: Boolean, // only allow nested comments if this is true.
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +27,7 @@ const commentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'gamethread',
     },
+    slug: String,
 });
 
 commentSchema.plugin(mongodbErrorHandler);
