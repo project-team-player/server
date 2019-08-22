@@ -84,11 +84,8 @@ const userSchema = new Schema({
     ],
     bets: [
         {
-            betID: String,
-            objectReference: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'bet',
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'bet',
         },
     ],
     globalRank: {
@@ -106,11 +103,8 @@ const userSchema = new Schema({
     ],
     comments: [
         {
-            commentID: String,
-            objectReference: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'comment',
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'comment',
         },
     ],
     resetPasswordToken: String,
@@ -146,5 +140,7 @@ userSchema.virtual('gravatar').get(function() {
 // better error messages
 userSchema.plugin(mongodbErrorHandler); 
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('user', userSchema);
+
+module.exports = User;
 

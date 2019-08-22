@@ -4,7 +4,7 @@
 `Development` => `Staging` => `Production`
 
 ## Cloning this repo then using it.
-1. Clone `https://github.com/project-team-player/server.git` into your local machine.
+1. Clone `https://github.com/slice-it/server.git` into your local machine.
 2. Do an `npm install` or `npm i` to install dependencies.
 3. `npm run dev` to run.
 4. Hit `localhost:6900` when the server is running and you should be greeted with a message.
