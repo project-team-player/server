@@ -5,12 +5,10 @@ mongoose.Promise = global.Promise;
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const commentSchema = new Schema({
-    owner: {
-        username: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
+    owner: String,
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
             ref: 'user',
-        },
     },
     text: String,
     createdAt: String,
