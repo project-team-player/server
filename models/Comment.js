@@ -6,7 +6,7 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 
 const commentSchema = new Schema({
     owner: String,
-    ownerId: {
+    ownerID: {
         type: mongoose.Schema.Types.ObjectId,
             ref: 'user',
     },
@@ -27,6 +27,7 @@ const commentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'gamethread',
     },
+    slug: String,
 });
 
 commentSchema.plugin(mongodbErrorHandler);
