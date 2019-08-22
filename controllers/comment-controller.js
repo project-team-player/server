@@ -10,7 +10,23 @@ const gamethreadController = require('./gamethread-controller');
  */
 const createOne = async(comment, options) => {
     const returnAwait = await Comment.create(comment);
-    return returnAwait;
+    const passToSync = {
+        _id: returnAwait._id,
+        owner: returnAwait.owner,
+        slug: returnAwait.slug,
+    };
+    const fromSync = await syncUserAndGamethread(passToSync, 1);
+    const returnObj = {
+        _id: returnAwait._id,
+        owner: returnAwait.owner,
+        text: returnAwait.text,
+        createdAt:returnAwait.createdAt,
+        isRootComment: returnAwait.isRootComment,
+        slug: returnAwait.slug,
+        gameThreadReference: returnAwait.gameThreadReference,
+        serverMessage: fromSync,
+    };
+    return returnObj;
 };
 
 /**
@@ -57,7 +73,21 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
             .populate('gameThreadReference');
         const user = commentObj.ownerObj;
         const gamethread = commentObj.gameThreadReference;
-
+        commentsArrayUser = user.comments;
+        commentsArrayGamethread = gamethread.comments;
+        commentsArrayUser.push(syncRequest._id);
+        commentsArrayGamethread.push(syncRequest._id);
+        const userUpdate = await userController.updateOne(user._id.toString(), {
+            comments: commentsArrayUser,
+        });
+        const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id.toString(), {
+            comments: commentsArrayGamethread,
+        });
+        if(userUpdate && gamethreadUpdate) {
+            return `Success commenting on ${syncRequest.slug} by ${syncRequest.owner}`;
+        } else {
+            return `Failed commenting on ${syncRequest.slug} by ${syncRequest.owner}`;
+        }
     } else if(analog === 2) {
         // TODO
         return `this analog has yet to be implemented`;

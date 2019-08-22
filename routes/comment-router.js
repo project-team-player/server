@@ -20,7 +20,7 @@ router.post('/add/gamethread/:id',
         if(req.body.username && req.body.text) {
             const comment = await commentController.createOne({
                 owner: req.body.username,
-                ownerObj: req.user_id,
+                ownerObj: req.user._id,
                 text: req.body.text,
                 createdAt: `${moment()}`,
                 isRootComment: true,
@@ -29,7 +29,7 @@ router.post('/add/gamethread/:id',
                 slug: req.body.slug,
             });
             if(comment) {
-                return res.status(201).json({ comment });
+                return res.status(201).json(comment);
             } else {
                 const errorComment = new CustomError(400, 'Comment wasnt created.');
                 return res.status(400).json({ errorComment });
