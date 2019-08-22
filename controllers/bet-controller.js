@@ -69,6 +69,7 @@ const readMany = async(options) => {
 /**
  * 
  * @param {Object} syncRequest -> a reduced bet obj.
+ * @param {Integer} analog -> analog switch
  * Synchronizes user and gamethreads on the database 
  * accordingly for every bet.
  */
@@ -107,7 +108,7 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
     } else {
         return `Hit bottom else`;
     }
-}
+};
 
 module.exports = {
     createOne,

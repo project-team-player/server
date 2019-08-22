@@ -1,4 +1,6 @@
 const Comment = require('../models/Comment');
+const userController = require('./user-controller');
+const gamethreadController = require('./gamethread-controller');
 
 /**
  * 
@@ -40,6 +42,22 @@ const readOne = async(options) => {
 const readMany = async(options) => {
     const returnAwait = await Comment.find(options);
     return returnAwait;
+};
+
+/**
+ * 
+ * @param {Object} syncRequest -> comment obj
+ * @param {Integer} analog -> analog switch 
+ */
+const syncUserAndGamethread = async(syncRequest, analog) => {
+    if(analog === 1) {
+
+    } else if(analog === 2) {
+        // TODO
+        return `this analog has yet to be implemented`;
+    } else {
+        return `Hit bottom else`;
+    }
 };
 
 
