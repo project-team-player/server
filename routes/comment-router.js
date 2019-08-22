@@ -6,7 +6,7 @@ const commentController = require('../controllers/comment-controller');
 const CustomError = require('../handlers/Custom-Error');
 
 /**
- * Router that creates a single comment, syncs to comment 
+ * Router that creates a single ROOT comment, syncs to comment 
  * controller's createOne() function.
  * req.params.id -> id of the gamethread
  * req.body.username -> owner of the comment
@@ -21,6 +21,12 @@ router.post('/add/gamethread/:id',
             const comment = await commentController.createOne({
                 owner: req.body.username,
                 ownerID: req.user_id,
+                text: req.body.text,
+                createdAt: `${moment()}`,
+                isRootComment: true,
+                comments: [],
+                gameThreadReference: req.params.id,
+                slug: req.body.slug,
             });
         } else {
             const errorReq = new CustomError(400, `'username' and 'text' are required`);

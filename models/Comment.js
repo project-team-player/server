@@ -8,7 +8,7 @@ const commentSchema = new Schema({
     owner: String,
     ownerID: {
         type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
+        ref: 'user',
     },
     text: String,
     createdAt: String,
