@@ -1,7 +1,6 @@
 /**
  * Awards weekly slices to users. 
  * Activates on :
- *  -> User creation
  *  -> Every close of the week.
  * Desirable to be AUTOMATATED WEEKLY.
  * Must know User Controller
@@ -20,7 +19,7 @@ const distributeSlices = async (dbName) => {
         const controllerResult = await userController.updateMany({
             pizzaSlicesWeekly: 64,
         });
-        // close db when youre done
+        // TODO: might have to be ommitted in production cuz connection might get closed. 
         mongoose.disconnect();
         return controllerResult;
     } catch(err) {
