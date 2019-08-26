@@ -20,10 +20,22 @@ const createOne = async(bet, options) => {
     });
     if(exist.length !== 0) {
         const returnedMsg = {
-            message: `Error. This user already bet ${exist[0].slicesBet} slices on ${exist[0].key} on game ${exist[0].slug}`
-        }
+            serverMessage: `Error. This user already bet ${exist[0].slicesBet} slices on ${exist[0].key} on game ${exist[0].slug}`
+        };
         return returnedMsg;
     }
+    // make sure the user has enough slices to bet
+    const userBetCheck = await userController.readOne({
+        _id: bet.owner,
+    });
+    if(userBetCheck.pizzaSlicesWeekly < bet.slicesBet || userBetCheck < 1) {
+        // return back to front end with serverMessage.
+        const returnedMsg = {
+            serverMessage: `User has ${userBetCheck.pizzaSlicesWeekly} slices left to bet, not enough for current bet`,
+        };
+        return returnedMsg;
+    }
+    // the actual creation of BET if both checks pass
     const returnAwait = await Bet.create(bet);  
     const passToSync = {
         _id: returnAwait._id,
