@@ -47,6 +47,11 @@ const updateOne = async (user, options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> Defines parameters to update.
+ * @returns {Object} returnedObj -> an object with message.
+ */
 const updateMany = async (options) => {
     const users = await User.updateMany({}, { $set: options }, { new: true });
     const returnObj = {
