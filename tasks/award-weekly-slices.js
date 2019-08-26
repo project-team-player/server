@@ -7,3 +7,15 @@
  * Must know User Controller
  */
 const userController = require('../controllers/user-controller');
+
+const distributeSlices = async (dbName) => {
+    console.log(dbName);
+    const controllerResult = await userController.updateMany({
+        pizzaSlicesWeekly: 64,
+    });
+    return controllerResult;
+};
+
+module.exports = {
+    distributeSlices,
+};
