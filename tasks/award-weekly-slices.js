@@ -6,3 +6,4 @@
  * Desirable to be AUTOMATATED WEEKLY.
  * Must know User Controller
  */
+const userController = require('../controllers/user-controller');
