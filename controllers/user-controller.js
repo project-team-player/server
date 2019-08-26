@@ -47,10 +47,19 @@ const updateOne = async (user, options) => {
     return returnAwait;
 };
 
+const updateMany = async (options) => {
+    const users = await User.updateMany({}, { $set: options }, { new: true });
+    const returnObj = {
+        serverMessage: `${users.length} items updated with updateMany`,
+    };
+    return returnObj;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
     readMany,   
     updateOne,
+    updateMany,
 };
