@@ -50,6 +50,10 @@ const userSchema = new Schema({
         type: Number,
         default: 0,
     },
+    weeklyWins: {
+        type: Number,
+        default: 0,
+    },
     commends: {
         type: Number,
         default: 0,
