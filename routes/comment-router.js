@@ -20,13 +20,13 @@ router.get('/all/gamethread/:id',
 /**
  * Router that creates a single ROOT comment, syncs to comment 
  * controller's createOne() function.
- * req.params.id -> id of the gamethread
+ * req.params.slug -> slug of the gamethread
  * req.body.username -> owner of the comment
  * req.body.text -> text of the comment
- * req.body.slug -> slug of the game thread
+ * req.body.gamethreadId -> ID of the game thread
  * req.user -> the user
  */
-router.post('/add/gamethread/:id',  
+router.post('/gamethread/:slug',  
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
         if(req.body.username && req.body.text) {
@@ -37,8 +37,8 @@ router.post('/add/gamethread/:id',
                 createdAt: `${moment()}`,
                 isRootComment: true,
                 comments: [],
-                gameThreadReference: req.params.id,
-                slug: req.body.slug,
+                gameThreadReference: req.body.gamethreadId,
+                slug: req.params.slug,
             });
             if(comment) {
                 return res.status(201).json(comment);
