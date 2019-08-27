@@ -105,9 +105,12 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
         betsArrayUser.push(syncRequest._id);
         betsArrayGamethread.push(syncRequest._id);
         const userUpdate = await userController.updateOne(user._id.toString(), {
+            // update the bets array of the user and pizza slices weekly
             bets: betsArrayUser,
+            pizzaSlicesWeekly: user.pizzaSlicesWeekly - syncRequest.slicesBet,
         });
         const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id.toString(), {
+            // update the bets array of the gamethread.
             bets: betsArrayGamethread,
         });
         if(userUpdate && gamethreadUpdate) {
