@@ -114,7 +114,7 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
             bets: betsArrayGamethread,
         });
         if(userUpdate && gamethreadUpdate) {
-            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}`;
+            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}. User has ${userUpdate.pizzaSlicesWeekly} slices left.`;
         } else {
             return `Failed to bet on ${syncRequest.slug}`;
         }
