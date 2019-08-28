@@ -73,8 +73,7 @@ const createMany = async(bets, options) => {
 const readOne = async(options) => {
     const returnAwait = await Bet
         .findOne(options)
-        .populate('gameThreadReference')
-        .populate('team');
+        .populate('gameThreadReference');
     return returnAwait;
 };
 
@@ -84,10 +83,7 @@ const readOne = async(options) => {
  * @returns {Options} -> found objects
  */
 const readMany = async(options) => {
-    const returnAwait = await Bet
-        .find(options)
-        .populate('gameThreadReference')
-        .populate('team');;
+    const returnAwait = await Bet.find(options);
     return returnAwait;
 };
 

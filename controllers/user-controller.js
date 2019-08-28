@@ -47,7 +47,11 @@ const readAllBets = async (user, options) => {
     const foundUser = await User.findOne({ _id: user });
     // perform if user's bets array isnt empty
     if(foundUser.bets.length !== 0) {
-        const returnArray = await betController.readMany({ owner: user });
+        const returnArray = [];
+        for(let i = 0; i < foundUser.bets.length; ++i) {
+            const bet = await betController.readOne({ _id: foundUser.bets[i] });
+            returnArray.push(bet);
+        }
         return returnArray;
     }
     // else bet array is empty return error message

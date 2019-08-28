@@ -13,7 +13,7 @@ const betSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'gamethread',
     },
-    team: {
+    teamReference: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'team',
     },

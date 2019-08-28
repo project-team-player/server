@@ -20,7 +20,7 @@ router.post('/gamethread/:slug',
             const bet = await betController.createOne({
                 owner: req.user._id,
                 gameThreadReference: req.body.gamethreadId,
-                team: req.body.teamId,
+                teamReference: req.body.teamId,
                 key: req.body.key,
                 slug: req.params.slug,
                 slicesBet: req.body.slices,
