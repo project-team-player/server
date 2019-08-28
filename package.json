@@ -14,7 +14,12 @@
     "mirror": "node ./mirrors/proliferate.js",
     "mirror-development": "node ./mirrors/proliferate.js --dev",
     "mirror-staging": "node ./mirrors/proliferate.js --stag",
-    "mirror-production": "node ./mirrors/proliferate.js --prod"
+    "mirror-production": "node ./mirrors/proliferate.js --prod",
+    "task-manager": "node ./tasks/task-manager.js",
+    "task-manager-weekly-slices-test": "node ./tasks/task-manager.js --weekly-slices test",
+    "task-manager-weekly-slices-dev": "node ./tasks/task-manager.js --weekly-slices development",
+    "task-manager-weekly-slices-stag": "node ./tasks/task-manager.js --weekly-slices staging",
+    "task-manager-weekly-slices-prod": "node ./tasks/task-manager.js --weekly-slices production"
   },
   "repository": {
     "type": "git",

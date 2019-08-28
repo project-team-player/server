@@ -20,10 +20,22 @@ const createOne = async(bet, options) => {
     });
     if(exist.length !== 0) {
         const returnedMsg = {
-            message: `Error. This user already bet ${exist[0].slicesBet} slices on ${exist[0].key} on game ${exist[0].slug}`
-        }
+            serverMessage: `Error. This user already bet ${exist[0].slicesBet} slices on ${exist[0].key} on game ${exist[0].slug}`
+        };
         return returnedMsg;
     }
+    // make sure the user has enough slices to bet
+    const userBetCheck = await userController.readOne({
+        _id: bet.owner,
+    });
+    if(userBetCheck.pizzaSlicesWeekly < bet.slicesBet || userBetCheck < 1) {
+        // return back to front end with serverMessage.
+        const returnedMsg = {
+            serverMessage: `User has ${userBetCheck.pizzaSlicesWeekly} slices left to bet, not enough for current bet`,
+        };
+        return returnedMsg;
+    }
+    // the actual creation of BET if both checks pass
     const returnAwait = await Bet.create(bet);  
     const passToSync = {
         _id: returnAwait._id,
@@ -59,7 +71,9 @@ const createMany = async(bets, options) => {
  * @returns {Object} -> found object
  */
 const readOne = async(options) => {
-    const returnAwait = await Bet.findOne(options);
+    const returnAwait = await Bet
+        .findOne(options)
+        .populate('gameThreadReference');
     return returnAwait;
 };
 
@@ -93,13 +107,16 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
         betsArrayUser.push(syncRequest._id);
         betsArrayGamethread.push(syncRequest._id);
         const userUpdate = await userController.updateOne(user._id.toString(), {
+            // update the bets array of the user and pizza slices weekly
             bets: betsArrayUser,
+            pizzaSlicesWeekly: user.pizzaSlicesWeekly - syncRequest.slicesBet,
         });
         const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id.toString(), {
+            // update the bets array of the gamethread.
             bets: betsArrayGamethread,
         });
         if(userUpdate && gamethreadUpdate) {
-            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}`;
+            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}. User has ${userUpdate.pizzaSlicesWeekly} slices left.`;
         } else {
             return `Failed to bet on ${syncRequest.slug}`;
         }

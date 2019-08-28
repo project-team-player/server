@@ -40,13 +40,17 @@ const userSchema = new Schema({
     },
     pizzaSlicesWeekly: {
         type: Number,
-        default: 0,
+        default: 64,
     },
     wins: {
         type: Number,
         default: 0,
     },
     loses: {
+        type: Number,
+        default: 0,
+    },
+    weeklyWins: {
         type: Number,
         default: 0,
     },
