@@ -24,6 +24,7 @@ const betSchema = new Schema({
         default: 0,
     },
     isWin: Boolean,
+    disabled: false,
 });
 
 betSchema.plugin(mongodbErrorHandler);

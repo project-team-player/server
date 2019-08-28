@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const betController = require('./bet-controller');
 
 /**
  * 
@@ -38,6 +39,26 @@ const readMany = async (options) => {
 
 /**
  * 
+ * @param {ObjectID} -> id of the user that will use this controller
+ * @param {Object} options -> optional parameters
+ * @returns {Array} of Bet objects 
+ */
+const readAllBets = async (user, options) => {
+    const foundUser = await User.findOne({ _id: user });
+    // perform if user's bets array isnt empty
+    if(foundUser.bets.length !== 0) {
+        const returnArray = await betController.readMany({ owner: user });
+        return returnArray;
+    }
+    // else bet array is empty return error message
+    const returnedMsg = {
+        serverMessage: `${foundUser.username} has not placed any bets`,
+    };
+    return returnedMsg;   
+};
+
+/**
+ * 
  * @param {Object} user -> user id 
  * @param {Object} options -> update parameters
  * @returns {Object}
@@ -64,7 +85,8 @@ module.exports = {
     createOne,
     createMany,
     readOne,
-    readMany,   
+    readMany,
+    readAllBets,   
     updateOne,
     updateMany,
 };
