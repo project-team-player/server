@@ -16,4 +16,4 @@ const runEngine = async (season, week) => {
 
 module.exports = {
     runEngine,
-}
+};
