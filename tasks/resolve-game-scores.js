@@ -17,6 +17,7 @@ const resolveScores = async (season, week) => {
          * 2. Match gameScores with the pulled games by { gameKey } (preferably), { globalGameID } (alternative).
          * 3. Update all the game objects to reflect winner.
          */
+        
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
