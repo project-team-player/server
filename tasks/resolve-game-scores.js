@@ -20,6 +20,7 @@ const resolveScores = async (season, week) => {
          */
         mongoose.connect(process.env.DATABASE_CONNECTION);
         mongoose.Promise = global.Promise;
+        let resolvedScores = 0;
         const weekGames = await gameController.readMany({ week });
         for(let i = 0; i < weekGames.length; ++i) {
             for(let j = 0; j < gameScores.length; ++j) {
@@ -35,9 +36,17 @@ const resolveScores = async (season, week) => {
                     }
                     // reflect winner into weekGame obj
                     await gameController.updateOne(weekGames[i]._id, { winner });
+                    resolvedScores++;
                 }
+                // else just interate through the loop
             }
         }
+        const returnObj = {
+            scores: gameScores.length,
+            resolved: resolvedScores,
+            message: `${resolvedScores} out of the ${gameScores.length} games had their scores resolved.`,
+        };
+        return returnObj;
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
