@@ -4,5 +4,9 @@
  *      -> For each bet, check gamethread, check game reference, pull the winner. 
  *      -> IF the winner is the same as in the bet, user wins that bet.
  *      -> ELSE user loses the bet. 
- *      -> update that bet object's 'isWin' key.
+ *      -> update that bet object's 'isWin' key
+ * @returns {Object} with messages
  */
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '/../.env') });
+const mongoose = require('mongoose');

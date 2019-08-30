@@ -41,6 +41,7 @@ const resolveScores = async (season, week) => {
                 // else just interate through the loop
             }
         }
+        mongoose.disconnect();
         const returnObj = {
             scores: gameScores.length,
             resolved: resolvedScores,
