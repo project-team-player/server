@@ -1,3 +1,8 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '/../.env') });
+const mongoose = require('mongoose');
+const betResolver = require('../controllers/bet-controller');
+
 /**
  * The bet resolver for every user. 
  * 1. Obtain all the bets in the database
@@ -7,11 +12,6 @@
  *      -> update that bet object's 'isWin' key
  * @returns {Object} with messages
  */
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '/../.env') });
-const mongoose = require('mongoose');
-const betResolver = require('../controllers/bet-controller');
-
 const resolveBets = async => {
     try {
         // TODO
