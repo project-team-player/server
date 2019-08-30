@@ -13,7 +13,11 @@ const mongoose = require('mongoose');
 const betResolver = require('../controllers/bet-controller');
 
 const resolveBets = async => {
-    // TODO
+    try {
+        // TODO
+    } catch(err) {
+        console.log(`Error has occured ${err}`);
+    }
 };  
 
 module.exports = {
