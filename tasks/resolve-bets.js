@@ -1,7 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
-const betResolver = require('../controllers/bet-controller');
+const betController = require('../controllers/bet-controller');
 
 /**
  * The bet resolver for every user. 
@@ -14,7 +14,11 @@ const betResolver = require('../controllers/bet-controller');
  */
 const resolveBets = async => {
     try {
-        // TODO
+        mongoose.connect(process.env.DATABASE_CONNECTION);
+        mongoose.Promise = global.Promise;
+        const bets = await betController.readMany({});
+
+        // disconnect DB connection
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
