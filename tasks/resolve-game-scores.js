@@ -1,6 +1,7 @@
 /**
  * Resolves the game scores with a given season and week.
  * Calls the score-partition ingestion engine.
+ * NOTE: This is the first resolver to be called !
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
