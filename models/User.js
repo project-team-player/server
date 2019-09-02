@@ -43,6 +43,7 @@ const userSchema = new Schema({
         default: 64,
     },
     wins: {
+        // total wins!
         type: Number,
         default: 0,
     },
@@ -51,6 +52,8 @@ const userSchema = new Schema({
         default: 0,
     },
     weeklyWins: {
+        // wins in the week, resets after each week, gets dumped
+        // into the 'wins' field.
         type: Number,
         default: 0,
     },
