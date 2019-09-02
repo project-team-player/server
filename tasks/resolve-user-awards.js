@@ -12,13 +12,35 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
 const userController = require('../controllers/user-controller');
+const multiplier = require('../data/multiplier');
 
 const resolveAwards = async (dbName) => {
+    const WON_BET_MULTIPLIER = 2;
     // create DB conn string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
         mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
+        // 1
+        const users = await userController.readMany({});
+        // 2
+        for(let i = 0; i < users.length; ++i) {
+            let pizzaSlicesWeekly = users[i].pizzaSlicesWeekly;
+            let pizzaSlicesWonWeek = users[i].pizzaSlicesWonWeek;
+            const weeklyWins = users[i].weeklyWins;
+            // calculate the shit out of it. 
+            pizzaSlicesWeekly = pizzaSlicesWeekly + ((pizzaSlicesWonWeek * WON_BET_MULTIPLIER) * multiplier[weeklyWins]);
+            // 3
+            await userController.updateOne(users[i]._id, {
+                pizzaSlicesWeekly,
+            });
+        }
+        mongooose.disconnect();
+        const returnObj = {
+            message: `${users.length} users have their awards resolved`,
+        };
+        return returnObj;
+
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
