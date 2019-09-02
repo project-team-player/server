@@ -6,9 +6,9 @@ const gameController = require('../controllers/game-controller');
 
 /**
  * The bet resolver for every user. 
- * 1. Obtain all the games in the database
+ * 1. Obtain all the games within a week in the database
  *      -> For each game, find the associated bet (use SLUG), pull the winner. 
- *      -> IF the winner is the same as in the bet, user wins that bet.
+ *      -> IF the winner on the game is the same as the 'key' in the bet, bet wins.
  *      -> ELSE user loses the bet. 
  *      -> update that bet object's 'isWin' key
  * @returns {Object} with messages
