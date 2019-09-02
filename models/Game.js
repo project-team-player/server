@@ -45,9 +45,7 @@ const gameSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    winner: {
-        key: String,
-    },
+    winner: String,
     gameThreadReference: {
         gameThreadID: String,
         objectReference: {
