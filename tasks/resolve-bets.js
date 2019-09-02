@@ -22,8 +22,8 @@ const resolveBets = async (week) => {
         const games = await gameController.readMany({ week });
         for(let i = 0; i < games.length; ++i) {
             const bet = await betController.readOne({ slug: games[i].slug });
-            // bet with the same slug as game is now obtained, 
-            // that model planning was on point
+            // The bet with the same slug as game is now obtained, 
+            // that model planning was on point bitches.
             let isWin;
             if(bet.key === games[i].winner) {
                 // the bet wins 
