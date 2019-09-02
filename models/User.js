@@ -35,12 +35,21 @@ const userSchema = new Schema({
         default: 0,
     },
     pizzaSlicesTotal: {
+        // accumulated pizza slices, receiver of the dump
+        // from pizzaSlicesWeekly
         type: Number,
         default: 0,
     },
     pizzaSlicesWeekly: {
+        // given to the user at the start of each week
         type: Number,
         default: 64,
+    },
+    pizzaSlicesWonWeek: {
+        // accumulation of pizzaslices won on each bet on 
+        // a given week.
+        type: Number,
+        default: 0,
     },
     wins: {
         // total wins!
