@@ -8,7 +8,9 @@ if(process.argv.includes('--weekly-slices')) {
 
 /**
  * If a task pipeline is to be created, this will be the order
- * 1. resolve-game-scores
+ * 1. resolve-game-scores 
+ *      -> specs: resolveScores(season, week, dbName) 
+ *      -> dependencies: ingestion/score-partition
  * 2. resolve-bets
  * 3. resolve-user-bets
  * 4. resolve-user-awards
