@@ -8,3 +8,16 @@
  *  'slicesBet' on the bet into the user's 'pizzaSlicesWonWeek' field
  * 5. ELSE 'isWin is false, do nothing.
  */
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '/../.env') });
+const mongoose = require('mongoose');
+const betController = require('../controllers/bet-controller');
+const userController = require('../controllers/user-controller');
+
+const resolveBets = async (dbName) => {
+    
+};
+
+module.exports = {
+    resolveBets,
+};
