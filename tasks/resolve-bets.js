@@ -14,10 +14,12 @@ const gameController = require('../controllers/game-controller');
  * NOTE: This MUST only run after 'resolve-game-scores.js' has been run. 
  * @returns {Object} with messages
  */
-const resolveBets = async (week) => {
+const resolveBets = async (week, dbName) => {
+    // create DB string
+    const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
         // TODO: make db connection string modular. See './default-winner.js'
-        mongoose.connect(process.env.DATABASE_CONNECTION);
+        mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         let resolvedBets = 0;
         const games = await gameController.readMany({ week });

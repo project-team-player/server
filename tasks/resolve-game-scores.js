@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 const scores = require('../ingestion/score-partition');
 const gameController = require('../controllers/game-controller');
 
-const resolveScores = async (season, week) => {
+const resolveScores = async (season, week, dbName) => {
+    // create DB string
+    const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
         const gameScores = await scores.runEngine(season, week);
         /**
@@ -18,8 +20,7 @@ const resolveScores = async (season, week) => {
          * 3. Update all the game objects to reflect winner.
          * NOTE: gameScores has 'GameKey'. weekGames has 'gameKey'.
          */
-        // TODO: make db connection string modular. See './default-winner.js'
-        mongoose.connect(process.env.DATABASE_CONNECTION);
+        mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         let resolvedScores = 0;
         const weekGames = await gameController.readMany({ week });
