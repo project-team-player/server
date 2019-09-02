@@ -87,10 +87,20 @@ const userSchema = new Schema({
         },
     ],
     bets: [
+        // This will only refer to bets made in a week. Previous bets will 
+        // be moved to the accumulatedBets (see below) after the end 
+        // of the NFL week.
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'bet',
         },
+    ],
+    accumulatedBets: [
+        // every bet from bets array moves here after the end of the week.
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'bet',
+        }
     ],
     globalRank: {
         type: Number,
