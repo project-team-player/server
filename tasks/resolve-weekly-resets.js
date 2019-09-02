@@ -12,6 +12,7 @@
  *    'pizzaSlicesWeekly' into 64
  * -> 'weeklyWins' into 'wins' then reset 'weeklyWins' to 0
  * -> 'weeklyLoses' into 'loses' then reset 'weeklyLoses' to 0.
+ * -> 'pizzaSlicesWonWeek' reset back to 0.
  * ------------------------------------------------------------------------------
  */
 const path = require('path');
@@ -28,12 +29,56 @@ const weeklyResets = async (dbName) => {
         const users = await userController.readMany({});
         // manipulate each users resetable fields
         for(let i = 0; i < users.length; ++i) {
-            
-        }
+            // jump to the next iteration if the user's bets array is empty
+            if(users[i].bets === undefined) {
+                continue;
+            }
+            const accumulatedBets = users[i].accumulatedBets;
+            // bets into accumulatedBets then empty bets
+            for(let j = 0; j < users[i].bets.length; ++j) {
+                accumulatedBets.push(users[i].bets[j]);
+                users[i].bets.splice(j, 1);
+            }
+            // bets are now in accumulatedBets and bets is reset to empty array
+            // pizzaSlicesWeekly into pizzaSlicesTotal then reset
+            let pizzaSlicesTotal = users[i].pizzaSlicesTotal;
+            pizzaSlicesTotal += users[i].pizzaSlicesWeekly;
+            // reset pizzaSlicesWeekly to 64 at the DB update later
+            // weeklyWins into wins then reset
+            let wins = users[i].wins;
+            wins += users[i].weeklyWins;
+            // reset weeklyWins to 0 at the DB update later.
+            // weeklyLoses into loses then reset
+            let loses = users[i].loses;
+            loses += users[i].weeklyLoses;
+            // reset weeklyLoses to 0 at the DB update later.
+            // reset pizzaSlicesWonWeek at the DB update later.
+            // DB update here
+            await userController.updateOne(users[i]._id, {
+                accumulatedBets,
+                bets: users[i].bets,
+                pizzaSlicesTotal,
+                pizzaSlicesWeekly: 64,
+                wins,
+                weeklyWins: 0,
+                loses,
+                weeklyLoses: 0,
+                pizzaSlicesWonWeek: 0,
+            });
+            // updating current user DONE
+        }   
+        mongoose.disconnect();
+        const returnObj = {
+            message: `${users.length} users executed their weekly reset`,
+        };
+        return returnObj;
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
 };
+
+// write script here for it to be callable
+// ITS called the 'bitch dont run my scripts' lock
 
 module.exports = {
     weeklyResets,

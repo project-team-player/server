@@ -29,6 +29,10 @@ const resolveBets = async (dbName) => {
         // 1
         const users = await userController.readMany({});
         for(let i = 0; i < users.length; ++i) {
+            // continue into the next iteration if the user's bets array is empty
+            if(users[i].bets === undefined) {
+                continue;
+            }
             // Because of these next 2 variables, it is MANDAFUCKINGTORY to 
             // reset the 'weeklyWins' and 'pizzaSlicesWonWeek' fields in each 
             // user every closing of the NFL week. Consider yourself warned.
