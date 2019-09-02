@@ -15,7 +15,14 @@ const betController = require('../controllers/bet-controller');
 const userController = require('../controllers/user-controller');
 
 const resolveBets = async (dbName) => {
-    
+    // create DB conn string
+    const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
+    try {
+        mongoose.connect(dbConnection);
+        mongoose.Promise = global.Promise;
+    } catch(err) {
+        console.log(`Error has occured ${err}`);
+    }
 };
 
 module.exports = {
