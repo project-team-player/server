@@ -47,9 +47,12 @@ const resolveBets = async (dbName) => {
                 // This for loop terminates once all the bets in the bets array 
                 // have been read. 
             }
+            // calculate loses.
+            const betsLost = users[i].bets.length - betsWon;
             // 6
             await userController.updateOne(users[i]._id, {
                 weeklyWins: betsWon,
+                weeklyLoses: betsLost,
                 pizzaSlicesWonWeek: slicesWon,
             });
         }

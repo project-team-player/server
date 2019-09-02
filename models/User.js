@@ -66,6 +66,12 @@ const userSchema = new Schema({
         type: Number,
         default: 0,
     },
+    weeklyLoses: {
+        // loses in the week, resets after each week, gets dumped
+        // into the 'loses' field.
+        type: Number,
+        default: 0,
+    },
     commends: {
         type: Number,
         default: 0,
