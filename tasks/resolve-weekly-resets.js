@@ -6,4 +6,6 @@
  * -> 'pizzaSlicesWeekly' into 'pizzaSlicesTotal' then reset 
  *    'pizzaSlicesWeekly' into 64
  * -> 'weeklyWins' into 'wins' then reset 'weeklyWins' to 0
+ * -> 'weeklyLoses' into 'loses' then reset 'weeklyLoses' to 0.
+ * 
  */
