@@ -9,8 +9,9 @@ const gameController = require('../controllers/game-controller');
  * 1. Obtain all the games within a week in the database
  *      -> For each game, find the associated bet (use SLUG), pull the winner. 
  *      -> IF the winner on the game is the same as the 'key' in the bet, bet wins.
- *      -> ELSE user loses the bet. 
+ *      -> ELSE bet loses. 
  *      -> update that bet object's 'isWin' key
+ * NOTE: This MUST only run after 'resolve-game-scores.js' has been run. 
  * @returns {Object} with messages
  */
 const resolveBets = async (week) => {
