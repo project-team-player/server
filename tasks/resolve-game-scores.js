@@ -18,6 +18,7 @@ const resolveScores = async (season, week) => {
          * 3. Update all the game objects to reflect winner.
          * NOTE: gameScores has 'GameKey'. weekGames has 'gameKey'.
          */
+        // TODO: make db connection string modular. See './default-winner.js'
         mongoose.connect(process.env.DATABASE_CONNECTION);
         mongoose.Promise = global.Promise;
         let resolvedScores = 0;
@@ -51,7 +52,10 @@ const resolveScores = async (season, week) => {
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
-}
+};
+
+// write script here for it to be callable
+// ITS called the 'bitch dont run my scripts' lock
 
 module.exports = {
     resolveScores,

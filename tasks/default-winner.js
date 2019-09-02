@@ -13,10 +13,18 @@ const assignNone = async (dbName) => {
     try {
         mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
+        const result = await gameController.updateMany({
+            winner: 'None',
+        });
+        mongoose.disconnect();
+        return result;
     } catch(err) {
         console.log(`Error has occured ${err}`);
     }
 };
+
+// write script here for it to be callable
+// ITS called the 'bitch dont run my scripts' lock
 
 module.exports = {
     assignNone,

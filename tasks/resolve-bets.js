@@ -16,6 +16,7 @@ const gameController = require('../controllers/game-controller');
  */
 const resolveBets = async (week) => {
     try {
+        // TODO: make db connection string modular. See './default-winner.js'
         mongoose.connect(process.env.DATABASE_CONNECTION);
         mongoose.Promise = global.Promise;
         let resolvedBets = 0;
@@ -51,6 +52,9 @@ const resolveBets = async (week) => {
         console.log(`Error has occured ${err}`);
     }
 };  
+
+// write script here for it to be callable
+// ITS called the 'bitch dont run my scripts' lock
 
 module.exports = {
     resolveBets,
