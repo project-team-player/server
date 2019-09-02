@@ -7,6 +7,8 @@
  *      and will be derived based on the user's 'weeklyWins' field.
  * 3. Update user's 'pizzSlicesWeekly' on the DB
  * Big O(N).
+ * After execution of this program, the 'pizzaSlicesWeekly' field of all users
+ * should be updated to reflect the rewards they reaped from winning games. 
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
