@@ -22,7 +22,8 @@ const assignArray = async (dbName) => {
     }
 };
 
-assignArray(process.argv[2]);
+// write script here for it to be callable
+// ITS called the 'bitch dont run my scripts' lock
 
 module.exports = {
     assignArray,
