@@ -7,7 +7,10 @@
  * 4. IF 'isWin' is true, increment user's 'weeklyWins' AND add 
  *  'slicesBet' on the bet into the user's 'pizzaSlicesWonWeek' field
  * 5. ELSE 'isWin is false, do nothing.
+ * 6. Update the user with its 'weeklyWins' and 'pizzaSlicesWonWeek' fields.
  * NOTE: must only run after 'resolve-bets.js' has been run.
+ * After running this program, the users on the DB should have their
+ * 'weeklyWins' and 'pizzaSlicesWonWeek' fields updated to reflect their won bets.
  * Computationally expensive. All users are in an array, each of them 
  * has an array of bets. O(n ^ 2). 
  */
@@ -26,14 +29,35 @@ const resolveBets = async (dbName) => {
         // 1
         const users = await userController.readMany({});
         for(let i = 0; i < users.length; ++i) {
+            // Because of these next 2 variables, it is MANDAFUCKINGTORY to 
+            // reset the 'weeklyWins' and 'pizzaSlicesWonWeek' fields in each 
+            // user every closing of the NFL week. Consider yourself warned.
+            let betsWon = users[i].weeklyWins; 
+            let slicesWon = users[i].pizzaSlicesWonWeek;
             // 2
             for(let j = 0; j < users[i].bets.length; ++j) {
+                const bet = await betController.readOne({ _id: users[i].bets[j] });
                 // 3
-                if(users[i].bets[j].isWin === true) {
-                    // TODO
+                if(bet.isWin === true) {
+                    // 4
+                    betsWon++;
+                    slicesWon += bet.slicesBet;
                 }
+                // 5 else the bet is a huge 'L', do nothing.
+                // This for loop terminates once all the bets in the bets array 
+                // have been read. 
             }
+            // 6
+            await userController.updateOne(users[i]._id, {
+                weeklyWins: betsWon,
+                pizzaSlicesWonWeek: slicesWon,
+            });
         }
+        mongoose.disconnect();
+        const returnObj = {
+            message: `${users.length} users have their bets resolved`,
+        };
+        return returnObj;
 
     } catch(err) {
         console.log(`Error has occured ${err}`);
