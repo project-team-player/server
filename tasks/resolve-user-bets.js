@@ -12,7 +12,7 @@
  * After running this program, the users on the DB should have their
  * 'weeklyWins' and 'pizzaSlicesWonWeek' fields updated to reflect their won bets.
  * Computationally expensive. All users are in an array, each of them 
- * has an array of bets. O(n ^ 2). 
+ * has an array of bets. Big O(n ^ 2). 
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
