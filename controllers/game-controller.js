@@ -56,10 +56,24 @@ const updateOne = async(game, options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> defines the keys/fields that needed to be updated.
+ * @returns {JSON} message
+ */
+const updateMany = async (options) => {
+    const returnAwait = await Game.updateMany({}, { $set: options }, { new: true });
+    const returnObj = {
+        serverMessage: `${returnAwait.length} items updated with updateMany`,
+    };
+    return returnObj;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
     readMany,
     updateOne,
+    updateMany,
 };

@@ -50,7 +50,7 @@ const runEngine = async () => {
                 }, 
                 awayScore: 0,
                 homeScore: 0,
-                winner: 'In Progress',  
+                winner: 'None',  
                 date: gameData[i].Day,
                 dateTime: gameData[i].DateTime,
                 gameThreadReference: {},
@@ -72,4 +72,4 @@ const runEngine = async () => {
 
 module.exports = {
     runEngine,
-}
+};

@@ -89,6 +89,17 @@ const readMany = async(options) => {
 
 /**
  * 
+ * @param {ObjectId} bet -> id of the bet object
+ * @param {Object} options -> parameters to be updated on. 
+ * @returns {Object} -> updated object 
+ */
+const updateOne = async(bet, options) => {
+    const returnAwait = await Bet.findByIdAndUpdate(bet, { $set: options }, { new: true });
+    return returnAwait;
+};
+
+/**
+ * 
  * @param {Object} syncRequest -> a reduced bet obj.
  * @param {Integer} analog -> analog switch
  * Synchronizes user and gamethreads on the database 
@@ -133,4 +144,5 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    updateOne,
 };
