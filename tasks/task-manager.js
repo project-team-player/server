@@ -19,6 +19,9 @@ const resolveUserBets = require('./resolve-user-bets');
 const resolveUserAwards = require('./resolve-user-awards');
 const resolveWeeklyResets = require('./resolve-weekly-resets')
 
+const NFL_SEASON = 2019;
+const NFL_WEEK = 1; // change this accordingly
+
 if(process.argv.includes('--pipe1')) {
     // run pipe 1 subroutines.
 } else {
