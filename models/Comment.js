@@ -28,6 +28,10 @@ const commentSchema = new Schema({
         ref: 'gamethread',
     },
     slug: String,
+    betReference: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'bet',
+    },
 });
 
 commentSchema.plugin(mongodbErrorHandler);
