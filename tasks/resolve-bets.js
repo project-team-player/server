@@ -7,10 +7,11 @@ const gameController = require('../controllers/game-controller');
 /**
  * The bet resolver for every user. 
  * 1. Obtain all the games within a week in the database
- *      -> For each game, find the associated bet (use SLUG), pull the winner. 
- *      -> IF the winner on the game is the same as the 'key' in the bet, bet wins.
- *      -> ELSE bet loses. 
- *      -> update that bet object's 'isWin' key
+ *      -> For each game, find the associated bets (use SLUG), pull the winner. 
+ *      -> For each bet, resolve the shit out of it
+ *          -> IF the winner on the game is the same as the 'key' in the bet, bet wins.
+ *          -> ELSE bet loses. 
+ *          -> update that bet object's 'isWin' key
  * NOTE: This MUST only run after 'resolve-game-scores.js' has been run. 
  * @returns {Object} with messages
  */
@@ -24,20 +25,23 @@ const resolveBets = async (week, dbName) => {
         let resolvedBets = 0;
         const games = await gameController.readMany({ week });
         for(let i = 0; i < games.length; ++i) {
-            const bet = await betController.readOne({ slug: games[i].slug });
-            // The bet with the same slug as game is now obtained, 
+            const bets = await betController.readMany({ slug: games[i].slug });
+            // The bets with the same slug as game is now obtained, 
             // that model planning was on point bitches.
-            let isWin;
-            if(bet.key === games[i].winner) {
-                // the bet wins 
-                isWin = true;
-            } else {
-                // the bet loses
-                isWin = false;
+            for(let j = 0; j < bets.length; ++j) {
+                // each bet now penetrated. Um penetrate. yum.
+                let isWin;
+                if(bets[j].key === games[i].winner) {
+                    // bet wins
+                    isWin = true;
+                } else {
+                    // big fat 'L'
+                    isWin = false;
+                }
+                // update the bet object with its isWin key
+                await betController.updateOne(bets[j]._id, { isWin });
+                resolvedBets++;
             }
-            // update the bet object with its isWin key
-            await betController.updateOne(bet._id, { isWin });
-            resolvedBets++;
         }
         // breaking out this for loop means all bets associated with week's games
         // have been updated and resolved. 
