@@ -19,11 +19,12 @@ const resolveUserBets = require('./resolve-user-bets');
 const resolveUserAwards = require('./resolve-user-awards');
 const resolveWeeklyResets = require('./resolve-weekly-resets')
 
-const NFL_SEASON = 2019;
+const NFL_SEASON = '2019REG'; // change for different years and season types
 const NFL_WEEK = 1; // change this accordingly
 
 if(process.argv.includes('--pipe1')) {
     // run pipe 1 subroutines.
+    console.log(process.argv[3]);
 } else {
     console.log('Task Manager Activated');
 }
