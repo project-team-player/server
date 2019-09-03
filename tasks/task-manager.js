@@ -1,11 +1,3 @@
-const weeklySlices = require('./award-weekly-slices');
-
-if(process.argv.includes('--weekly-slices')) {
-    weeklySlices.distributeSlices(process.argv[3]);
-} else {
-    console.log('Task Manager Activated');
-}
-
 /**
  * If a task pipeline is to be created, this will be the order
  * 1. resolve-game-scores 
@@ -21,3 +13,35 @@ if(process.argv.includes('--weekly-slices')) {
  * 5. resolve-weekly-resets
  *      -> subroutine: resolveResets(dbName)
  */
+const resolveGameScores = require('./resolve-game-scores');
+const resolveBets = require('./resolve-bets');
+const resolveUserBets = require('./resolve-user-bets');
+const resolveUserAwards = require('./resolve-user-awards');
+const resolveWeeklyResets = require('./resolve-weekly-resets')
+
+const NFL_SEASON = '2019REG'; // change for different years and season types
+const NFL_WEEK = 1; // change this accordingly
+
+const pipelines = async (season, week, dbName) => {
+    if(process.argv.includes('--pipe1')) {
+        // run pipe 1 subroutines.
+        const fromGameScores = await resolveGameScores(season, week, dbName);
+        const fromBets = await resolveBets(week, dbName);
+        const fromUserBets = await resolveUserBets(dbName);
+        const fromUserAwards = await resolveUserAwards(dbName);
+        const fromWeeklyResets = await resolveWeeklyResets(dbName);
+        const returnObj = {
+            fromGameScores,
+            fromBets,
+            fromUserBets,
+            fromUserAwards,
+            fromWeeklyResets,
+        };
+        console.log(returnObj); // jsut returns a message.
+    } else {
+        console.log('Task Manager Activated');
+    }
+};
+
+pipelines(NFL_SEASON, NFL_WEEK, process.argv[3]);
+
