@@ -78,7 +78,7 @@ const readMany = async options => {
  */
 const updateOne = async (comment, options) => {
   const doc = await Comment.findByIdAndUpdate(
-    user,
+    comment,
     { $set: options },
     { new: true }
   );
@@ -161,6 +161,7 @@ module.exports = {
   readOne,
   readMany,
   updateOne,
+  updateMany,
   deleteOne,
   deleteMany
 };
