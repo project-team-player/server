@@ -1,11 +1,3 @@
-const weeklySlices = require('./award-weekly-slices');
-
-if(process.argv.includes('--weekly-slices')) {
-    weeklySlices.distributeSlices(process.argv[3]);
-} else {
-    console.log('Task Manager Activated');
-}
-
 /**
  * If a task pipeline is to be created, this will be the order
  * 1. resolve-game-scores 
@@ -21,3 +13,14 @@ if(process.argv.includes('--weekly-slices')) {
  * 5. resolve-weekly-resets
  *      -> subroutine: resolveResets(dbName)
  */
+const resolveGameScores = require('./resolve-game-scores');
+const resolveBets = require('./resolve-bets');
+const resolveUserBets = require('./resolve-user-bets');
+const resolveUserAwards = require('./resolve-user-awards');
+const resolveWeeklyResets = require('./resolve-weekly-resets')
+
+if(process.argv.includes('--pipe1')) {
+    // run pipe 1 subroutines.
+} else {
+    console.log('Task Manager Activated');
+}
