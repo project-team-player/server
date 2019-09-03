@@ -73,6 +73,53 @@ const readMany = async(options) => {
 };
 
 /**
+ * Updates a single comment
+ * @param {Object} comment comment id
+ * @param {Object} options Additional parameters
+ * @returns Response
+ */
+const updateOne = async (comment, options) => {
+    const doc = await Comment.findByIdAndUpdate(
+      comment,
+      { $set: options },
+      { new: true }
+    );
+    return doc;
+  };
+
+/**
+ * Updates many comments
+ * @param {Object} options Additional parameters, whatever needs to be
+ * updated based of the route or caller of this controller.
+ * updates all users
+ */
+const updateMany = async (options) => {
+    const docs = await Comment.updateMany({}, { $set: options }, { new: true });
+    return docs;
+  };
+
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteOne = async (options) => {
+    const returnAwait = await Comment.deleteOne(options);
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteMany = async options => {
+    const returnAwait = await Comment.deleteMany(options);
+    return returnAwait;
+  };
+
+/**
  * 
  * @param {Object} syncRequest -> comment obj
  * @param {Integer} analog -> analog switch 
@@ -114,4 +161,8 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    updateOne,
+    updateMany,
+    deleteOne,
+    deleteMany
 };
