@@ -19,14 +19,13 @@ const resolveBets = async (week, dbName) => {
     // create DB string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
-        // TODO: make db connection string modular. See './default-winner.js'
         mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         let resolvedBets = 0;
         const games = await gameController.readMany({ week });
         for(let i = 0; i < games.length; ++i) {
             const bets = await betController.readMany({ slug: games[i].slug });
-            // The bets with the same slug as game is now obtained, 
+            // The bets with the same slug as the game is now obtained, 
             // that model planning was on point bitches.
             for(let j = 0; j < bets.length; ++j) {
                 // each bet now penetrated. Um penetrate. yum.
