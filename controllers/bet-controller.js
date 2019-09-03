@@ -100,6 +100,26 @@ const updateOne = async(bet, options) => {
 
 /**
  * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteOne = async (options) => {
+    const returnAwait = await Bet.deleteOne(options);
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteMany = async options => {
+    const returnAwait = await Bet.deleteMany(options);
+    return returnAwait;
+  };
+
+/**
+ * 
  * @param {Object} syncRequest -> a reduced bet obj.
  * @param {Integer} analog -> analog switch
  * Synchronizes user and gamethreads on the database 
@@ -145,4 +165,6 @@ module.exports = {
     readOne,
     readMany,
     updateOne,
+    deleteOne,
+    deleteMany
 };
