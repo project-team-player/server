@@ -5,12 +5,15 @@ const betController = require('../controllers/bet-controller');
 const CustomError = require('../handlers/Custom-Error');
 
 /**
+ * AS OF 9/4/19: this route does the creates the comment 
  * Router that places bets, syncs to bet controller 'createOne()'
  * req.params.slug -> slug of the gamethread
  * req.body.slices -> number of slices to be betted 
  * req.body.teamId -> id of team bet on
  * req.body.key -> team key that the user is betting on
  * req.body.gamethreadId -> id of gamethread
+ * req.body.comment -> comment associated with the bet
+ * req.body.username -> username of the user
  * req.user -> the user
  */
 router.post('/gamethread/:slug',
@@ -25,6 +28,7 @@ router.post('/gamethread/:slug',
                 slug: req.params.slug,
                 slicesBet: req.body.slices,
                 isWin: false,
+                comment: req.body.comment,
             });
             if(bet) {
                 return res.status(201).json(bet);

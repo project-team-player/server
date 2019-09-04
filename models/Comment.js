@@ -19,9 +19,9 @@ const commentSchema = new Schema({
             ref: 'comment',
         }
     ],
-    slicesToEnter: {
+    slicesBet: {
         type: Number,
-        default: 4,
+        default: 0,
     },
     gameThreadReference: {
         type: mongoose.Schema.Types.ObjectId,
