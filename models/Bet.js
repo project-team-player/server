@@ -25,6 +25,10 @@ const betSchema = new Schema({
     },
     isWin: Boolean,
     disabled: false,
+    commentReference: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'comment',
+    },
 });
 
 betSchema.plugin(mongodbErrorHandler);
