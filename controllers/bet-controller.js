@@ -1,4 +1,5 @@
 const Bet = require('../models/Bet');
+const User = require('../models/User'); // HACK: this shit should be illegal as fuck
 const userController = require('./user-controller');
 const gamethreadController = require('./gamethread-controller');
 
@@ -25,10 +26,10 @@ const createOne = async(bet, options) => {
         return returnedMsg;
     }
     // make sure the user has enough slices to bet
-    const userBetCheck = await userController.readOne({
-        _id: bet.owner,
-    });
-    if(userBetCheck.pizzaSlicesWeekly < bet.slicesBet || userBetCheck < 1) {
+    // LOOK , were using the user model for now . cuz the user controller is not cooperating.
+    const userBetCheck = await User.findById(bet.owner);
+    // every bet will have a user so no worry about not having a user
+    if(userBetCheck.pizzaSlicesWeekly < bet.slicesBet || userBetCheck.pizzaSlicesWeekly < 1) {
         // return back to front end with serverMessage.
         const returnedMsg = {
             serverMessage: `User has ${userBetCheck.pizzaSlicesWeekly} slices left to bet, not enough for current bet`,
@@ -137,12 +138,12 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
         betsArrayGamethread = gamethread.bets;
         betsArrayUser.push(syncRequest._id);
         betsArrayGamethread.push(syncRequest._id);
-        const userUpdate = await userController.updateOne(user._id.toString(), {
-            // update the bets array of the user and pizza slices weekly
-            bets: betsArrayUser,
-            pizzaSlicesWeekly: user.pizzaSlicesWeekly - syncRequest.slicesBet,
-        });
-        const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id.toString(), {
+        const userUpdate = await User.findByIdAndUpdate(user._id, { $set: {
+                bets: betsArrayUser,
+                pizzaSlicesWeekly: user.pizzaSlicesWeekly - syncRequest.slicesBet,
+            }}, { new: true }
+        );
+        const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id, {
             // update the bets array of the gamethread.
             bets: betsArrayGamethread,
         });
