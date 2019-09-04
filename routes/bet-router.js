@@ -51,12 +51,12 @@ router.post('/gamethread/:slug',
                 betReference: bet._id, // point to bet reference
             });
             // then update bet to point to comment reference
-            const updateBet = await betController.updateOne(bet._id, {
+            await betController.updateOne(bet._id, {
                 commentReference: comment._id,
             });
             if(bet) {
                 return res.status(201).json({
-                    updateBet, 
+                    bet, 
                     comment,
                 });
             } else {
