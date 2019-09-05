@@ -5,3 +5,12 @@
  *    gamethread's 'dateTime', disallow the user from betting.
  * 3. ELSE allow the user to bet. 
  */
+const timezone = require('moment-timezone');
+
+const verifyTime = async (time) => {
+
+};
+
+module.exports = {
+    verifyTime,
+};
