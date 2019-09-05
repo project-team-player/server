@@ -41,10 +41,10 @@ const isExpired = async (time) => {
         return false;
     }
     // hour
-    if(parseInt(gameTime[3]) < parseInt(localTime[3])) {
+    if(parseInt(gameTime[3]) <= parseInt(localTime[3])) {
         // min
-        if(parseInt(gameTime[4]) < parseInt(localTime[4])) {
-            return false;
+        if(parseInt(gameTime[4]) > parseInt(localTime[4])) {
+            return true;
         }
         return false;
     }

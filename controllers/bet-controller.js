@@ -133,8 +133,8 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
                 .populate('gameThreadReference');
         const user = betObj.owner;
         const gamethread = betObj.gameThreadReference;
-        betsArrayUser = user.bets;
-        betsArrayGamethread = gamethread.bets; // SHIT is erroring out
+        betsArrayUser = user.bets || [];
+        betsArrayGamethread = gamethread.bets || []; // SHIT is erroring out
         betsArrayUser.push(syncRequest._id);
         betsArrayGamethread.push(syncRequest._id);
         const userUpdate = await User.findByIdAndUpdate(user._id, { $set: {
