@@ -31,6 +31,9 @@ const copyDates = async (dbName) => {
     }
 };
 
+// write script here for it to be callable
+// ITS called the 'bitch dont run my scripts' lock
+
 module.exports = {
     copyDates,
 };
