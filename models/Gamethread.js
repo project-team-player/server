@@ -25,6 +25,7 @@ const gamethreadSchema = new Schema({
             ref: 'comment',
         }
     ],
+    dateTime: String,
     week: Number,
     slug: String, // slug will be assigned by game.
 });
