@@ -16,43 +16,67 @@ const moment = require('moment');
  * 2. get the current time from moment(). this defaults to pacific
  * 3. compare. 
  */
-const isExpired = async (time) => {
-    // game time from args its eastern
-    let gameTime = await moment(time).format('YYYY MM DD h mm');
+const isValidTime = async (time) => {
+    // game time from args is in eastern timezone
+    let validTime = true;
+    let gameTime = await moment(time).format('YYYY MM DD H mm');
     let hour = gameTime.split(' ')[3];
-    hour = hour - 3; // convert hr into pacific time
+    let day = gameTime.split(' ')[2];
+    // convert hr into pacific time
+    // 0 ET === 9 PT (21)
+    // 1 ET === 10 PT (22)
+    // 2 ET === 11 PT (23)
+    // 3 ET === 12 PT (0)
+    hour = parseInt(hour);
+    day = parseInt(day);
+    if(hour !== 0 && hour !== 1 && hour !== 2 && hour !== 3) { 
+        hour -= 3; 
+    } else {
+        if(hour === 0) {
+            hour = 21;
+            day -= 1;
+        } else if(hour === 1) { 
+            hour = 22; 
+            day -= 1;
+        }
+        else if(hour === 2) { 
+            hour = 23; 
+            day -= 1;
+        }
+        else{ 
+            // no need to subtract day.
+            hour = 0; 
+        }
+    }
     gameTime = gameTime.split(' ');
+    gameTime[2] = day;
     gameTime[3] = hour;
-
+    
     // local time is set in here
-    let localTime = await moment().format('YYYY MM DD h mm');
+    let localTime = await moment().format('YYYY MM DD H mm');
     localTime = localTime.split(' ');
     // do comparisons now
-    // year
-    if(parseInt(gameTime[0]) < parseInt(localTime[0])) {
-        return false;
-    } 
-    // month
-    if(parseInt(gameTime[1]) < parseInt(localTime[1])) {
-        return false;
-    }
-    // day
-    if(parseInt(gameTime[2]) < parseInt(localTime[2])) {
-        return false;
-    }
-    // hour
-    if(parseInt(gameTime[3]) <= parseInt(localTime[3])) {
-        // min
-        if(parseInt(gameTime[4]) > parseInt(localTime[4])) {
-            return true;
+    for (let i = 0; i < gameTime.length; ++i) {
+        if(parseInt(gameTime[i]) < parseInt(localTime[i])) {
+            // anything that the local time has greater than the 
+            // game time, it is false, GTFO
+            validTime = false;
+            break;
+        } else if(parseInt(gameTime[i]) > parseInt(localTime[i])) {
+            // anything the game time has greater than the local
+            // time, it is true, GTFO
+            break;
+        } else {
+            // continue iterating with equality checks
+            continue;
         }
-        return false;
     }
-    return true; 
+    
+    return validTime; 
 };
 
 module.exports = {
-    isExpired,
+    isValidTime,
 };  
 
 // YYYY MM DD h mm -> format to be used

@@ -24,9 +24,9 @@ router.post('/gamethread/:slug',
     catchErrors(async(req, res) => {
         if(req.body.slices && req.body.key) {
             // dateTime must be greater than current time
-            const validTime = await timeVerify.isExpired(req.body.dateTime);
+            const validTime = await timeVerify.isValidTime(req.body.dateTime);
             if(!validTime) {
-                const timeExpired = 'Time to place bets has expired';
+                const timeExpired = 'Betting disabled, game either started, in progress or finished';
                 return res.status(201).json({
                     timeExpired,
                 });
