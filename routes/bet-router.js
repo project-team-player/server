@@ -5,6 +5,7 @@ const { catchErrors } = require('../handlers/error-handlers');
 const betController = require('../controllers/bet-controller');
 const commentController = require('../controllers/comment-controller'); // comment-router subs.
 const CustomError = require('../handlers/Custom-Error');
+const timeVerify = require('../handlers/bet-time-verification');
 
 /**
  * AS OF 9/4/19: this route does the creates the comment 
@@ -15,12 +16,21 @@ const CustomError = require('../handlers/Custom-Error');
  * req.body.key -> team key that the user is betting on
  * req.body.gamethreadId -> id of gamethread
  * req.body.comment -> comment associated with the bet
+ * req.body.dateTime -> timestamp from front
  * req.user -> the user
  */
 router.post('/gamethread/:slug',
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
         if(req.body.slices && req.body.key) {
+            // dateTime must be greater than current time
+            const validTime = await timeVerify.isExpired(req.body.dateTime);
+            if(!validTime) {
+                const timeExpired = 'Time to place bets has expired';
+                return res.status(201).json({
+                    timeExpired,
+                });
+            }
             // create the bet first
             const bet = await betController.createOne({
                 owner: req.user._id,
@@ -51,12 +61,12 @@ router.post('/gamethread/:slug',
                 betReference: bet._id, // point to bet reference
             });
             // then update bet to point to comment reference
-            const updateBet = await betController.updateOne(bet._id, {
+            await betController.updateOne(bet._id, {
                 commentReference: comment._id,
             });
             if(bet) {
                 return res.status(201).json({
-                    updateBet, 
+                    bet, 
                     comment,
                 });
             } else {
