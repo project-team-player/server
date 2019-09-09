@@ -51,6 +51,7 @@ router.post('/gamethread/:slug',
             const comment = await commentController.createOne({
                 owner: req.user.username,
                 ownerObj: req.user._id,
+                gravatar: req.user.gravatar,
                 text: req.body.comment,
                 createdAt: `${moment()}`,
                 isRootComment: true,
