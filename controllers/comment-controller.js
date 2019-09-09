@@ -98,7 +98,7 @@ const updateOne = async (comment, options) => {
 const updateMany = async (options) => {
     const docs = await Comment.updateMany({}, { $set: options }, { new: true });
     return docs;
-  };
+};
 
 
 /**
