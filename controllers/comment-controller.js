@@ -19,6 +19,7 @@ const createOne = async(comment, options) => {
     const returnObj = {
         _id: returnAwait._id,
         owner: returnAwait.owner,
+        gravatar: returnAwait.gravatar,
         text: returnAwait.text,
         createdAt:returnAwait.createdAt,
         isRootComment: returnAwait.isRootComment,
@@ -62,6 +63,7 @@ const readMany = async(options) => {
         returnArray.push({
             _id: returnAwait[i]._id,
             owner: returnAwait[i].owner,
+            gravatar: returnAwait[i].gravatar,
             text: returnAwait[i].text,
             createdAt:returnAwait[i].createdAt,
             isRootComment: returnAwait[i].isRootComment,
@@ -96,7 +98,7 @@ const updateOne = async (comment, options) => {
 const updateMany = async (options) => {
     const docs = await Comment.updateMany({}, { $set: options }, { new: true });
     return docs;
-  };
+};
 
 
 /**
