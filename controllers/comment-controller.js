@@ -63,6 +63,7 @@ const readMany = async(options) => {
         returnArray.push({
             _id: returnAwait[i]._id,
             owner: returnAwait[i].owner,
+            gravatar: returnAwait[i].gravatar,
             text: returnAwait[i].text,
             createdAt:returnAwait[i].createdAt,
             isRootComment: returnAwait[i].isRootComment,
