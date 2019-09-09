@@ -19,6 +19,7 @@ const createOne = async(comment, options) => {
     const returnObj = {
         _id: returnAwait._id,
         owner: returnAwait.owner,
+        gravatar: returnAwait.gravatar,
         text: returnAwait.text,
         createdAt:returnAwait.createdAt,
         isRootComment: returnAwait.isRootComment,
