@@ -37,7 +37,7 @@ const resolveAwards = async (dbName) => {
                 pizzaSlicesWeekly,
             });
         }
-        await mongooose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             message: `${users.length} users have their awards resolved`,
         };
