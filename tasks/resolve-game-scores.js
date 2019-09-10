@@ -21,7 +21,7 @@ const resolveScores = async (season, week, dbName) => {
          * 3. Update all the game objects to reflect winner.
          * NOTE: gameScores has 'GameKey'. weekGames has 'gameKey'.
          */
-        mongoose.connect(dbConnection);
+        await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         let resolvedScores = 0;
         const weekGames = await gameController.readMany({ week });
@@ -44,7 +44,7 @@ const resolveScores = async (season, week, dbName) => {
                 // else just interate through the loop
             }
         }
-        mongoose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             scores: gameScores.length,
             resolved: resolvedScores,

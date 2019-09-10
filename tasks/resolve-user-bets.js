@@ -24,13 +24,13 @@ const resolveBets = async (dbName) => {
     // create DB conn string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
-        mongoose.connect(dbConnection);
+        await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         // 1
         const users = await userController.readMany({});
         for(let i = 0; i < users.length; ++i) {
             // continue into the next iteration if the user's bets array is empty
-            if(users[i].bets === undefined) {
+            if(users[i].bets === undefined || users[i].bets.length === 0) {
                 continue;
             }
             // Because of these next 2 variables, it is MANDAFUCKINGTORY to 
@@ -40,12 +40,12 @@ const resolveBets = async (dbName) => {
             let slicesWon = users[i].pizzaSlicesWonWeek;
             // 2
             for(let j = 0; j < users[i].bets.length; ++j) {
-                const bet = await betController.readOne({ _id: users[i].bets[j] });
+                const bet = await betController.readMany({ _id: users[i].bets[j] });
                 // 3
-                if(bet.isWin === true) {
+                if(bet[0].isWin === true) {
                     // 4
                     betsWon++;
-                    slicesWon += bet.slicesBet;
+                    slicesWon += bet[0].slicesBet;
                 }
                 // 5 else the bet is a huge 'L', do nothing.
                 // This for loop terminates once all the bets in the bets array 
@@ -60,7 +60,7 @@ const resolveBets = async (dbName) => {
                 pizzaSlicesWonWeek: slicesWon,
             });
         }
-        mongoose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             message: `${users.length} users have their bets resolved`,
         };

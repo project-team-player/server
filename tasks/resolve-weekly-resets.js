@@ -24,13 +24,13 @@ const resolveResets = async (dbName) => {
     // create DB conn string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
-        mongoose.connect(dbConnection);
+        await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         const users = await userController.readMany({});
         // manipulate each users resetable fields
         for(let i = 0; i < users.length; ++i) {
             // jump to the next iteration if the user's bets array is empty
-            if(users[i].bets === undefined) {
+            if(users[i].bets === undefined || users[i].bets.length === 0) {
                 continue;
             }
             const accumulatedBets = users[i].accumulatedBets;
@@ -67,7 +67,7 @@ const resolveResets = async (dbName) => {
             });
             // updating current user DONE
         }   
-        mongoose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             message: `${users.length} users executed their weekly reset`,
         };
