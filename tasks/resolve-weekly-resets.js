@@ -22,6 +22,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
 const userController = require('../controllers/user-controller');
+const betController = require('../controllers/bet-controller');
 
 const resolveResets = async (week, dbName) => {
     // create DB conn string
@@ -38,11 +39,36 @@ const resolveResets = async (week, dbName) => {
             }
             const accumulatedBets = users[i].accumulatedBets;
             // bets into accumulatedBets then empty bets
+            // EXCEPT bets that havent happened yet.
             for(let j = 0; j < users[i].bets.length; ++j) {
-                accumulatedBets.push(users[i].bets[j]);
-                users[i].bets.splice(j, 1);
+                const bet = await betController.readOne({ _id: users[i].bets[j] });
+                if(!bet) {
+                    // next iteration
+                    continue;
+                }
+                // take the bet's week from its slug , refer to slug structures on DB
+                let betWeek;
+                bet.slug[bet.slug.length - 2] === '-' ?
+                    betWeek = parseInt(bet.slug.slice(-1)) : betWeek = parseInt(bet.slug.slice(-2));
+                // only do splicing if betWeek and week are the same
+                if(betWeek === week) {
+                    accumulatedBets.push(users[i].bets[j]);
+                    users[i].bets[j] = 'removed'; // temp place holder
+                }
+                // else. next iteration
             }
-            // bets are now in accumulatedBets and bets is reset to empty array
+            /**
+             * Fix users[i].bets. Take off elements called 'removed'
+             * then resize the array.
+             */
+            const cleansedArray = [];
+            for(let k = 0; k < users[i].bets.length; ++k) {
+                if(users[i].bets[k] !== 'removed') {
+                    cleansedArray.push(users[i].bets[k]);
+                }
+            }
+            // Bets on week are now in accumulatedBets and bets is reset to just bets
+            // that have yet to be resolved aka future games.
             // pizzaSlicesWeekly into pizzaSlicesTotal then reset
             let pizzaSlicesTotal = users[i].pizzaSlicesTotal;
             pizzaSlicesTotal += users[i].pizzaSlicesWeekly;
@@ -59,7 +85,7 @@ const resolveResets = async (week, dbName) => {
             // DB update here
             await userController.updateOne(users[i]._id, {
                 accumulatedBets,
-                bets: users[i].bets,
+                bets: cleansedArray,
                 pizzaSlicesTotal,
                 pizzaSlicesWeekly: 64,
                 wins,
@@ -82,6 +108,7 @@ const resolveResets = async (week, dbName) => {
 
 // write script here for it to be callable
 // ITS called the 'bitch dont run my scripts' lock
+resolveResets(1, process.argv[2]);
 
 module.exports = {
     resolveResets,
