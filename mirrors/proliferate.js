@@ -19,7 +19,7 @@ if(process.argv.includes("--dev")) {
     console.log("Mirror staging DB into production DB");
     prodMirror.runMirror();
 } else if(process.argv.includes("--fudge")) {
-    console.log("Mirro test DB into fudge DB");
+    console.log("Mirror test DB into fudge DB");
     fudgeMirror.runMirror();
 } else {
     console.log("Mirror initialized");
