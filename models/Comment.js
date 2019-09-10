@@ -10,6 +10,7 @@ const commentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
+    gravatar: String,
     text: String,
     createdAt: String,
     isRootComment: Boolean, // only allow nested comments if this is true.
@@ -19,15 +20,19 @@ const commentSchema = new Schema({
             ref: 'comment',
         }
     ],
-    slicesToEnter: {
+    slicesBet: {
         type: Number,
-        default: 4,
+        default: 0,
     },
     gameThreadReference: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'gamethread',
     },
     slug: String,
+    betReference: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'bet',
+    },
 });
 
 commentSchema.plugin(mongodbErrorHandler);

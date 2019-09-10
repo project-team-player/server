@@ -13,7 +13,7 @@ const betSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'gamethread',
     },
-    team: {
+    teamReference: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'team',
     },
@@ -24,6 +24,11 @@ const betSchema = new Schema({
         default: 0,
     },
     isWin: Boolean,
+    disabled: false,
+    commentReference: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'comment',
+    },
 });
 
 betSchema.plugin(mongodbErrorHandler);

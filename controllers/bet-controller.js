@@ -1,4 +1,5 @@
 const Bet = require('../models/Bet');
+const User = require('../models/User'); // HACK: this shit should be illegal as fuck
 const userController = require('./user-controller');
 const gamethreadController = require('./gamethread-controller');
 
@@ -15,15 +16,26 @@ const createOne = async(bet, options) => {
      */
     const exist = await Bet.find({ 
         owner: bet.owner,
-        key: bet.key,
         slug: bet.slug,
     });
     if(exist.length !== 0) {
         const returnedMsg = {
-            message: `Error. This user already bet ${exist[0].slicesBet} slices on ${exist[0].key} on game ${exist[0].slug}`
-        }
+            serverMessage: `Error. This user already bet ${exist[0].slicesBet} slices on ${exist[0].key} on game ${exist[0].slug}`
+        };
         return returnedMsg;
     }
+    // make sure the user has enough slices to bet
+    // LOOK , were using the user model for now . cuz the user controller is not cooperating.
+    const userBetCheck = await User.findById(bet.owner);
+    // every bet will have a user so no worry about not having a user
+    if(userBetCheck.pizzaSlicesWeekly < bet.slicesBet || userBetCheck.pizzaSlicesWeekly < 1) {
+        // return back to front end with serverMessage.
+        const returnedMsg = {
+            serverMessage: `User has ${userBetCheck.pizzaSlicesWeekly} slices left to bet, not enough for current bet`,
+        };
+        return returnedMsg;
+    }
+    // the actual creation of BET if both checks pass
     const returnAwait = await Bet.create(bet);  
     const passToSync = {
         _id: returnAwait._id,
@@ -59,7 +71,9 @@ const createMany = async(bets, options) => {
  * @returns {Object} -> found object
  */
 const readOne = async(options) => {
-    const returnAwait = await Bet.findOne(options);
+    const returnAwait = await Bet
+        .findOne(options)
+        .populate('gameThreadReference');
     return returnAwait;
 };
 
@@ -72,6 +86,37 @@ const readMany = async(options) => {
     const returnAwait = await Bet.find(options);
     return returnAwait;
 };
+
+/**
+ * 
+ * @param {ObjectId} bet -> id of the bet object
+ * @param {Object} options -> parameters to be updated on. 
+ * @returns {Object} -> updated object 
+ */
+const updateOne = async(bet, options) => {
+    const returnAwait = await Bet.findByIdAndUpdate(bet, { $set: options }, { new: true });
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteOne = async (options) => {
+    const returnAwait = await Bet.deleteOne(options);
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteMany = async options => {
+    const returnAwait = await Bet.deleteMany(options);
+    return returnAwait;
+  };
 
 /**
  * 
@@ -88,18 +133,21 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
                 .populate('gameThreadReference');
         const user = betObj.owner;
         const gamethread = betObj.gameThreadReference;
-        betsArrayUser = user.bets;
-        betsArrayGamethread = gamethread.bets;
+        betsArrayUser = user.bets || [];
+        betsArrayGamethread = gamethread.bets || []; // SHIT is erroring out
         betsArrayUser.push(syncRequest._id);
         betsArrayGamethread.push(syncRequest._id);
-        const userUpdate = await userController.updateOne(user._id.toString(), {
-            bets: betsArrayUser,
-        });
-        const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id.toString(), {
+        const userUpdate = await User.findByIdAndUpdate(user._id, { $set: {
+                bets: betsArrayUser,
+                pizzaSlicesWeekly: user.pizzaSlicesWeekly - syncRequest.slicesBet,
+            }}, { new: true }
+        );
+        const gamethreadUpdate = await gamethreadController.updateOne(gamethread._id, {
+            // update the bets array of the gamethread.
             bets: betsArrayGamethread,
         });
         if(userUpdate && gamethreadUpdate) {
-            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}`;
+            return `Success betting ${syncRequest.slicesBet} slices on ${syncRequest.key} on game ${syncRequest.slug}. User has ${userUpdate.pizzaSlicesWeekly} slices left.`;
         } else {
             return `Failed to bet on ${syncRequest.slug}`;
         }
@@ -116,4 +164,7 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    updateOne,
+    deleteOne,
+    deleteMany
 };
