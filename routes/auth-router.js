@@ -82,6 +82,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
         message: 'User succesfully authenticated',
         username: req.user.username,
         email: req.user.email,
+        user: req.user,
     });
 });
 
