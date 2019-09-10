@@ -18,8 +18,8 @@ const teamPercentages = async (gamethreadObj) => {
         const awayTeam = game.awayTeam.key;
         const homeTeam = game.homeTeam.key;
         let percentages = {};
-        percentages[awayTeam] = 0;
-        percentages[homeTeam] = 0;
+        percentages[awayTeam] = 50; // can be zero 
+        percentages[homeTeam] = 50; // can be zero
         return percentages;
     } else { 
         const game = await gameController.readOne({ slug: gamethreadObj.slug });

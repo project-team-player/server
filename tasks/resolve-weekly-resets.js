@@ -8,6 +8,9 @@
  * ------------------------------------------------------------------------------
  * User
  * -> 'bets' into 'accumulatedBets' then empty 'bets'
+ *      CAUTION: some muthafuckas bet in advance, only transfer their
+ *      bets into accumulators if the week matches current week. 
+ *      Leave everything else.
  * -> 'pizzaSlicesWeekly' into 'pizzaSlicesTotal' then reset 
  *    'pizzaSlicesWeekly' into 64
  * -> 'weeklyWins' into 'wins' then reset 'weeklyWins' to 0
@@ -19,27 +22,53 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
 const userController = require('../controllers/user-controller');
+const betController = require('../controllers/bet-controller');
 
-const resolveResets = async (dbName) => {
+const resolveResets = async (week, dbName) => {
     // create DB conn string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
-        mongoose.connect(dbConnection);
+        await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         const users = await userController.readMany({});
         // manipulate each users resetable fields
         for(let i = 0; i < users.length; ++i) {
             // jump to the next iteration if the user's bets array is empty
-            if(users[i].bets === undefined) {
+            if(users[i].bets === undefined || users[i].bets.length === 0) {
                 continue;
             }
             const accumulatedBets = users[i].accumulatedBets;
             // bets into accumulatedBets then empty bets
+            // EXCEPT bets that havent happened yet.
             for(let j = 0; j < users[i].bets.length; ++j) {
-                accumulatedBets.push(users[i].bets[j]);
-                users[i].bets.splice(j, 1);
+                const bet = await betController.readOne({ _id: users[i].bets[j] });
+                if(!bet) {
+                    // next iteration
+                    continue;
+                }
+                // take the bet's week from its slug , refer to slug structures on DB
+                let betWeek;
+                bet.slug[bet.slug.length - 2] === '-' ?
+                    betWeek = parseInt(bet.slug.slice(-1)) : betWeek = parseInt(bet.slug.slice(-2));
+                // only do splicing if betWeek and week are the same
+                if(betWeek === week) {
+                    accumulatedBets.push(users[i].bets[j]);
+                    users[i].bets[j] = 'removed'; // temp place holder
+                }
+                // else. next iteration
             }
-            // bets are now in accumulatedBets and bets is reset to empty array
+            /**
+             * Fix users[i].bets. Take off elements called 'removed'
+             * then resize the array.
+             */
+            const cleansedArray = [];
+            for(let k = 0; k < users[i].bets.length; ++k) {
+                if(users[i].bets[k] !== 'removed') {
+                    cleansedArray.push(users[i].bets[k]);
+                }
+            }
+            // Bets on week are now in accumulatedBets and bets is reset to just bets
+            // that have yet to be resolved aka future games.
             // pizzaSlicesWeekly into pizzaSlicesTotal then reset
             let pizzaSlicesTotal = users[i].pizzaSlicesTotal;
             pizzaSlicesTotal += users[i].pizzaSlicesWeekly;
@@ -56,7 +85,7 @@ const resolveResets = async (dbName) => {
             // DB update here
             await userController.updateOne(users[i]._id, {
                 accumulatedBets,
-                bets: users[i].bets,
+                bets: cleansedArray,
                 pizzaSlicesTotal,
                 pizzaSlicesWeekly: 64,
                 wins,
@@ -67,7 +96,7 @@ const resolveResets = async (dbName) => {
             });
             // updating current user DONE
         }   
-        mongoose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             message: `${users.length} users executed their weekly reset`,
         };

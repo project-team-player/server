@@ -25,11 +25,11 @@ const NFL_WEEK = 1; // change this accordingly
 const pipelines = async (season, week, dbName) => {
     if(process.argv.includes('--pipe1')) {
         // run pipe 1 subroutines.
-        const fromGameScores = await resolveGameScores(season, week, dbName);
-        const fromBets = await resolveBets(week, dbName);
-        const fromUserBets = await resolveUserBets(dbName);
-        const fromUserAwards = await resolveUserAwards(dbName);
-        const fromWeeklyResets = await resolveWeeklyResets(dbName);
+        const fromGameScores = await resolveGameScores.resolveScores(season, week, dbName);
+        const fromBets = await resolveBets.resolveBets(week, dbName);
+        const fromUserBets = await resolveUserBets.resolveBets(week, dbName);
+        const fromUserAwards = await resolveUserAwards.resolveAwards(dbName);
+        const fromWeeklyResets = await resolveWeeklyResets.resolveResets(week, dbName);
         const returnObj = {
             fromGameScores,
             fromBets,
@@ -37,7 +37,7 @@ const pipelines = async (season, week, dbName) => {
             fromUserAwards,
             fromWeeklyResets,
         };
-        console.log(returnObj); // jsut returns a message.
+        console.log(returnObj); // just returns a message.
     } else {
         console.log('Task Manager Activated');
     }
