@@ -108,7 +108,6 @@ const resolveResets = async (week, dbName) => {
 
 // write script here for it to be callable
 // ITS called the 'bitch dont run my scripts' lock
-resolveResets(1, process.argv[2]);
 
 module.exports = {
     resolveResets,
