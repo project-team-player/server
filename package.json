@@ -12,9 +12,17 @@
     "ingestion-game": "node ./ingestion/engine.js --game",
     "ingestion-thread": "node ./ingestion/engine.js --thread",
     "mirror": "node ./mirrors/proliferate.js",
+    "mirror-fudge": "node ./mirrors/proliferate.js --fudge",
+    "mirror-fudge-mini": "node ./mirrors/proliferate.js --fudge-mini",
     "mirror-development": "node ./mirrors/proliferate.js --dev",
     "mirror-staging": "node ./mirrors/proliferate.js --stag",
-    "mirror-production": "node ./mirrors/proliferate.js --prod"
+    "mirror-production": "node ./mirrors/proliferate.js --prod",
+    "task-manager": "node ./tasks/task-manager.js",
+    "task-manager-pipe1-fudge": "node ./tasks/task-manager.js --pipe1 fudge",
+    "task-manager-pipe1-test": "node ./tasks/task-manager.js --pipe1 test",
+    "task-manager-pipe1-dev": "node ./tasks/task-manager.js --pipe1 development",
+    "task-manager-pipe1-stag": "node ./tasks/task-manager.js --pipe1 staging",
+    "task-manager-pipe1-prod": "node ./tasks/task-manager.js --pipe1 production"
   },
   "repository": {
     "type": "git",

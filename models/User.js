@@ -35,18 +35,40 @@ const userSchema = new Schema({
         default: 0,
     },
     pizzaSlicesTotal: {
+        // accumulated pizza slices, receiver of the dump
+        // from pizzaSlicesWeekly
         type: Number,
         default: 0,
     },
     pizzaSlicesWeekly: {
+        // given to the user at the start of each week
+        type: Number,
+        default: 64,
+    },
+    pizzaSlicesWonWeek: {
+        // accumulation of pizzaslices won on each bet on 
+        // a given week.
         type: Number,
         default: 0,
     },
     wins: {
+        // total wins!
         type: Number,
         default: 0,
     },
     loses: {
+        type: Number,
+        default: 0,
+    },
+    weeklyWins: {
+        // wins in the week, resets after each week, gets dumped
+        // into the 'wins' field.
+        type: Number,
+        default: 0,
+    },
+    weeklyLoses: {
+        // loses in the week, resets after each week, gets dumped
+        // into the 'loses' field.
         type: Number,
         default: 0,
     },
@@ -83,10 +105,20 @@ const userSchema = new Schema({
         },
     ],
     bets: [
+        // This will only refer to bets made in a week. Previous bets will 
+        // be moved to the accumulatedBets (see below) after the end 
+        // of the NFL week.
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'bet',
         },
+    ],
+    accumulatedBets: [
+        // every bet from bets array moves here after the end of the week.
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'bet',
+        }
     ],
     globalRank: {
         type: Number,

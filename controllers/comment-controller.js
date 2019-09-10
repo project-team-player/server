@@ -19,6 +19,7 @@ const createOne = async(comment, options) => {
     const returnObj = {
         _id: returnAwait._id,
         owner: returnAwait.owner,
+        gravatar: returnAwait.gravatar,
         text: returnAwait.text,
         createdAt:returnAwait.createdAt,
         isRootComment: returnAwait.isRootComment,
@@ -62,6 +63,7 @@ const readMany = async(options) => {
         returnArray.push({
             _id: returnAwait[i]._id,
             owner: returnAwait[i].owner,
+            gravatar: returnAwait[i].gravatar,
             text: returnAwait[i].text,
             createdAt:returnAwait[i].createdAt,
             isRootComment: returnAwait[i].isRootComment,
@@ -71,6 +73,53 @@ const readMany = async(options) => {
     }
     return returnArray;
 };
+
+/**
+ * Updates a single comment
+ * @param {Object} comment comment id
+ * @param {Object} options Additional parameters
+ * @returns Response
+ */
+const updateOne = async (comment, options) => {
+    const doc = await Comment.findByIdAndUpdate(
+      comment,
+      { $set: options },
+      { new: true }
+    );
+    return doc;
+  };
+
+/**
+ * Updates many comments
+ * @param {Object} options Additional parameters, whatever needs to be
+ * updated based of the route or caller of this controller.
+ * updates all users
+ */
+const updateMany = async (options) => {
+    const docs = await Comment.updateMany({}, { $set: options }, { new: true });
+    return docs;
+};
+
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteOne = async (options) => {
+    const returnAwait = await Comment.deleteOne(options);
+    return returnAwait;
+};
+
+/**
+ * 
+ * @param {options} -> parameters to be updated on. 
+ * @returns response
+ */
+const deleteMany = async options => {
+    const returnAwait = await Comment.deleteMany(options);
+    return returnAwait;
+  };
 
 /**
  * 
@@ -114,4 +163,8 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    updateOne,
+    updateMany,
+    deleteOne,
+    deleteMany
 };

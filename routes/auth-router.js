@@ -1,5 +1,3 @@
-// const path = require('path');
-// require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -7,6 +5,7 @@ const { catchErrors } = require('../handlers/error-handlers');
 const userController = require('../controllers/user-controller');
 const authSubroutines = require('../handlers/auth-subroutines');
 const CustomError = require('../handlers/Custom-Error');
+const passport = require('passport');
 
 router.post('/signup', 
     authSubroutines.usePassEmailFilled,
@@ -76,6 +75,16 @@ router.post(
         });
     })
 );
+
+// Check's if user is authenticated and returns username and email in the response object
+router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.json({
+        message: 'User succesfully authenticated',
+        username: req.user.username,
+        email: req.user.email,
+        user: req.user,
+    });
+});
 
 module.exports = router;
 

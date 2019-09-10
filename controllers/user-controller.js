@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const betController = require('./bet-controller');
 
 /**
  * 
@@ -38,6 +39,30 @@ const readMany = async (options) => {
 
 /**
  * 
+ * @param {ObjectID} -> id of the user that will use this controller
+ * @param {Object} options -> optional parameters
+ * @returns {Array} of Bet objects 
+ */
+const readAllBets = async (user, options) => {
+    const foundUser = await User.findOne({ _id: user });
+    // perform if user's bets array isnt empty
+    if(foundUser.bets.length !== 0) {
+        const returnArray = [];
+        for(let i = 0; i < foundUser.bets.length; ++i) {
+            const bet = await betController.readOne({ _id: foundUser.bets[i] });
+            returnArray.push(bet);
+        }
+        return returnArray;
+    }
+    // else bet array is empty return error message
+    const returnedMsg = {
+        serverMessage: `${foundUser.username} has not placed any bets`,
+    };
+    return returnedMsg;   
+};
+
+/**
+ * 
  * @param {Object} user -> user id 
  * @param {Object} options -> update parameters
  * @returns {Object}
@@ -47,10 +72,25 @@ const updateOne = async (user, options) => {
     return returnAwait;
 };
 
+/**
+ * 
+ * @param {Object} options -> Defines parameters to update.
+ * @returns {Object} returnedObj -> an object with message.
+ */
+const updateMany = async (options) => {
+    const users = await User.updateMany({}, { $set: options }, { new: true });
+    const returnObj = {
+        serverMessage: `${users.length} items updated with updateMany`,
+    };
+    return returnObj;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
-    readMany,   
+    readMany,
+    readAllBets,   
     updateOne,
+    updateMany,
 };

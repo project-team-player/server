@@ -45,13 +45,7 @@ const gameSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    winner: {
-        name: String,
-        objectReference: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'team',
-        },
-    },
+    winner: String,
     gameThreadReference: {
         gameThreadID: String,
         objectReference: {
