@@ -20,7 +20,7 @@ const resolveBets = async (week, dbName) => {
     // create DB string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
-        mongoose.connect(dbConnection);
+        await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         let resolvedBets = 0;
         const games = await gameController.readMany({ week });
@@ -47,7 +47,7 @@ const resolveBets = async (week, dbName) => {
         // have been updated and resolved. 
 
         // disconnect DB connection
-        mongoose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             games: games.length,
             resolved: resolvedBets,

@@ -21,14 +21,14 @@ const resolveAwards = async (dbName) => {
     // create DB conn string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
-        mongoose.connect(dbConnection);
+        await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         // 1
         const users = await userController.readMany({});
         // 2
         for(let i = 0; i < users.length; ++i) {
             let pizzaSlicesWeekly = users[i].pizzaSlicesWeekly;
-            let pizzaSlicesWonWeek = users[i].pizzaSlicesWonWeek;
+            const pizzaSlicesWonWeek = users[i].pizzaSlicesWonWeek;
             const weeklyWins = users[i].weeklyWins;
             // calculate the shit out of it. 
             pizzaSlicesWeekly = pizzaSlicesWeekly + ((pizzaSlicesWonWeek * WON_BET_MULTIPLIER) * multiplier[weeklyWins]);
@@ -37,7 +37,7 @@ const resolveAwards = async (dbName) => {
                 pizzaSlicesWeekly,
             });
         }
-        mongooose.disconnect();
+        await mongooose.disconnect();
         const returnObj = {
             message: `${users.length} users have their awards resolved`,
         };

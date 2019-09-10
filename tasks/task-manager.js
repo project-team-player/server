@@ -37,7 +37,7 @@ const pipelines = async (season, week, dbName) => {
             fromUserAwards,
             fromWeeklyResets,
         };
-        console.log(returnObj); // jsut returns a message.
+        console.log(returnObj); // just returns a message.
     } else {
         console.log('Task Manager Activated');
     }
