@@ -50,7 +50,6 @@ const resolveAwards = async (dbName) => {
 
 // write script here for it to be callable
 // ITS called the 'bitch dont run my scripts' lock
-resolveAwards(process.argv[2]);
 
 module.exports = {
     resolveAwards,

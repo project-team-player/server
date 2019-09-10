@@ -8,6 +8,9 @@
  * ------------------------------------------------------------------------------
  * User
  * -> 'bets' into 'accumulatedBets' then empty 'bets'
+ *      CAUTION: some muthafuckas bet in advance, only transfer their
+ *      bets into accumulators if the week matches current week. 
+ *      Leave everything else.
  * -> 'pizzaSlicesWeekly' into 'pizzaSlicesTotal' then reset 
  *    'pizzaSlicesWeekly' into 64
  * -> 'weeklyWins' into 'wins' then reset 'weeklyWins' to 0
