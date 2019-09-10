@@ -17,6 +17,7 @@
     "mirror-staging": "node ./mirrors/proliferate.js --stag",
     "mirror-production": "node ./mirrors/proliferate.js --prod",
     "task-manager": "node ./tasks/task-manager.js",
+    "task-manager-pipe1-fudge": "node ./tasks/task-manager.js --pipe1 fudge",
     "task-manager-pipe1-test": "node ./tasks/task-manager.js --pipe1 test",
     "task-manager-pipe1-dev": "node ./tasks/task-manager.js --pipe1 development",
     "task-manager-pipe1-stag": "node ./tasks/task-manager.js --pipe1 staging",

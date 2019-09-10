@@ -25,11 +25,11 @@ const NFL_WEEK = 1; // change this accordingly
 const pipelines = async (season, week, dbName) => {
     if(process.argv.includes('--pipe1')) {
         // run pipe 1 subroutines.
-        const fromGameScores = await resolveGameScores(season, week, dbName);
-        const fromBets = await resolveBets(week, dbName);
-        const fromUserBets = await resolveUserBets(dbName);
-        const fromUserAwards = await resolveUserAwards(dbName);
-        const fromWeeklyResets = await resolveWeeklyResets(dbName);
+        const fromGameScores = await resolveGameScores.resolveScores(season, week, dbName);
+        const fromBets = await resolveBets.resolveBets(week, dbName);
+        const fromUserBets = await resolveUserBets.resolveBets(dbName);
+        const fromUserAwards = await resolveUserAwards.resolveAwards(dbName);
+        const fromWeeklyResets = await resolveWeeklyResets.resolveResets(dbName);
         const returnObj = {
             fromGameScores,
             fromBets,
