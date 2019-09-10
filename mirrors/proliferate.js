@@ -3,8 +3,10 @@
  * test -> development -> staging -> production
  * WARNING: Copies teams, games and gamethreads collections!!!!!!
  * Except for fudge, fudge only copies games, gamethreads, users and bets
+ * Then, theres fudge mini, which only copies 'users'
  */
 const fudgeMirror = require('./fudge-mirror');
+const fudgeMiniMirror = require('./fudgemini-mirror');
 const devMirror = require('./developement-mirror');
 const stagMirror = require('./staging-mirror');
 const prodMirror = require('./production-mirror');
@@ -21,6 +23,9 @@ if(process.argv.includes("--dev")) {
 } else if(process.argv.includes("--fudge")) {
     console.log("Mirror test DB into fudge DB");
     fudgeMirror.runMirror();
+} else if(process.argv.includes("--fudge-mini")) {
+    console.log("Mini Fudge Mirroring");
+    fudgeMiniMirror.runMirror();
 } else {
     console.log("Mirror initialized");
 }

@@ -37,7 +37,7 @@ const resolveAwards = async (dbName) => {
                 pizzaSlicesWeekly,
             });
         }
-        await mongooose.disconnect();
+        await mongoose.disconnect();
         const returnObj = {
             message: `${users.length} users have their awards resolved`,
         };
@@ -50,6 +50,7 @@ const resolveAwards = async (dbName) => {
 
 // write script here for it to be callable
 // ITS called the 'bitch dont run my scripts' lock
+resolveAwards(process.argv[2]);
 
 module.exports = {
     resolveAwards,

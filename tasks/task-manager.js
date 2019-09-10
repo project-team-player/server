@@ -27,9 +27,9 @@ const pipelines = async (season, week, dbName) => {
         // run pipe 1 subroutines.
         const fromGameScores = await resolveGameScores.resolveScores(season, week, dbName);
         const fromBets = await resolveBets.resolveBets(week, dbName);
-        const fromUserBets = await resolveUserBets.resolveBets(dbName);
+        const fromUserBets = await resolveUserBets.resolveBets(week, dbName);
         const fromUserAwards = await resolveUserAwards.resolveAwards(dbName);
-        const fromWeeklyResets = await resolveWeeklyResets.resolveResets(dbName);
+        const fromWeeklyResets = await resolveWeeklyResets.resolveResets(week, dbName);
         const returnObj = {
             fromGameScores,
             fromBets,

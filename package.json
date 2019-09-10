@@ -13,6 +13,7 @@
     "ingestion-thread": "node ./ingestion/engine.js --thread",
     "mirror": "node ./mirrors/proliferate.js",
     "mirror-fudge": "node ./mirrors/proliferate.js --fudge",
+    "mirror-fudge-mini": "node ./mirrors/proliferate.js --fudge-mini",
     "mirror-development": "node ./mirrors/proliferate.js --dev",
     "mirror-staging": "node ./mirrors/proliferate.js --stag",
     "mirror-production": "node ./mirrors/proliferate.js --prod",

@@ -20,7 +20,7 @@ const mongoose = require('mongoose');
 const betController = require('../controllers/bet-controller');
 const userController = require('../controllers/user-controller');
 
-const resolveBets = async (dbName) => {
+const resolveBets = async (week, dbName) => {
     // create DB conn string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
@@ -40,12 +40,13 @@ const resolveBets = async (dbName) => {
             let slicesWon = users[i].pizzaSlicesWonWeek;
             // 2
             for(let j = 0; j < users[i].bets.length; ++j) {
-                const bet = await betController.readMany({ _id: users[i].bets[j] });
+                const bet = await betController.readOne({ _id: users[i].bets[j] });
+                if(!bet) { continue; }
                 // 3
-                if(bet[0].isWin === true) {
+                if(bet.isWin === true) {
                     // 4
                     betsWon++;
-                    slicesWon += bet[0].slicesBet;
+                    slicesWon += bet.slicesBet;
                 }
                 // 5 else the bet is a huge 'L', do nothing.
                 // This for loop terminates once all the bets in the bets array 
@@ -73,6 +74,7 @@ const resolveBets = async (dbName) => {
 
 // write script here for it to be callable
 // ITS called the 'bitch dont run my scripts' lock
+resolveBets(process.argv[2]);
 
 module.exports = {
     resolveBets,
