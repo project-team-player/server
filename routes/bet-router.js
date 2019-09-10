@@ -27,7 +27,7 @@ router.post('/gamethread/:slug',
             const validTime = await timeVerify.isValidTime(req.body.dateTime);
             if(!validTime) {
                 const timeExpired = 'Betting disabled, game either started, in progress or finished';
-                return res.status(201).json({
+                return res.status(400).json({
                     timeExpired,
                 });
             }
