@@ -81,7 +81,15 @@ const readMany = async(options) => {
  * @returns {array of Objects}
  */
 const readWithBets = async(options) => {
-    
+    const returnAwait = await Comment.find(options);
+    const returnArray = [];
+    for(let i = 0; i < returnAwait.length; ++i) {
+        const comment = await Comment
+            .findOne({ _id: returnAwait[i]._id })
+            .populate('betReference');
+        returnArray.push(comment);
+    }
+    return returnArray;
 };
 
 /**
