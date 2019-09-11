@@ -98,7 +98,19 @@ const leaderBoard = async (query, options) => {
         .sort({
             pizzaSlicesTotal: -1,
         });
-    return users;
+    const returnArray = [];
+    for(let i = 0; i < users.length; ++i) {
+        const filtered = users[i].toObject();
+        delete filtered.permissions;
+        delete filtered.bets;
+        delete filtered.accumulatedBets;
+        delete filtered.comments;
+        delete filtered._id;
+        delete filtered.email;
+        delete filtered.password;
+        returnArray.push(filtered);
+    }
+    return returnArray;
 };
 
 module.exports = {
