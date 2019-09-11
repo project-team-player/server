@@ -105,7 +105,7 @@ const updateOne = async (comment, options) => {
       { new: true }
     );
     return doc;
-  };
+};
 
 /**
  * Updates many comments
