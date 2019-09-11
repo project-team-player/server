@@ -17,4 +17,11 @@ router.get('/bets',
     })
 );
 
+/**
+ * Route the reads the global leaderboard
+ */
+router.get('/leaderboard/global',
+    
+);
+
 module.exports = router;
