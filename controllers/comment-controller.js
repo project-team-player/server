@@ -65,11 +65,31 @@ const readMany = async(options) => {
             owner: returnAwait[i].owner,
             gravatar: returnAwait[i].gravatar,
             text: returnAwait[i].text,
-            createdAt:returnAwait[i].createdAt,
+            createdAt: returnAwait[i].createdAt,
             isRootComment: returnAwait[i].isRootComment,
             slug: returnAwait[i].slug,
             gameThreadReference: returnAwait[i].gameThreadReference,
+            betReference: returnAwait[i].betReference,
         });
+    }
+    return returnArray;
+};
+
+/**
+ * 
+ * @param {Object} options -> defines the parameters to find
+ * @returns {array of Objects}
+ */
+const readWithBets = async(options) => {
+    const returnAwait = await Comment
+        .find(options)
+        .populate('betReference');
+    const returnArray = [];
+    for(let i = 0; i < returnAwait.length; ++i) {
+        const filtered = returnAwait[i].toObject();
+        delete filtered.ownerObj;
+        delete filtered.betReference.owner;
+        returnArray.push(filtered);
     }
     return returnArray;
 };
@@ -87,7 +107,7 @@ const updateOne = async (comment, options) => {
       { new: true }
     );
     return doc;
-  };
+};
 
 /**
  * Updates many comments
@@ -119,7 +139,7 @@ const deleteOne = async (options) => {
 const deleteMany = async options => {
     const returnAwait = await Comment.deleteMany(options);
     return returnAwait;
-  };
+};
 
 /**
  * 
@@ -163,6 +183,7 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    readWithBets,
     updateOne,
     updateMany,
     deleteOne,

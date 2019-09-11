@@ -12,7 +12,9 @@ const CustomError = require('../handlers/Custom-Error');
  */
 router.get('/all/gamethread/:id',
     catchErrors(async(req, res) => {
-        const comments = await commentController.readMany({ gameThreadReference: req.params.id });
+        const comments = await commentController.readWithBets({ 
+            gameThreadReference: req.params.id 
+        });
         return res.status(200).json({ comments });
     })
 );
