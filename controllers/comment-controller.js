@@ -137,7 +137,7 @@ const deleteOne = async (options) => {
 const deleteMany = async options => {
     const returnAwait = await Comment.deleteMany(options);
     return returnAwait;
-  };
+};
 
 /**
  * 
