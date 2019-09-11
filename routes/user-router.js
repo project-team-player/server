@@ -21,7 +21,9 @@ router.get('/bets',
  * Route the reads the global leaderboard
  */
 router.get('/leaderboard/global',
-    
+    catchErrors(async(req, res) => {
+        // call the leaderboard function on user controller
+    })
 );
 
 module.exports = router;
