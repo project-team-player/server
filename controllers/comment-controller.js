@@ -69,9 +69,19 @@ const readMany = async(options) => {
             isRootComment: returnAwait[i].isRootComment,
             slug: returnAwait[i].slug,
             gameThreadReference: returnAwait[i].gameThreadReference,
+            betReference: returnAwait[i].betReference,
         });
     }
     return returnArray;
+};
+
+/**
+ * 
+ * @param {Object} options -> defines the parameters to find
+ * @returns {array of Objects}
+ */
+const readWithBets = async(options) => {
+    
 };
 
 /**
@@ -163,6 +173,7 @@ module.exports = {
     createMany,
     readOne,
     readMany,
+    readWithBets,
     updateOne,
     updateMany,
     deleteOne,
