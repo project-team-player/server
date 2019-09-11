@@ -17,4 +17,17 @@ router.get('/bets',
     })
 );
 
+/**
+ * Route the reads the global leaderboard
+ */
+router.get('/leaderboard/global',
+    catchErrors(async(req, res) => {
+        // call the leaderboard function on user controller
+        const users = await userController.leaderBoard();
+        return res.status(201).json({
+            users,
+        });
+    })
+);
+
 module.exports = router;
