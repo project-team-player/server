@@ -102,6 +102,12 @@ const leaderBoard = async (query, options) => {
     for(let i = 0; i < users.length; ++i) {
         const filtered = users[i].toObject();
         delete filtered.permissions;
+        delete filtered.weeklyWins;
+        delete filtered.weeklyLoses;
+        delete filtered.globalRank;
+        delete filtered.badge;
+        delete filtered.favoriteTeams;
+        delete filtered.achievements;
         delete filtered.bets;
         delete filtered.accumulatedBets;
         delete filtered.comments;
