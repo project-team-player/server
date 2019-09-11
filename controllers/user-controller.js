@@ -85,6 +85,40 @@ const updateMany = async (options) => {
     return returnObj;
 };
 
+/**
+ * 
+ * @param {Object} query
+ * @param {Object} options 
+ * @returns {Array} of objects sorted in descending order
+ * based on the value of a user's 'pizzaSlicesTotal'.
+ */
+const leaderBoard = async (query, options) => {
+    const users = await User
+        .find()
+        .sort({
+            pizzaSlicesTotal: -1,
+        });
+    const returnArray = [];
+    for(let i = 0; i < users.length; ++i) {
+        const filtered = users[i].toObject();
+        delete filtered.permissions;
+        delete filtered.weeklyWins;
+        delete filtered.weeklyLoses;
+        delete filtered.globalRank;
+        delete filtered.badge;
+        delete filtered.favoriteTeams;
+        delete filtered.achievements;
+        delete filtered.bets;
+        delete filtered.accumulatedBets;
+        delete filtered.comments;
+        delete filtered._id;
+        delete filtered.email;
+        delete filtered.password;
+        returnArray.push(filtered);
+    }
+    return returnArray;
+};
+
 module.exports = {
     createOne,
     createMany,
@@ -93,4 +127,5 @@ module.exports = {
     readAllBets,   
     updateOne,
     updateMany,
+    leaderBoard,
 };
