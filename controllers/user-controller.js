@@ -93,7 +93,12 @@ const updateMany = async (options) => {
  * based on the value of a user's 'pizzaSlicesTotal'.
  */
 const leaderBoard = async (query, options) => {
-
+    const users = await User
+        .find()
+        .sort({
+            pizzaSlicesTotal: -1,
+        });
+    return users;
 };
 
 module.exports = {
