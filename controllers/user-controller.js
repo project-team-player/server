@@ -85,6 +85,17 @@ const updateMany = async (options) => {
     return returnObj;
 };
 
+/**
+ * 
+ * @param {Object} query
+ * @param {Object} options 
+ * @returns {Array} of objects sorted in descending order
+ * based on the value of a user's 'pizzaSlicesTotal'.
+ */
+const leaderBoard = async (query, options) => {
+
+};
+
 module.exports = {
     createOne,
     createMany,
@@ -93,4 +104,5 @@ module.exports = {
     readAllBets,   
     updateOne,
     updateMany,
+    leaderBoard,
 };
