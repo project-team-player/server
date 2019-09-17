@@ -101,11 +101,7 @@ const readWithBets = async(options) => {
  * @returns Response
  */
 const updateOne = async (comment, options) => {
-    const doc = await Comment.findByIdAndUpdate(
-      comment,
-      { $set: options },
-      { new: true }
-    );
+    const doc = await Comment.findByIdAndUpdate(comment, { $set: options }, { new: true });
     return doc;
 };
 
