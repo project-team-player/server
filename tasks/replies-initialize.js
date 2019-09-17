@@ -29,9 +29,6 @@ const initializeReplies = async (dbName) => {
 
 };
 
-// anti bitch lock
-initializeReplies(process.argv[2]);
-
 module.exports = {
     initializeReplies,
 };
