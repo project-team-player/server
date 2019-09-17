@@ -30,4 +30,13 @@ router.get('/leaderboard/global',
     })
 );
 
+/**
+ * Route that reads leaderboards per week
+ */
+router.get('/leaderboard/week/:week',
+    catchErrors(async(req, res) => {
+        // TO FUCKING DO 
+    })
+)
+
 module.exports = router;
