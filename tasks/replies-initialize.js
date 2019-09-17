@@ -7,6 +7,11 @@ const mongoose = require('mongoose');
 const commentController = require('../controllers/comment-controller');
 
 const initializeReplies = async (dbName) => {
+    try {
+        
+    } catch(err) {
+        console.log(`Error has occured ${err}`);
+    }
 
 };
 
