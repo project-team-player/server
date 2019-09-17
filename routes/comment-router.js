@@ -39,7 +39,7 @@ router.post('/gamethread/:slug',
                 text: req.body.text,
                 createdAt: `${moment()}`,
                 isRootComment: true,
-                comments: [],
+                replies: [],
                 gameThreadReference: req.body.gamethreadId,
                 slug: req.params.slug,
             });
