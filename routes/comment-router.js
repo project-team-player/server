@@ -56,4 +56,28 @@ router.post('/gamethread/:slug',
     })
 );
 
+/**
+ * Make patch request
+ * Needs: Comment ID
+ * req.params.id (id is the comment id)
+ */
+
+router.patch('/reply/:id', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        const comment = await commentController.readOne({_id:req.params.id});
+        const replies = comment.replies || [];
+        const reply = {
+            username: req.body.username,
+            gravatar: req.body.gravatar,
+            text: req.body.text,
+            createdAt: `${moment()}`
+        }
+        replies.push(reply);
+        await commentController.updateOne(comment._id, {
+            replies: replies
+        });
+    })
+)
+
 module.exports = router;
