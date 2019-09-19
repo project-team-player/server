@@ -32,7 +32,7 @@ const resolveResets = async (week, dbName) => {
         mongoose.Promise = global.Promise;
         const users = await userController.readMany({});
         // manipulate each users resetable fields
-        for(let i = 0; i < users.length; ++i) {
+        for(let i = 0; i < users.length; i++) {
             // jump to the next iteration if the user's bets array is empty
             if(users[i].bets === undefined || users[i].bets.length === 0) {
                 continue;
@@ -40,7 +40,7 @@ const resolveResets = async (week, dbName) => {
             const accumulatedBets = users[i].accumulatedBets;
             // bets into accumulatedBets then empty bets
             // EXCEPT bets that havent happened yet.
-            for(let j = 0; j < users[i].bets.length; ++j) {
+            for(let j = 0; j < users[i].bets.length; j++) {
                 const bet = await betController.readOne({ _id: users[i].bets[j] });
                 if(!bet) {
                     // next iteration
@@ -62,7 +62,7 @@ const resolveResets = async (week, dbName) => {
              * then resize the array.
              */
             const cleansedArray = [];
-            for(let k = 0; k < users[i].bets.length; ++k) {
+            for(let k = 0; k < users[i].bets.length; k++) {
                 if(users[i].bets[k] !== 'removed') {
                     cleansedArray.push(users[i].bets[k]);
                 }
@@ -72,6 +72,9 @@ const resolveResets = async (week, dbName) => {
             // pizzaSlicesWeekly into pizzaSlicesTotal then reset
             let pizzaSlicesTotal = users[i].pizzaSlicesTotal;
             pizzaSlicesTotal += users[i].pizzaSlicesWeekly;
+            // do this for the weekly leaderboards.
+            const weeklySlices = users[i].pizzaSlicesWeekly;
+            const placeHolder = `slicesWeek${week}`;
             // reset pizzaSlicesWeekly to 64 at the DB update later
             // weeklyWins into wins then reset
             let wins = users[i].wins;
@@ -93,6 +96,7 @@ const resolveResets = async (week, dbName) => {
                 loses,
                 weeklyLoses: 0,
                 pizzaSlicesWonWeek: 0,
+                [placeHolder]: weeklySlices,
             });
             // updating current user DONE
         }   

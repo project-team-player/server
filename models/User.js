@@ -141,6 +141,25 @@ const userSchema = new Schema({
     ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    // because sometimes, you just gotta do 
+    // what you gotta do 
+    slicesWeek1: Number,
+    slicesWeek2: Number,
+    slicesWeek3: Number,
+    slicesWeek4: Number,
+    slicesWeek5: Number,
+    slicesWeek6: Number,
+    slicesWeek7: Number,
+    slicesWeek8: Number,
+    slicesWeek9: Number,
+    slicesWeek10: Number,
+    slicesWeek11: Number,
+    slicesWeek12: Number,
+    slicesWeek13: Number,
+    slicesWeek14: Number,
+    slicesWeek15: Number,
+    slicesWeek16: Number,
+    slicesWeek17: Number,
 });
 
 /**

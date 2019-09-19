@@ -23,11 +23,27 @@ router.get('/bets',
 router.get('/leaderboard/global',
     catchErrors(async(req, res) => {
         // call the leaderboard function on user controller
-        const users = await userController.leaderBoard();
+        const users = await userController.leaderBoard({ analog: 1 });
         return res.status(201).json({
             users,
         });
     })
 );
+
+/**
+ * Route that reads leaderboards per week
+ */
+router.get('/leaderboard/week/:week',
+    catchErrors(async(req, res) => {
+        // call leaderboard function on user controller
+        const users = await userController.leaderBoard({
+            analog: 2,
+            week: req.params.week,
+        });
+        return res.status(201).json({
+            users,
+        });
+    })
+)
 
 module.exports = router;
