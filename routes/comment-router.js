@@ -77,6 +77,7 @@ router.patch('/reply/:id',
         await commentController.updateOne(comment._id, {
             replies: replies
         });
+        return res.status(201).json(reply);
     })
 )
 
