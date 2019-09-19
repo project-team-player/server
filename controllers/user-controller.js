@@ -120,6 +120,12 @@ const leaderBoard = async (options) => {
             returnArray.push(filtered);
         }
         return returnArray;
+    } else if(options.analog === 2) {
+        // WEEKLY LEADERBOARD. OPTIONS OBJECT MUST
+        // CONTAIN WEEK NUMBER AS WELL
+    } else {
+        const serverMessage = `Error: that analog isn't functional`;
+        return serverMessage;
     }
 };
 
