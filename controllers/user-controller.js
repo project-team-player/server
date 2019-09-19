@@ -146,7 +146,7 @@ const arrayTrim = (users) => {
         returnArray.push(filtered);
     }
     return returnArray;
-}
+};
 
 module.exports = {
     createOne,
