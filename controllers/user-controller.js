@@ -87,10 +87,11 @@ const updateMany = async (options) => {
 
 /**
  * 
- * @param {Object} options 
+ * @param {Object} options -> contains 'analog'. Decides between
+ * global and weekly leaderboard.
  * @returns {Array} of objects sorted in descending order
- * based on the value of a user's 'pizzaSlicesTotal' for global
- * different options.analog for different results.
+ * based on the value of a user's 'pizzaSlicesTotal' for global.
+ * Different options.analog for different results (global or weekly)
  */
 const leaderBoard = async (options) => {
     if(options.analog === 1) {
