@@ -97,10 +97,10 @@ const leaderBoard = async (options) => {
     if(options.analog === 1) {
         // GLOBAL LEADERBOARD
         const users = await User
-        .find()
-        .sort({
-            pizzaSlicesTotal: -1,
-        });
+            .find()
+            .sort({
+                pizzaSlicesTotal: -1,
+            });
         const returnArray = [];
         for(let i = 0; i < users.length; ++i) {
             const filtered = users[i].toObject();
@@ -123,6 +123,8 @@ const leaderBoard = async (options) => {
     } else if(options.analog === 2) {
         // WEEKLY LEADERBOARD. OPTIONS OBJECT MUST
         // CONTAIN WEEK NUMBER AS WELL
+        const placeHolder = `slicesWeek${options.week}`;
+
     } else {
         const serverMessage = `Error: that analog isn't functional`;
         return serverMessage;
