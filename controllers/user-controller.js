@@ -87,13 +87,14 @@ const updateMany = async (options) => {
 
 /**
  * 
- * @param {Object} query
  * @param {Object} options 
  * @returns {Array} of objects sorted in descending order
- * based on the value of a user's 'pizzaSlicesTotal'.
+ * based on the value of a user's 'pizzaSlicesTotal' for global
+ * different options.analog for different results.
  */
 const leaderBoard = async (options) => {
     if(options.analog === 1) {
+        // GLOBAL LEADERBOARD
         const users = await User
         .find()
         .sort({
