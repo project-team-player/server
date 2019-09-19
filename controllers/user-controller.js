@@ -101,35 +101,52 @@ const leaderBoard = async (options) => {
             .sort({
                 pizzaSlicesTotal: -1,
             });
-        const returnArray = [];
-        for(let i = 0; i < users.length; ++i) {
-            const filtered = users[i].toObject();
-            delete filtered.permissions;
-            delete filtered.weeklyWins;
-            delete filtered.weeklyLoses;
-            delete filtered.globalRank;
-            delete filtered.badge;
-            delete filtered.favoriteTeams;
-            delete filtered.achievements;
-            delete filtered.bets;
-            delete filtered.accumulatedBets;
-            delete filtered.comments;
-            delete filtered._id;
-            delete filtered.email;
-            delete filtered.password;
-            returnArray.push(filtered);
-        }
+        const returnArray = arrayTrim(users);
         return returnArray;
     } else if(options.analog === 2) {
         // WEEKLY LEADERBOARD. OPTIONS OBJECT MUST
         // CONTAIN WEEK NUMBER AS WELL
         const placeHolder = `slicesWeek${options.week}`;
-
+        const users = await User
+            .find()
+            .sort({
+                [placeHolder]: -1,
+            });
+        const returnArray = arrayTrim(users);
+        return returnArray;
     } else {
         const serverMessage = `Error: that analog isn't functional`;
         return serverMessage;
     }
 };
+
+/**
+ * 
+ * @param {Array} users -> array of objects. 
+ * @returns {Array} -> array of objects
+ * does the necessary trimming of each of the array
+ */
+const arrayTrim = (users) => {
+    const returnArray = [];
+    for(let i = 0; i < users.length; ++i) {
+        const filtered = users[i].toObject();
+        delete filtered.permissions;
+        delete filtered.weeklyWins;
+        delete filtered.weeklyLoses;
+        delete filtered.globalRank;
+        delete filtered.badge;
+        delete filtered.favoriteTeams;
+        delete filtered.achievements;
+        delete filtered.bets;
+        delete filtered.accumulatedBets;
+        delete filtered.comments;
+        delete filtered._id;
+        delete filtered.email;
+        delete filtered.password;
+        returnArray.push(filtered);
+    }
+    return returnArray;
+}
 
 module.exports = {
     createOne,
