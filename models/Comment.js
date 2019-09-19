@@ -20,7 +20,7 @@ const commentSchema = new Schema({
             gravatar: String,
             text: String,
             createdAt: String,
-        },
+        }
     ],
     slicesBet: {
         type: Number,
