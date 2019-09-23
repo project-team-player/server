@@ -143,6 +143,7 @@ const arrayTrim = (users) => {
         delete filtered._id;
         delete filtered.email;
         delete filtered.password;
+        filtered.pizzaSlicesTotal = Math.round(filtered.pizzaSlicesTotal);
         returnArray.push(filtered);
     }
     return returnArray;
