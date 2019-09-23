@@ -112,7 +112,7 @@ const leaderBoard = async (options) => {
             .sort({
                 [placeHolder]: -1,
             });
-        const returnArray = arrayTrim(users);
+        const returnArray = arrayTrim(users, options.week);
         return returnArray;
     } else {
         const serverMessage = `Error: that analog isn't functional`;
@@ -123,10 +123,11 @@ const leaderBoard = async (options) => {
 /**
  * 
  * @param {Array} users -> array of objects. 
+ * @param {Integer} week -> optional parameter called by weekly leaderboard
  * @returns {Array} -> array of objects
  * does the necessary trimming of each of the array
  */
-const arrayTrim = (users) => {
+const arrayTrim = (users, week) => {
     const returnArray = [];
     for(let i = 0; i < users.length; ++i) {
         const filtered = users[i].toObject();
@@ -143,6 +144,11 @@ const arrayTrim = (users) => {
         delete filtered._id;
         delete filtered.email;
         delete filtered.password;
+        filtered.pizzaSlicesTotal = Math.round(filtered.pizzaSlicesTotal);
+        if(week) {
+            const placeholder = `slicesWeek${week}`;
+            filtered[placeholder] = Math.round(filtered[placeholder]);
+        }
         returnArray.push(filtered);
     }
     return returnArray;
