@@ -52,8 +52,8 @@ const resolveResets = async (week, dbName) => {
                 let betWeek;
                 bet.slug[bet.slug.length - 2] === '-' ?
                     betWeek = parseInt(bet.slug.slice(-1)) : betWeek = parseInt(bet.slug.slice(-2));
-                // only do splicing if betWeek and week are the same
-                if(betWeek === week) {
+                // only do splicing if betWeek is the same or less than week
+                if(betWeek <= week) {
                     accumulatedBets.push(users[i].bets[j]);
                     users[i].bets[j] = 'removed'; // temp place holder
                 }
