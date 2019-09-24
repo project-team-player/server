@@ -43,6 +43,8 @@ const resolveResets = async (week, dbName) => {
             for(let j = 0; j < users[i].bets.length; j++) {
                 const bet = await betController.readOne({ _id: users[i].bets[j] });
                 if(!bet) {
+                    // remove these empty bets
+                    users[i].bets[j] = 'removed'; // temp place holder
                     // next iteration
                     continue;
                 }
