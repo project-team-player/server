@@ -43,6 +43,8 @@ const resolveResets = async (week, dbName) => {
             for(let j = 0; j < users[i].bets.length; j++) {
                 const bet = await betController.readOne({ _id: users[i].bets[j] });
                 if(!bet) {
+                    // remove these empty bets
+                    users[i].bets[j] = 'removed'; // temp place holder
                     // next iteration
                     continue;
                 }
@@ -50,8 +52,8 @@ const resolveResets = async (week, dbName) => {
                 let betWeek;
                 bet.slug[bet.slug.length - 2] === '-' ?
                     betWeek = parseInt(bet.slug.slice(-1)) : betWeek = parseInt(bet.slug.slice(-2));
-                // only do splicing if betWeek and week are the same
-                if(betWeek === week) {
+                // only do splicing if betWeek is the same or less than week
+                if(betWeek <= week) {
                     accumulatedBets.push(users[i].bets[j]);
                     users[i].bets[j] = 'removed'; // temp place holder
                 }
