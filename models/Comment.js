@@ -14,10 +14,12 @@ const commentSchema = new Schema({
     text: String,
     createdAt: String,
     isRootComment: Boolean, // only allow nested comments if this is true.
-    comments: [
+    replies: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'comment',
+            username: String,
+            gravatar: String,
+            text: String,
+            createdAt: String,
         }
     ],
     slicesBet: {
