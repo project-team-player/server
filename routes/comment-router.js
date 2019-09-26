@@ -12,7 +12,9 @@ const CustomError = require('../handlers/Custom-Error');
  */
 router.get('/all/gamethread/:id',
     catchErrors(async(req, res) => {
-        const comments = await commentController.readMany({ gameThreadReference: req.params.id });
+        const comments = await commentController.readWithBets({ 
+            gameThreadReference: req.params.id 
+        });
         return res.status(200).json({ comments });
     })
 );
@@ -37,7 +39,7 @@ router.post('/gamethread/:slug',
                 text: req.body.text,
                 createdAt: `${moment()}`,
                 isRootComment: true,
-                comments: [],
+                replies: [],
                 gameThreadReference: req.body.gamethreadId,
                 slug: req.params.slug,
             });
@@ -53,5 +55,30 @@ router.post('/gamethread/:slug',
         }
     })
 );
+
+/**
+ * Make patch request
+ * Needs: Comment ID
+ * req.params.id (id is the comment id)
+ */
+
+router.patch('/reply/:id', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        const comment = await commentController.readOne({_id:req.params.id});
+        const replies = comment.replies || [];
+        const reply = {
+            username: req.body.username,
+            gravatar: req.body.gravatar,
+            text: req.body.text,
+            createdAt: `${moment()}`
+        }
+        replies.push(reply);
+        await commentController.updateOne(comment._id, {
+            replies: replies
+        });
+        return res.status(201).json(reply);
+    })
+)
 
 module.exports = router;

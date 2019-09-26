@@ -85,6 +85,75 @@ const updateMany = async (options) => {
     return returnObj;
 };
 
+/**
+ * 
+ * @param {Object} options -> contains 'analog'. Decides between
+ * global and weekly leaderboard.
+ * @returns {Array} of objects sorted in descending order
+ * based on the value of a user's 'pizzaSlicesTotal' for global.
+ * Different options.analog for different results (global or weekly)
+ */
+const leaderBoard = async (options) => {
+    if(options.analog === 1) {
+        // GLOBAL LEADERBOARD
+        const users = await User
+            .find()
+            .sort({
+                pizzaSlicesTotal: -1,
+            });
+        const returnArray = arrayTrim(users);
+        return returnArray;
+    } else if(options.analog === 2) {
+        // WEEKLY LEADERBOARD. OPTIONS OBJECT MUST
+        // CONTAIN WEEK NUMBER AS WELL
+        const placeHolder = `slicesWeek${options.week}`;
+        const users = await User
+            .find()
+            .sort({
+                [placeHolder]: -1,
+            });
+        const returnArray = arrayTrim(users, options.week);
+        return returnArray;
+    } else {
+        const serverMessage = `Error: that analog isn't functional`;
+        return serverMessage;
+    }
+};
+
+/**
+ * 
+ * @param {Array} users -> array of objects. 
+ * @param {Integer} week -> optional parameter called by weekly leaderboard
+ * @returns {Array} -> array of objects
+ * does the necessary trimming of each of the array
+ */
+const arrayTrim = (users, week) => {
+    const returnArray = [];
+    for(let i = 0; i < users.length; ++i) {
+        const filtered = users[i].toObject();
+        delete filtered.permissions;
+        delete filtered.weeklyWins;
+        delete filtered.weeklyLoses;
+        delete filtered.globalRank;
+        delete filtered.badge;
+        delete filtered.favoriteTeams;
+        delete filtered.achievements;
+        delete filtered.bets;
+        delete filtered.accumulatedBets;
+        delete filtered.comments;
+        delete filtered._id;
+        delete filtered.email;
+        delete filtered.password;
+        filtered.pizzaSlicesTotal = Math.round(filtered.pizzaSlicesTotal);
+        if(week) {
+            const placeholder = `slicesWeek${week}`;
+            filtered[placeholder] = Math.round(filtered[placeholder]);
+        }
+        returnArray.push(filtered);
+    }
+    return returnArray;
+};
+
 module.exports = {
     createOne,
     createMany,
@@ -93,4 +162,5 @@ module.exports = {
     readAllBets,   
     updateOne,
     updateMany,
+    leaderBoard,
 };
