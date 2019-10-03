@@ -2,6 +2,7 @@ const Bet = require('../models/Bet');
 const User = require('../models/User'); // HACK: this shit should be illegal as fuck
 const userController = require('./user-controller');
 const gamethreadController = require('./gamethread-controller');
+const teamController = require('./team-controller');
 
 /**
  * 
@@ -44,11 +45,14 @@ const createOne = async(bet, options) => {
         slug: returnAwait.slug,
     };
     const fromSync = await syncUserAndGamethread(passToSync, 1);
+    // find the logo of the team, use teamReference.
+    const team = await teamController.readOne({ _id: returnAwait.teamReference });
     const returnObj = {
         _id: returnAwait._id,
         slicesBet: returnAwait.slicesBet,
         key: returnAwait.key,
         slug: returnAwait.slug,
+        logo: team.wikiLogoURL,
         serverMessage: fromSync,
     };
     return returnObj;
