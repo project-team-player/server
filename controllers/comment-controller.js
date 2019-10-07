@@ -69,6 +69,7 @@ const readMany = async(options) => {
             isRootComment: returnAwait[i].isRootComment,
             slug: returnAwait[i].slug,
             gameThreadReference: returnAwait[i].gameThreadReference,
+            replies: returnAwait[i].replies,
             betReference: returnAwait[i].betReference,
         });
     }

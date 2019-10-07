@@ -10,9 +10,17 @@ const CustomError = require('../handlers/Custom-Error');
  * Router that gets all the comments of a gamethread
  * req.params.id -> id of the gamethread containing comments
  */
+// router.get('/all/gamethread/:id',
+//     catchErrors(async(req, res) => {
+//         const comments = await commentController.readWithBets({ 
+//             gameThreadReference: req.params.id 
+//         });
+//         return res.status(200).json({ comments });
+//     })
+// );
 router.get('/all/gamethread/:id',
     catchErrors(async(req, res) => {
-        const comments = await commentController.readWithBets({ 
+        const comments = await commentController.readMany({ 
             gameThreadReference: req.params.id 
         });
         return res.status(200).json({ comments });
