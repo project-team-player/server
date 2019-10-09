@@ -52,7 +52,7 @@ const createOne = async(bet, options) => {
         slicesBet: returnAwait.slicesBet,
         key: returnAwait.key,
         slug: returnAwait.slug,
-        logo: team.wikiLogoURL,
+        //logo: team.wikiLogoURL,
         serverMessage: fromSync,
     };
     return returnObj;
