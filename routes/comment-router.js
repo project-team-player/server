@@ -18,6 +18,14 @@ router.get('/all/gamethread/:id',
         return res.status(200).json({ comments });
     })
 );
+// router.get('/all/gamethread/:id',
+//     catchErrors(async(req, res) => {
+//         const comments = await commentController.readMany({ 
+//             gameThreadReference: req.params.id 
+//         });
+//         return res.status(200).json({ comments });
+//     })
+// );
 
 /**
  * Router that creates a single ROOT comment, syncs to comment 
