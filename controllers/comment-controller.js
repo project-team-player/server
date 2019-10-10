@@ -63,12 +63,13 @@ const readMany = async(options) => {
         returnArray.push({
             _id: returnAwait[i]._id,
             owner: returnAwait[i].owner,
-            gravatar: returnAwait[i].gravatar,
+            // gravatar: returnAwait[i].gravatar,
             text: returnAwait[i].text,
             createdAt: returnAwait[i].createdAt,
             isRootComment: returnAwait[i].isRootComment,
             slug: returnAwait[i].slug,
             gameThreadReference: returnAwait[i].gameThreadReference,
+            replies: returnAwait[i].replies,
             betReference: returnAwait[i].betReference,
         });
     }
@@ -87,8 +88,8 @@ const readWithBets = async(options) => {
     const returnArray = [];
     for(let i = 0; i < returnAwait.length; ++i) {
         const filtered = returnAwait[i].toObject();
-        delete filtered.ownerObj;
-        delete filtered.betReference.owner;
+        // delete filtered.ownerObj;
+        // delete filtered.betReference.owner;
         returnArray.push(filtered);
     }
     return returnArray;

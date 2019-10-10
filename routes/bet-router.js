@@ -48,27 +48,27 @@ router.post('/gamethread/:slug',
                 });
             }
             // create the comment afterwards
-            const comment = await commentController.createOne({
-                owner: req.user.username,
-                ownerObj: req.user._id,
-                gravatar: req.user.gravatar,
-                text: req.body.comment,
-                createdAt: `${moment()}`,
-                isRootComment: true,
-                replies: [],
-                slicesBet: req.body.slices,
-                gameThreadReference: req.body.gamethreadId,
-                slug: req.params.slug,
-                betReference: bet._id, // point to bet reference
-            });
+              // const comment = await commentController.createOne({
+              //     owner: req.user.username,
+              //     ownerObj: req.user._id,
+              //     gravatar: req.user.gravatar,
+              //     text: req.body.comment,
+              //     createdAt: `${moment()}`,
+              //     isRootComment: true,
+              //     replies: [],
+              //     slicesBet: req.body.slices,
+              //     gameThreadReference: req.body.gamethreadId,
+              //     slug: req.params.slug,
+              //     betReference: bet._id, // point to bet reference
+              // });
             // then update bet to point to comment reference
-            await betController.updateOne(bet._id, {
-                commentReference: comment._id,
-            });
+            // await betController.updateOne(bet._id, {
+            //     commentReference: comment._id,
+            // });
             if(bet) {
                 return res.status(201).json({
                     bet, 
-                    comment,
+                    // comment,
                 });
             } else {
                 const errorBet = new CustomError(400, 'Bet wasnt created.');
