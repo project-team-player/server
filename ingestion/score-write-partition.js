@@ -24,6 +24,24 @@ const runEngine = async (date) => {
                 'x-rapidapi-key': `${process.env.RAPID_API_KEY}`,
             },
         });
+        /**
+        * data.events -> fucking array
+        * data.events[index].teams_normalized[0].abbreviation (away team abbr)
+        * data.events[index].teams_normalized[1].abbreviation (home team abbr)
+        * data.events[index].score.score_away
+        * data.events[index].score.score_home
+        */
+        const games = [];
+        for(let i = 0; i < data.data.events.length; i++) {
+            games.push({
+                team_away: data.data.events[i].teams_normalized[0].abbreviation,
+                team_home: data.data.events[i].teams_normalized[1].abbreviation,
+                // score_away: data.data.events[i].score.score_away,
+                // score_home: data.data.events[i].score.score_home,
+                score: data.data.events[i].score,
+            });
+        }
+        return games;
     } catch (err) {
         console.log(`Error has occured ${err}`);
     }
