@@ -11,7 +11,19 @@ require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 
 const runEngine = async (date) => {
     try {
-        // TODO
+        const data = await axios.get(`https://${process.env.API_HOST}/sports/2/events/${date}?include=scores`, {
+            query: {
+                'include': [
+                    'scores',
+                    'all_periods',
+                ],
+                'offset': '0',
+            },
+            headers: {
+                'x-rapidapi-host': `${process.env.API_HOST}`,
+                'x-rapidapi-key': `${process.env.API_KEY}`,
+            },
+        });
     } catch (err) {
         console.log(`Error has occured ${err}`);
     }
