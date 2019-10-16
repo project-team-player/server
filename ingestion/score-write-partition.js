@@ -9,8 +9,12 @@ const axios = require('axios');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 
-const runEngine = async () => {
-
+const runEngine = async (date) => {
+    try {
+        // TODO
+    } catch (err) {
+        console.log(`Error has occured ${err}`);
+    }
 };
 
 module.exports = {
