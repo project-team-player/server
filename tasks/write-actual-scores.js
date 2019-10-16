@@ -8,3 +8,18 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
+const scores = require('../ingestion/score-write-partition');
+const gameController = require('../controllers/game-controller');
+
+const writeScores = async (date, dbName) => {
+    // create DB string
+    try {
+        // TODO
+    } catch (err) {
+        console.log(`Error has occured ${err}`);
+    }
+};
+
+module.exports = {
+    writeScores,
+};
