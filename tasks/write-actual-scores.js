@@ -5,3 +5,6 @@
  *  -> match with data.data.events[i].teams_normalized[0].abbreviation (away)
  *      and data.data.events[i].teams_normalized[1].abbreviation (home)
  */
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '/../.env') });
+const mongoose = require('mongoose');
