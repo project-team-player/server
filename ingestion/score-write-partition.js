@@ -5,3 +5,6 @@
  * This then gets called by a task program in the task folder.
  * Namely ../tasks/write-actual-scores.js
  */
+const axios = require('axios');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '/../.env') });
