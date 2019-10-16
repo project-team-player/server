@@ -15,11 +15,12 @@ const writeScores = async (date, dbName) => {
     // create DB string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
+        const gameScores = await scores.runEngine(date);
         /**
           * Pseudo code steps
           */
-         await mongoose.connect(dbConnection);
-         mongoose.Promise = global.Promise;
+        await mongoose.connect(dbConnection);
+        mongoose.Promise = global.Promise;
     } catch (err) {
         console.log(`Error has occured ${err}`);
     }
