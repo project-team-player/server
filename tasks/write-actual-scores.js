@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 const scores = require('../ingestion/score-write-partition');
 const gameController = require('../controllers/game-controller');
 
-const writeScores = async (date, dbName) => {
+const writeScores = async (date, dbName, year, week) => {
     // create DB string
     const dbConnection = `${process.env.DB_CONN_STR1}${process.env.DATABASE_ROOT_USERNAME}${process.env.DB_CONN_STR2}${process.env.DATABASE_ROOT_PASSWORD}${process.env.DB_CONN_STR3}${dbName}${process.env.DB_CONN_STR4}`;
     try {
