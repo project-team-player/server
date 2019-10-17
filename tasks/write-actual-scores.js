@@ -24,6 +24,17 @@ const writeScores = async (date, dbName, year, week) => {
           */
         await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
+        for (let i = 0; i < gameScores.length; ++i) {
+            const slug = `${gameScores[i].team_away}-vs-${gameScores[i].team_home}-${year}-week-${week}`;
+            const game = await gameController.readOne({ slug });
+            await gameController.updateOne(game._id, {
+                awayScore: gameScores[i].score.score_away,
+                homeScore: gameScores[i].score.score_home,
+            });
+        }
+        await mongoose.disconnect();
+        const message = `${gameScores.length} games have their scores updated`;
+        return message;
     } catch (err) {
         console.log(`Error has occured ${err}`);
     }
