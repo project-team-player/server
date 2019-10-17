@@ -17,7 +17,10 @@ const writeScores = async (date, dbName, year, week) => {
     try {
         const gameScores = await scores.runEngine(date);
         /**
-          * Pseudo code steps
+          * 1. Build slug from params and gameScores info
+          * 2. Find the corresponding game in the DB based of slug
+          * 3. Rewrite scores
+          * 4. Save to DB.
           */
         await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
