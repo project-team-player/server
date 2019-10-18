@@ -52,7 +52,7 @@ const readMany = async(options) => {
  * @returns {Object} updated Object
  */
 const updateOne = async(game, options) => {
-    const returnAwait = await Game.findOneAndUpdate(game, { $set: options }, { new: true });
+    const returnAwait = await Game.findByIdAndUpdate(game, { $set: options }, { new: true });
     return returnAwait;
 };
 
@@ -69,6 +69,16 @@ const updateMany = async (options) => {
     return returnObj;
 };
 
+/**
+ * 
+ * @param {Object} filter -> filter of what is to be updated
+ * @param {Object} options -> udpate specs 
+ */
+const updateScore = async(filter, options) => {
+    const returnAwait = await Game.findOneAndUpdate(filter, { $set: options }, { new: true });
+    return returnAwait;
+};
+
 module.exports = {
     createOne,
     createMany,
@@ -76,4 +86,5 @@ module.exports = {
     readMany,
     updateOne,
     updateMany,
+    updateScore,
 };
