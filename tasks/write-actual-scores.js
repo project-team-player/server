@@ -4,7 +4,6 @@
  * 1. Obtain home and away teams (awayTeam.key and homeTeam.key) 
  *  -> match with data.data.events[i].teams_normalized[0].abbreviation (away)
  *      and data.data.events[i].teams_normalized[1].abbreviation (home)
- * WARNING: Washington Redskins uses 'WAS' as key in the DB but arrives as 'WSH' from a 3rd party API, check this shit.
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
@@ -26,14 +25,27 @@ const writeScores = async (date, dbName, year, week) => {
         await mongoose.connect(dbConnection);
         mongoose.Promise = global.Promise;
         for (let i = 0; i < gameScores.length; ++i) {
-            const slug = `${gameScores[i].team_away}-vs-${gameScores[i].team_home}-${year}-week-${week}`;
+            // WARNING: Washington Redskins uses 'WAS' as key in the DB but arrives as 'WSH' from a 3rd party API, check this shit.
+            // EXPECT MORE OF THIS SHIT
+            let teamAway;
+            let teamHome;
+            if(gameScores[i].team_away === 'WSH') {
+                teamAway = 'WAS';
+                teamHome = gameScores[i].team_home;
+            } else if(gameScores[i].team_home === 'WSH') {
+                teamAway = gameScores[i].team_away;
+                teamHome = 'WAS';
+            } else {
+                teamAway = gameScores[i].team_away;
+                teamHome = gameScores[i].team_home;
+            }
+            const slug = `${teamAway}-vs-${teamHome}-${year}-week-${week}`;
             const filter = { slug: slug };
             const updates = {
                 awayScore: gameScores[i].score.score_away,
                 homeScore: gameScores[i].score.score_home,
             };
-            const updated = await Game.findOneAndUpdate(filter, updates);
-            console.log(updated);
+            await Game.findOneAndUpdate(filter, updates);
         }
         await mongoose.disconnect();
         const returnObj = {
