@@ -69,16 +69,6 @@ const updateMany = async (options) => {
     return returnObj;
 };
 
-/**
- * 
- * @param {Object} filter -> filter of what is to be updated
- * @param {Object} options -> udpate specs 
- */
-const updateScore = async(filter, options) => {
-    const returnAwait = await Game.findOneAndUpdate(filter, { $set: options }, { new: true });
-    return returnAwait;
-};
-
 module.exports = {
     createOne,
     createMany,
