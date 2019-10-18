@@ -76,5 +76,4 @@ module.exports = {
     readMany,
     updateOne,
     updateMany,
-    updateScore,
 };
