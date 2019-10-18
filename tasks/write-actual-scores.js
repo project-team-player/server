@@ -4,12 +4,13 @@
  * 1. Obtain home and away teams (awayTeam.key and homeTeam.key) 
  *  -> match with data.data.events[i].teams_normalized[0].abbreviation (away)
  *      and data.data.events[i].teams_normalized[1].abbreviation (home)
+ * WARNING: Washington Redskins uses 'WAS' as key in the DB but arrives as 'WSH' from a 3rd party API, check this shit.
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
 const scores = require('../ingestion/score-write-partition');
-const gameController = require('../controllers/game-controller');
+const Game = require('../models/Game');
 
 const writeScores = async (date, dbName, year, week) => {
     // create DB string
@@ -26,15 +27,19 @@ const writeScores = async (date, dbName, year, week) => {
         mongoose.Promise = global.Promise;
         for (let i = 0; i < gameScores.length; ++i) {
             const slug = `${gameScores[i].team_away}-vs-${gameScores[i].team_home}-${year}-week-${week}`;
-            const game = await gameController.readOne({ slug });
-            await gameController.updateOne(game._id, {
+            const filter = { slug: slug };
+            const updates = {
                 awayScore: gameScores[i].score.score_away,
                 homeScore: gameScores[i].score.score_home,
-            });
+            };
+            const updated = await Game.findOneAndUpdate(filter, updates);
+            console.log(updated);
         }
         await mongoose.disconnect();
-        const message = `${gameScores.length} games have their scores updated`;
-        return message;
+        const returnObj = {
+            message: `${gameScores.length} games have their scores updated`,
+        }
+        return returnObj;
     } catch (err) {
         console.log(`Error has occured ${err}`);
     }
