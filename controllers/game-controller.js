@@ -47,12 +47,12 @@ const readMany = async(options) => {
 
 /**
  * 
- * @param {Object} filter -> filter of the game to be updated 
+ * @param {Object} game -> id of the game to be updated 
  * @param {Object} options -> keys to be updated with respective values
  * @returns {Object} updated Object
  */
-const updateOne = async(filter, options) => {
-    const returnAwait = await Game.findOneAndUpdate(filter, { $set: options }, { new: true });
+const updateOne = async(game, options) => {
+    const returnAwait = await Game.findOneAndUpdate(game, { $set: options }, { new: true });
     return returnAwait;
 };
 
