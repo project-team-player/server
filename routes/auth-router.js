@@ -77,12 +77,12 @@ router.post(
 );
 
 // Check's if user is authenticated and returns username and email in the response object
-router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     res.json({
         message: 'User succesfully authenticated',
         username: req.user.username,
         email: req.user.email,
-        user: req.user,
+        user: await userController.readOneWithBets({ _id: req.user._id}),
     });
 });
 

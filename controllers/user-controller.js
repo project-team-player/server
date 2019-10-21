@@ -29,6 +29,16 @@ const readOne = async (options) => {
 
 /**
  * 
+ * @param {Object} options -> defines the parameters on what to find  
+ * @returns Object read
+ */
+const readOneWithBets = async (options) => {
+    const returnAwait = await User.findOne(options).populate('bets', 'slicesBet key');
+    return returnAwait;
+};
+
+/**
+ * 
  * @param {Object} options -> defines parameters to find
  * @returns {Object} found Object(s)
  */
@@ -158,6 +168,7 @@ module.exports = {
     createOne,
     createMany,
     readOne,
+    readOneWithBets,
     readMany,
     readAllBets,   
     updateOne,
