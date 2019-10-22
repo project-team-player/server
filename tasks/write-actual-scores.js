@@ -4,6 +4,12 @@
  * 1. Obtain home and away teams (awayTeam.key and homeTeam.key) 
  *  -> match with data.data.events[i].teams_normalized[0].abbreviation (away)
  *      and data.data.events[i].teams_normalized[1].abbreviation (home)
+ * Notes about this 3rd party API: 
+ * -> Thursday night games may or may not have final scores on Thursday, try pulling on FRIDAY instead
+ * -> Sunday games can be pulled on Sunday 
+ * -> BUT the LAST Sunday night game may not be included in the Sunday pull.Try pulling it on Monday instead.
+ * -> Monday night games may or may not have final scores on Monday, try pulling on Tuesday instead.
+ * -> IF in doubt, dont fuck with it and call the backend wizard Erverted.
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
