@@ -11,7 +11,7 @@ router.post('/signup',
     authSubroutines.usePassEmailFilled,
     authSubroutines.confirmedPasswords,
     catchErrors(async (req, res) => {
-        const existingUser = await userController.readOne({ email: req.body.email });
+        const existingUser = await userController.readOneWithBets({ email: req.body.email });
         if(existingUser) {
             const errorEmailExists = new CustomError(400, 'That email address has already been registered');
             return res.status(400).json({ errorEmailExists });
@@ -45,10 +45,10 @@ router.post(
     authSubroutines.loginFilled,
     catchErrors(async (req, res) => {
         // validation passed, find the user using email
-        let user = await userController.readOne({ email: req.body.username });
+        let user = await userController.readOneWithBets({ email: req.body.username });
         if(!user) {
             // that attempt didnt work, attempt to find it using the username
-            user = await userController.readOne({ username: req.body.username });
+            user = await userController.readOneWithBets({ username: req.body.username });
         }
         if(!user) {
             // user doesnt exist
