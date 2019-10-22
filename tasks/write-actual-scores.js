@@ -58,4 +58,5 @@ const writeScores = async (date, dbName, year, week) => {
 };
 
 // date, dbName, year, week
-writeScores(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
+writeScores(process.argv[2], process.argv[3], process.argv[4], process.argv[5]).
+    then(data => console.log(data));
