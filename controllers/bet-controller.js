@@ -32,7 +32,7 @@ const createOne = async(bet, options) => {
     if(userBetCheck.pizzaSlicesWeekly < bet.slicesBet || userBetCheck.pizzaSlicesWeekly < 1) {
         // return back to front end with serverMessage.
         const returnedMsg = {
-            serverMessage: `User has ${userBetCheck.pizzaSlicesWeekly} slices left to bet, not enough for current bet`,
+            serverMessage: `Error. User has ${userBetCheck.pizzaSlicesWeekly} slices left to bet, not enough for current bet`,
         };
         return returnedMsg;
     }
