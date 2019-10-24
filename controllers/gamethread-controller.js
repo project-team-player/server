@@ -28,7 +28,17 @@ const createMany = async(gamethreads, options) => {
  * @returns {Object} read Object 
  */
 const readOne = async(options) => {
-    const returnAwait = await Gamethread.findOne(options).populate('comments', 'replies text createdAt owner');
+    const returnAwait = await Gamethread.findOne(options).populate('comments', 'replies text createdAt owner').populate({ 
+        path: 'bets',
+        select: 'slicesBet key',
+        populate: [
+            { path: 'owner', select: 'name' },
+        ]
+    })
+    // const returnAwait = await Gamethread.findOne(options).aggregate([
+    //     { "$unwind": "$reviews" }, 
+    //     { $lookup: { from: 'Bets' } }
+    // ])
     return returnAwait;
 };
 
