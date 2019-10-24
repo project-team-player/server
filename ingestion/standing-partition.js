@@ -9,11 +9,14 @@ require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 
 const runEngine = async (season) => {
     try {
-        // TODO
+        const data = await axios.get(`${process.env.SPORTSDATAIO_BASE_URL}Standings/${season}?key=${process.env.SPORTSDATAIO_API_KEY}`);
+        return data.data;
     } catch (err) {
         console.log(`Error has occured ${err}`);
     }
 };
+
+runEngine(process.argv[2]).then(data => console.log(data));
 
 module.exports = {
     runEngine,
