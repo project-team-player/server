@@ -15,3 +15,16 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
+const teamController = require('../controllers/team-controller');
+
+const resolveStandings = async (week) => {
+    try {
+        
+    } catch (err) {
+        console.log(`Error has occured ${err}`);
+    }
+};
+
+module.exports = {
+    resolveStandings,
+}
