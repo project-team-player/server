@@ -16,8 +16,6 @@ const runEngine = async (season) => {
     }
 };
 
-runEngine(process.argv[2]).then(data => console.log(data));
-
 module.exports = {
     runEngine,
 };
