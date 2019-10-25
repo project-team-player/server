@@ -17,7 +17,8 @@ const resolveGameScores = require('./resolve-game-scores');
 const resolveBets = require('./resolve-bets');
 const resolveUserBets = require('./resolve-user-bets');
 const resolveUserAwards = require('./resolve-user-awards');
-const resolveWeeklyResets = require('./resolve-weekly-resets')
+const resolveWeeklyResets = require('./resolve-weekly-resets');
+const resolveTeamStandings = require('./resolve-team-standings');
 
 const NFL_SEASON = '2019REG'; // change for different years and season types
 const NFL_WEEK = 7; // change this accordingly
@@ -30,12 +31,14 @@ const pipelines = async (season, week, dbName) => {
         const fromUserBets = await resolveUserBets.resolveBets(week, dbName);
         const fromUserAwards = await resolveUserAwards.resolveAwards(dbName);
         const fromWeeklyResets = await resolveWeeklyResets.resolveResets(week, dbName);
+        const fromTeamStandings = await resolveTeamStandings.resolveStandings(season, dbName);
         const returnObj = {
             fromGameScores,
             fromBets,
             fromUserBets,
             fromUserAwards,
             fromWeeklyResets,
+            fromTeamStandings,
         };
         console.log(returnObj); // just returns a message.
     } else {
