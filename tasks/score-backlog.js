@@ -56,11 +56,17 @@ const writeScores = async (date, dbName, year, week) => {
 
 const machinate = async () => {
     /** change these variables accordingly *************************************/
-    const dbName = 'test'; 
+    const dbName = 'development'; 
     const year = '2019';
     const dates = dateArray.dates1
     /***************************************************************************/
-    for (let i = 0; i < dates; ++i) {
-
+    try {
+        for (let i = 0; i < dates.length; ++i) {
+            await writeScores(dates[i][0], dbName, year, dates[i][1]);
+        };
+    } catch (err) {
+        console.log(`Error has occured ${err}`);
     }
 };
+
+machinate();
