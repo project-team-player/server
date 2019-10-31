@@ -56,9 +56,9 @@ const writeScores = async (date, dbName, year, week) => {
 
 const machinate = async () => {
     /** change these variables accordingly *************************************/
-    const dbName = 'development'; 
+    const dbName = 'production'; 
     const year = '2019';
-    const dates = dateArray.dates1
+    const dates = dateArray.dates2
     /***************************************************************************/
     try {
         for (let i = 0; i < dates.length; ++i) {
