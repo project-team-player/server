@@ -56,7 +56,7 @@ const writeScores = async (date, dbName, year, week) => {
 
 const machinate = async () => {
     /** change these variables accordingly *************************************/
-    const dbName = 'development'; 
+    const dbName = 'production'; 
     const year = '2019';
     const dates = dateArray.dates1
     /***************************************************************************/
