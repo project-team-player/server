@@ -11,7 +11,7 @@ router.post('/signup',
     authSubroutines.usePassEmailFilled,
     authSubroutines.confirmedPasswords,
     catchErrors(async (req, res) => {
-        const existingUser = await userController.readOne({ email: req.body.email });
+        const existingUser = await userController.readOneWithBets({ email: req.body.email });
         if(existingUser) {
             const errorEmailExists = new CustomError(400, 'That email address has already been registered');
             return res.status(400).json({ errorEmailExists });
@@ -45,10 +45,10 @@ router.post(
     authSubroutines.loginFilled,
     catchErrors(async (req, res) => {
         // validation passed, find the user using email
-        let user = await userController.readOne({ email: req.body.username });
+        let user = await userController.readOneWithBets({ email: req.body.username });
         if(!user) {
             // that attempt didnt work, attempt to find it using the username
-            user = await userController.readOne({ username: req.body.username });
+            user = await userController.readOneWithBets({ username: req.body.username });
         }
         if(!user) {
             // user doesnt exist
@@ -77,12 +77,12 @@ router.post(
 );
 
 // Check's if user is authenticated and returns username and email in the response object
-router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     res.json({
         message: 'User succesfully authenticated',
         username: req.user.username,
         email: req.user.email,
-        user: req.user,
+        user: await userController.readOneWithBets({ _id: req.user._id}),
     });
 });
 

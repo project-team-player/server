@@ -1,21 +1,12 @@
 /**
- * Calls the program in ../ingestion/score-write-partition.js.
- * Options on how to match score with a game:
- * 1. Obtain home and away teams (awayTeam.key and homeTeam.key) 
- *  -> match with data.data.events[i].teams_normalized[0].abbreviation (away)
- *      and data.data.events[i].teams_normalized[1].abbreviation (home)
- * Notes about this 3rd party API: 
- * -> Thursday night games may or may not have final scores on Thursday, try pulling on FRIDAY instead
- * -> Sunday games can be pulled on Sunday 
- * -> BUT the LAST Sunday night game may not be included in the Sunday pull.Try pulling it on Monday instead.
- * -> Monday night games may or may not have final scores on Monday, try pulling on Tuesday instead.
- * -> IF in doubt, dont fuck with it and call the backend wizard Erverted.
+ * Backlog of scores. 
  */
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '/../.env') });
 const mongoose = require('mongoose');
 const scores = require('../ingestion/score-write-partition');
 const Game = require('../models/Game');
+const dateArray = require('../data/game-dates');
 
 const writeScores = async (date, dbName, year, week) => {
     // create DB string
@@ -63,6 +54,19 @@ const writeScores = async (date, dbName, year, week) => {
     }
 };
 
-// date, dbName, year, week
-writeScores(process.argv[2], process.argv[3], process.argv[4], process.argv[5]).
-    then(data => console.log(data));
+const machinate = async () => {
+    /** change these variables accordingly *************************************/
+    const dbName = 'production'; 
+    const year = '2019';
+    const dates = dateArray.dates2
+    /***************************************************************************/
+    try {
+        for (let i = 0; i < dates.length; ++i) {
+            await writeScores(dates[i][0], dbName, year, dates[i][1]);
+        };
+    } catch (err) {
+        console.log(`Error has occured ${err}`);
+    }
+};
+
+machinate();
