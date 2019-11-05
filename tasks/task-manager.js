@@ -21,7 +21,7 @@ const resolveWeeklyResets = require('./resolve-weekly-resets');
 const resolveTeamStandings = require('./resolve-team-standings');
 
 const NFL_SEASON = '2019REG'; // change for different years and season types
-const NFL_WEEK = 8; // change this accordingly
+const NFL_WEEK = 9; // change this accordingly
 
 const pipelines = async (season, week, dbName) => {
     if(process.argv.includes('--pipe1')) {
