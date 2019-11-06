@@ -123,8 +123,29 @@ const userSchema = new Schema({
     ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    // because sometimes, you just gotta do 
-    // what you gotta do 
+
+    /**************PLACEHOLDER FIELDS *************************************************/
+    weeklyWins: {
+        // wins in the week, resets after each week, gets dumped
+        // into the 'wins' field.
+        type: Number,
+        default: 0,
+    },
+    weeklyLoses: {
+        // loses in the week, resets after each week, gets dumped
+        // into the 'loses' field.
+        type: Number,
+        default: 0,
+    },
+    pizzaSlicesWonWeek: {
+        // accumulation of pizzaslices won on each bet on 
+        // a given week.
+        type: Number,
+        default: 0,
+    },
+    /*********************************************************************************/
+   
+    /** Because, sometimes you just gotta do what you gotta do ***********************/
     slicesWeek1: Number,
     slicesWeek2: Number,
     slicesWeek3: Number,
@@ -160,26 +181,7 @@ const userSchema = new Schema({
     winsWeek15: Number,
     winsWeek16: Number,
     winsWeek17: Number,
-    /**************PLACEHOLDER FIELDS *************************************************/
-    weeklyWins: {
-        // wins in the week, resets after each week, gets dumped
-        // into the 'wins' field.
-        type: Number,
-        default: 0,
-    },
-    weeklyLoses: {
-        // loses in the week, resets after each week, gets dumped
-        // into the 'loses' field.
-        type: Number,
-        default: 0,
-    },
-    pizzaSlicesWonWeek: {
-        // accumulation of pizzaslices won on each bet on 
-        // a given week.
-        type: Number,
-        default: 0,
-    },
-    /*********************************************************************************/
+    /**************************************************************************/
 });
 
 /**
