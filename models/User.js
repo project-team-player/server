@@ -45,30 +45,12 @@ const userSchema = new Schema({
         type: Number,
         default: 64,
     },
-    pizzaSlicesWonWeek: {
-        // accumulation of pizzaslices won on each bet on 
-        // a given week.
-        type: Number,
-        default: 0,
-    },
     wins: {
         // total wins!
         type: Number,
         default: 0,
     },
     loses: {
-        type: Number,
-        default: 0,
-    },
-    weeklyWins: {
-        // wins in the week, resets after each week, gets dumped
-        // into the 'wins' field.
-        type: Number,
-        default: 0,
-    },
-    weeklyLoses: {
-        // loses in the week, resets after each week, gets dumped
-        // into the 'loses' field.
         type: Number,
         default: 0,
     },
@@ -141,8 +123,29 @@ const userSchema = new Schema({
     ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    // because sometimes, you just gotta do 
-    // what you gotta do 
+
+    /**************PLACEHOLDER FIELDS *************************************************/
+    weeklyWins: {
+        // wins in the week, resets after each week, gets dumped
+        // into the 'wins' field.
+        type: Number,
+        default: 0,
+    },
+    weeklyLoses: {
+        // loses in the week, resets after each week, gets dumped
+        // into the 'loses' field.
+        type: Number,
+        default: 0,
+    },
+    pizzaSlicesWonWeek: {
+        // accumulation of pizzaslices won on each bet on 
+        // a given week.
+        type: Number,
+        default: 0,
+    },
+    /*********************************************************************************/
+   
+    /** Because, sometimes you just gotta do what you gotta do ***********************/
     slicesWeek1: Number,
     slicesWeek2: Number,
     slicesWeek3: Number,
@@ -160,6 +163,25 @@ const userSchema = new Schema({
     slicesWeek15: Number,
     slicesWeek16: Number,
     slicesWeek17: Number,
+    // these too
+    winsWeek1: Number,
+    winsWeek2: Number,
+    winsWeek3: Number,
+    winsWeek4: Number,
+    winsWeek5: Number,
+    winsWeek6: Number,
+    winsWeek7: Number,
+    winsWeek8: Number,
+    winsWeek9: Number,
+    winsWeek10: Number,
+    winsWeek11: Number,
+    winsWeek12: Number,
+    winsWeek13: Number,
+    winsWeek14: Number,
+    winsWeek15: Number,
+    winsWeek16: Number,
+    winsWeek17: Number,
+    /**************************************************************************/
 });
 
 /**
