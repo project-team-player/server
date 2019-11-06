@@ -42,9 +42,21 @@ const readMany = async(options) => {
     return returnAwait;
 };
 
+
+/**
+ * 
+ * @param {object} filter -> defines how to find 
+ * @param {object} options -> defines what to update
+ */
+const updateOne = async (filter, options) => {
+    const returnAwait = await Team.findOneAndUpdate(filter, options);
+    return returnAwait;
+};
+
 module.exports = {
     createOne,
     createMany,
     readOne,
     readMany,
+    updateOne,
 };
