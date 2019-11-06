@@ -10,6 +10,7 @@ const gamethreadRouter = require('./gamethread-router');
 const betRouter = require('./bet-router');
 const commentRouter = require('./comment-router');
 const userRouter = require('./user-router');
+const teamRouter = require('./team-router');
 
 const app = express();
 app.use('/', publicRouter);
@@ -19,5 +20,6 @@ app.use('/gamethreads', gamethreadRouter);
 app.use('/bets', betRouter);
 app.use('/comments', commentRouter);
 app.use('/users', userRouter);
+app.use('/teams', teamRouter);
 
 module.exports = app;
