@@ -58,7 +58,7 @@ const machinate = async () => {
     /** change these variables accordingly *************************************/
     const dbName = 'production'; 
     const year = '2019';
-    const dates = dateArray.dates2
+    const dates = dateArray.dates3
     /***************************************************************************/
     try {
         for (let i = 0; i < dates.length; ++i) {
