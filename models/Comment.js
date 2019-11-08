@@ -35,6 +35,30 @@ const commentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'bet',
     },
+    votes: {
+        likes: {
+            count: { 
+                type: Number, 
+                min: 0,
+                default: 0,
+            },
+            users: { 
+                type: mongoose.Schema.Types.Mixed,
+                default: {},
+            },
+        },
+        dislikes: {
+            count: { 
+                type: Number, 
+                min: 0,
+                default: 0,
+            },
+            users: { 
+                type: mongoose.Schema.Types.Mixed,
+                default: {},
+            },
+        }
+    }
 });
 
 commentSchema.plugin(mongodbErrorHandler);
