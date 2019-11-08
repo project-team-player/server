@@ -71,6 +71,7 @@ const readMany = async(options) => {
             gameThreadReference: returnAwait[i].gameThreadReference,
             replies: returnAwait[i].replies,
             betReference: returnAwait[i].betReference,
+            votes: returnAwait[i].votes,
         });
     }
     return returnArray;
@@ -174,6 +175,49 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
     }
 };
 
+/**
+ * 
+ * @param {Object} req -> the express request object
+ * @param {Object} res -> the express response object
+ * @param {Object} options -> Options for adding and removal properties
+ * @param {String} [options.addVote] -> Type of vote you want to add to comment: specify "up" or "down"
+ * @param {String} options.remove -> Type of vote you want to remove from comment: specify "up" or "down"
+ * @returns {Void} 
+ */
+const updateVotes = async (req, res, { addVote = false, removeVote = false }) => {
+    const { _id: userId } = req.user;
+    const { commentId } = req.params;
+    let options = {};
+
+    // Adds and removes votes to comment if specified in arguments. Else it just removes specified vote.
+    if (!addVote) {
+        options = {
+            $pull: { [`votes.${removeVote}`]: userId }
+        }
+    } else {
+        options = {
+            $addToSet: { [`votes.${addVote}`]: userId },
+            $pull: { [`votes.${removeVote}`]: userId },
+        }
+    }
+
+    // Finds comment, adds upVote, and removes downVote if existing
+    const comment = await Comment.findByIdAndUpdate(commentId, options, 
+        {
+            fields: { votes: 1 },
+            new: true
+        },
+        (error, doc) => {
+            if (error) {
+                res.status(500).json('Error: something went wrong on the server.');
+            }
+        }
+    )
+
+    // Passes updated comment so it can be passed in response to client. Client can then see what was updated on comment. 
+    res.locals.comment = comment;
+}
+
 
 module.exports = {
     createOne,
@@ -183,6 +227,7 @@ module.exports = {
     readWithBets,
     updateOne,
     updateMany,
+    updateVotes,
     deleteOne,
     deleteMany
 };

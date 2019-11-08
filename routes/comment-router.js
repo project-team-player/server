@@ -4,7 +4,7 @@ const moment = require('moment');
 const { catchErrors } = require('../handlers/error-handlers');
 const commentController = require('../controllers/comment-controller');
 const CustomError = require('../handlers/Custom-Error');
-
+const Comment = require('../models/Comment');
 
 /**
  * Router that gets all the comments of a gamethread
@@ -86,6 +86,46 @@ router.patch('/reply/:id',
             replies: replies
         });
         return res.status(201).json(reply);
+    })
+)
+
+// Adds upvote to comment and removes downvote if existing
+router.post('/:commentId/votes/up', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res, next) => {
+        await commentController.updateVotes(req, res, { addVote: 'up', removeVote: 'down' })
+
+        res.status(200).json({ successMessage: 'Succesfully added comment upvote', updatedComment: res.locals.comment });
+    })
+);
+
+// Adds downvote to comment and removes upvote if existing
+router.post('/:commentId/votes/down', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { addVote: 'down', removeVote: 'up' })
+
+        res.status(200).json({ successMessage: 'Succesfully added comment downvote', updatedComment: res.locals.comment });
+    })
+);
+
+// Removes upvote from comment
+router.delete('/:commentId/votes/up', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { removeVote: 'up' })
+  
+        res.status(200).json({ successMessage: 'Succesfully removed upvote from comment', updatedComment: res.locals.comment });
+    })
+)
+
+// Removes downvote from comment
+router.delete('/:commentId/votes/down', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { removeVote: 'down' });
+
+        res.status(200).json({ successMessage: 'Succesfully removed downvote from comment', updatedComment: res.locals.comment });
     })
 )
 

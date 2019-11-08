@@ -35,6 +35,16 @@ const commentSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'bet',
     },
+    votes: {
+        up: [{ 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+        }],
+        down: [{ 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+        }],
+    }
 });
 
 commentSchema.plugin(mongodbErrorHandler);
