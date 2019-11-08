@@ -4,7 +4,7 @@ const moment = require('moment');
 const { catchErrors } = require('../handlers/error-handlers');
 const commentController = require('../controllers/comment-controller');
 const CustomError = require('../handlers/Custom-Error');
-
+const Comment = require('../models/Comment');
 
 /**
  * Router that gets all the comments of a gamethread
@@ -89,79 +89,44 @@ router.patch('/reply/:id',
     })
 )
 
-/**
- * Upvote, downvote or remove votes made by current user on a selected comment.
- * @param {String} req.user.username username is automatically derived from jwt token
- * @param {String} [req.query.upvote] add this upvote query param to upvote comment
- * @param {String} [req.query.downVote] add this downVote query param to downvote comment
- * @param {String} [req.query.removeVote] Add this removeVote query param to remove all likes/dislikes that current user has made on comment
- * @param {String} req.params.commentId Id of comment that needs to be voted on
- */
-router.patch('/:commentId/vote', 
+// Adds upvote to comment and removes downvote if existing
+router.post('/:commentId/votes/up', 
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res, next) => {
-        const { username } = req.user;
-        const { upVote, downVote, removeVote } = req.query;
-        const { commentId } = req.params;
-        // If username is missing in req.body
-        if (!username) res.status(400).json('Error: Please provide a username');
+        await commentController.updateVotes(req, res, { addVote: 'up', removeVote: 'down' })
 
-        // Get comment from commentId
-        const comment = await commentController.readOne({ _id: commentId })
-
-        // Make a shallow copy of comment for mutation
-        const commentVotes = { ...comment.votes };
-        const { dislikes: { count: dislikesCount, users: userDislikes }, likes: { count: likesCount, users: userLikes}} = commentVotes;
-
-        // Set default response in case query params are missing
-        let response = { code: 400, message: "Please provide valid query params and you can't vote twice" };
-
-        const addLike = () => {
-            commentVotes.likes.count = likesCount + 1;
-            commentVotes.likes.users[username] = true;
-            response = { code: 201, message: 'Comment succesfully liked!' };
-        }
-
-        const addDislike = () => {
-            commentVotes.dislikes.count = dislikesCount + 1;
-            commentVotes.dislikes.users[username] = true;
-            response = { code: 201, message: 'Comment succesfully disliked!' };
-        }
-
-        const removeLike = () => {
-            commentVotes.likes.count = likesCount - 1;
-            delete commentVotes.likes.users[username];
-            response = { code: 201, message: 'Comment like succesfully removed!' };
-        }
-
-        const removeDislike = () => {
-            commentVotes.dislikes.count = dislikesCount - 1;
-            delete commentVotes.dislikes.users[username];
-            response = { code: 201, message: 'Comment dislike succesfully removed!' };
-        }
-
-        // Check wheter to upvote, downvote or remove vote based on query params
-        if (upVote === 'true') {
-            if (userLikes[username]) return res.status(409).json(('Error: User has already liked this comment'));
-            if (userDislikes[username]) return res.status(409).json(('Error: User has already disliked this comment'));
-            addLike();
-        } else if (downVote === 'true') {
-            if (userDislikes[username]) res.status(409).json(('Error: User has already disliked this comment'));
-            else if (userLikes[username]) res.status(409).json(('Error: User has already liked this comment'));
-            else addDislike();
-        } else if (removeVote === 'true') {
-            if (userLikes[username]) removeLike();
-            else if (userDislikes[username]) removeDislike();
-            else response = { code: 409, message: 'Error: This user has not made any dislikes or likes for comment' }
-        }
-
-        if (response !== 400) {
-            // Make DB update to votes
-            await commentController.updateOne(commentId, { votes: commentVotes });
-        }
-        // Send response to client
-        return res.status(response.code).json(response.message);
+        res.status(200).json({ successMessage: 'Succesfully added comment upvote', updatedComment: res.locals.comment });
     })
 );
+
+// Adds downvote to comment and removes upvote if existing
+router.post('/:commentId/votes/down', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { addVote: 'down', removeVote: 'up' })
+
+        res.status(200).json({ successMessage: 'Succesfully added comment downvote', updatedComment: res.locals.comment });
+    })
+);
+
+// Removes upvote from comment
+router.delete('/:commentId/votes/up', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { removeVote: 'up' })
+  
+        res.status(200).json({ successMessage: 'Succesfully removed upvote from comment', updatedComment: res.locals.comment });
+    })
+)
+
+// Removes downvote from comment
+router.delete('/:commentId/votes/down', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { removeVote: 'down' });
+
+        res.status(200).json({ successMessage: 'Succesfully removed downvote from comment', updatedComment: res.locals.comment });
+    })
+)
 
 module.exports = router;
