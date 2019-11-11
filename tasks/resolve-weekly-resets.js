@@ -100,6 +100,7 @@ const resolveResets = async (week, dbName) => {
                 weeklyLoses: 0,
                 pizzaSlicesWonWeek: 0,
                 [placeHolder]: weeklySlices,
+                [placeHolder2]: users[i].weeklyWins,
             });
             // updating current user DONE
         }   
