@@ -77,6 +77,7 @@ const resolveResets = async (week, dbName) => {
             // do this for the weekly leaderboards.
             const weeklySlices = users[i].pizzaSlicesWeekly;
             const placeHolder = `slicesWeek${week}`;
+            const placeHolder2 = `winsWeek${week}`;
             // reset pizzaSlicesWeekly to 64 at the DB update later
             // weeklyWins into wins then reset
             let wins = users[i].wins;
@@ -99,6 +100,7 @@ const resolveResets = async (week, dbName) => {
                 weeklyLoses: 0,
                 pizzaSlicesWonWeek: 0,
                 [placeHolder]: weeklySlices,
+                [placeHolder2]: users[i].weeklyWins,
             });
             // updating current user DONE
         }   
