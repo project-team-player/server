@@ -20,6 +20,16 @@ const commentSchema = new Schema({
             gravatar: String,
             text: String,
             createdAt: String,
+            votes: {
+                up: [{ 
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'user',
+                }],
+                down: [{ 
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'user',
+                }],
+            }
         }
     ],
     slicesBet: {

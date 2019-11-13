@@ -184,37 +184,70 @@ const syncUserAndGamethread = async(syncRequest, analog) => {
  * @param {String} options.remove -> Type of vote you want to remove from comment: specify "up" or "down"
  * @returns {Void} 
  */
-const updateVotes = async (req, res, { addVote = false, removeVote = false }) => {
+const updateVotes = async (req, res, { addVote = false, removeVote = false, isReply = false }) => {
     const { _id: userId } = req.user;
-    const { commentId } = req.params;
+    const { commentId, replyId } = req.params;
     let options = {};
+
+    if (isReply) { 
+        options[`replies._id`] = replyId;
+    }
 
     // Adds and removes votes to comment if specified in arguments. Else it just removes specified vote.
     if (!addVote) {
-        options = {
-            $pull: { [`votes.${removeVote}`]: userId }
+        if (isReply) {
+            options = {
+                $pull: { [`replies.$[e].votes.${removeVote}`]: userId }
+            }
+        } else {
+            options = {
+                $pull: { [`votes.${removeVote}`]: userId }
+            }
         }
     } else {
-        options = {
-            $addToSet: { [`votes.${addVote}`]: userId },
-            $pull: { [`votes.${removeVote}`]: userId },
+        if (isReply) {
+            options = {
+                $addToSet: { [`replies.$[e].votes.${addVote}`]: userId },
+                $pull: { [`replies.$[e].votes.${removeVote}`]: userId },
+            }
+        } else {
+            options = {
+                $addToSet: { [`votes.${addVote}`]: userId },
+                $pull: { [`votes.${removeVote}`]: userId },
+            }
         }
     }
 
-    // Finds comment, adds upVote, and removes downVote if existing
-    const comment = await Comment.findByIdAndUpdate(commentId, options, 
-        {
-            fields: { votes: 1 },
-            new: true
-        },
-        (error, doc) => {
-            if (error) {
-                res.status(500).json('Error: something went wrong on the server.');
-            }
-        }
-    )
+    let comment = {};
 
-    // Passes updated comment so it can be passed in response to client. Client can then see what was updated on comment. 
+    // If the comment is a reply to another comment, find reply and update.
+    if (isReply) {
+        comment = await Comment.findByIdAndUpdate(commentId, options,
+            {
+                fields: { votes: 1 },
+                new: true,
+                arrayFilters: [{ "e._id": replyId }],
+            },
+            (error, doc) => {
+                if (error) {
+                    res.status(500).json('Error: something went wrong on the server.');
+                }
+            }
+        )
+    // If the comment is a root comment
+    } else {
+        comment = await Comment.findByIdAndUpdate(commentId, options, 
+            {
+                fields: { votes: 1 },
+                new: true,
+            },
+            (error, doc) => {
+                if (error) {
+                    res.status(500).json('Error: something went wrong on the server.');
+                }
+            }
+        )
+    }  
     res.locals.comment = comment;
 }
 

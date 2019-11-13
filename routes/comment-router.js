@@ -64,31 +64,6 @@ router.post('/gamethread/:slug',
     })
 );
 
-/**
- * Make patch request
- * Needs: Comment ID
- * req.params.id (id is the comment id)
- */
-
-router.patch('/reply/:id', 
-    passport.authenticate('jwt', { session: false }),
-    catchErrors(async(req, res) => {
-        const comment = await commentController.readOne({_id:req.params.id});
-        const replies = comment.replies || [];
-        const reply = {
-            username: req.body.username,
-            gravatar: req.body.gravatar,
-            text: req.body.text,
-            createdAt: `${moment()}`
-        }
-        replies.push(reply);
-        await commentController.updateOne(comment._id, {
-            replies: replies
-        });
-        return res.status(201).json(reply);
-    })
-)
-
 // Adds upvote to comment and removes downvote if existing
 router.post('/:commentId/votes/up', 
     passport.authenticate('jwt', { session: false }),
@@ -124,6 +99,75 @@ router.delete('/:commentId/votes/down',
     passport.authenticate('jwt', { session: false }),
     catchErrors(async(req, res) => {
         await commentController.updateVotes(req, res, { removeVote: 'down' });
+
+        res.status(200).json({ successMessage: 'Succesfully removed downvote from comment', updatedComment: res.locals.comment });
+    })
+)
+
+// ============ COMMENT REPLIES ================
+// TODO: Move the replies to a replies router e.g. in dir /comments/replies-router.js 
+
+
+/**
+ * Make patch request to create a reply
+ * Needs: Comment ID
+ * req.params.id (id is the comment id)
+ */
+
+router.patch('/reply/:id', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        const comment = await commentController.readOne({_id:req.params.id});
+        const replies = comment.replies || [];
+        const reply = {
+            username: req.body.username,
+            gravatar: req.body.gravatar,
+            text: req.body.text,
+            createdAt: `${moment()}`
+        }
+        replies.push(reply);
+        await commentController.updateOne(comment._id, {
+            replies: replies
+        });
+        return res.status(201).json(reply);
+    })
+)
+
+// Adds upvote to comment reply and removes downvote if existing
+router.post('/:commentId/replies/:replyId/votes/up', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res, next) => {
+        await commentController.updateVotes(req, res, { addVote: 'up', removeVote: 'down', isReply: true })
+
+        res.status(200).json({ successMessage: 'Succesfully added comment upvote', updatedComment: res.locals.comment });
+    })
+);
+
+// Adds downvote to comment reply and removes upvote if existing
+router.post('/:commentId/replies/:replyId/votes/down', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { addVote: 'down', removeVote: 'up', isReply: true, })
+
+        res.status(200).json({ successMessage: 'Succesfully added comment downvote', updatedComment: res.locals.comment });
+    })
+);
+
+// Removes upvote from comment reply
+router.delete('/:commentId/replies/:replyId/votes/up', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { removeVote: 'up', isReply: true })
+  
+        res.status(200).json({ successMessage: 'Succesfully removed upvote from comment', updatedComment: res.locals.comment });
+    })
+)
+
+// Removes downvote from comment reply
+router.delete('/:commentId/replies/:replyId/votes/down', 
+    passport.authenticate('jwt', { session: false }),
+    catchErrors(async(req, res) => {
+        await commentController.updateVotes(req, res, { removeVote: 'down', isReply: true });
 
         res.status(200).json({ successMessage: 'Succesfully removed downvote from comment', updatedComment: res.locals.comment });
     })
