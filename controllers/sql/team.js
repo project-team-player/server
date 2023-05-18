@@ -1,4 +1,6 @@
-const createTeam = (team) => {
+const { executeQuery } = require('./postgres');
+
+const createTeam = async (team) => {
     [
         fullName,
         key,
@@ -19,7 +21,7 @@ const createTeam = (team) => {
         stadiumDetails
     ] = [...team]
 
-    const query = `INSERT INTO TEAMS (
+    const query = `INSERT INTO teams (
         fullName,
         key,
         placeName,
@@ -56,15 +58,19 @@ const createTeam = (team) => {
         ${tertiaryColor},
         ${stadiumDetails}
     ) RETURNING *`
+    const result = await executeQuery(query);
+    return result;
 }
 
-const readTeam = (team) => {
-    const query = `SELECT * FROM TEAMS
+const readTeam = async (team) => {
+    const query = `SELECT * FROM teams
         WHERE id = ${team.id}
         RETURNING *`
+    const result = await executeQuery(query);
+    return result;
 }
 
-const updateTeam = (team) => {
+const updateTeam = async (team) => {
     [
         fullName,
         key,
@@ -84,7 +90,7 @@ const updateTeam = (team) => {
         tertiaryColor,
         stadiumDetails
     ] = [...team]
-    const query = `UPDATE TEAMS
+    const query = `UPDATE teams
         SET fullName = ${fullName}.
             key = ${key},
             placeName = ${placeName},
@@ -104,16 +110,46 @@ const updateTeam = (team) => {
             stadiumDetails = ${stadiumDetails}
         WHERE id = ${team.id}
         RETURNING *`
+    const result = await executeQuery(query);
+    return result;
 }
 
-const deleteTeam = (team) => {
-    const query = `DELETE FROM TEAMS
+const deleteTeam = async (team) => {
+    const query = `DELETE FROM teams
     WHERE id = ${team.id} `
+    const result = await executeQuery(query);
+    return result;
+}
+
+const createTeamTable = async () => {
+    const query = `CREATE TABLE teams (
+        id varchar PRIMARY KEY,
+        fullName varchar,
+        key varchar,
+        placeName varchar,
+        teamName varchar,
+        conference varchar,
+        division varchar,
+        byeWeek int,
+        headCoach varchar,
+        offensiveCoordinator varchar,
+        defensiveCoordinator varchar,
+        specialTeamsCoach varchar
+        wikiLogoURL varchar,
+        wikiWordMarkURL varchar,
+        primaryColor varchar,
+        secondaryColor varchar,
+        tertiaryColor varchar,
+        stadiumDetails varchar
+    )`
+    const result = await executeQuery(query);
+    return result;
 }
 
 module.exports = {
     createTeam,
     readTeam,
     updateTeam,
-    deleteTeam
+    deleteTeam,
+    createTeamTable
 };
