@@ -29,8 +29,7 @@ const createComment = async(comment) => {
         ${isRootComment},
         ${slug},
         ${gameThreadReference}
-    )
-    RETURNING *`
+    ) RETURNING *`
 }
 
 // get comment
@@ -51,8 +50,7 @@ const updateComment = async(comment) => {
 // delete comment 
 const deleteComment = async(comment, options) => {
     const query = `DELETE FROM COMMENTS
-    WHERE id = ${comment.id}
-    RETURNING *`
+    WHERE id = ${comment.id}`
 }
 
 
